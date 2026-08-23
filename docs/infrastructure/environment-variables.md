@@ -99,6 +99,6 @@ No `SANCTUM_STATEFUL_DOMAINS` or CORS origin list — the UIs are same-origin In
 | Variable | Example | Notes |
 |----------|---------|-------|
 | OTEL_EXPORTER_OTLP_ENDPOINT | http://[observability private IP]:4318 | VPC private address — traces, logs, metrics to SigNoz. Empty locally |
-| OTEL_SERVICE_NAME | syoksheet-api | |
+| OTEL_SERVICE_NAME | syoksheet | |
 | SENTRY_LARAVEL_DSN | https://…@errors.syoksheet.com/1 | GlitchTip DSN. Empty locally |
 | LOG_CHANNEL | stack | Local: daily only; staging/prod include the OTLP handler |
