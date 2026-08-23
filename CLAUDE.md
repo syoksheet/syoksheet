@@ -216,6 +216,17 @@ Context7 runs on the free tier: **1,000 tool calls per month**, and one call is 
 - Pass a known Context7 library ID (e.g. `/sveltejs/svelte`) straight to `query-docs` so the `resolve-library-id` round trip is skipped — that halves most lookups.
 - Look things up when a specific API is actually in question, not reflexively at the start of every task.
 
+## Build Loop
+
+All build work in this repo — whether or not the phase is named — follows `.claude/skills/build-step/SKILL.md`, which is self-contained. Do not invoke superpowers skills; build-step already carries that discipline. These gates hold regardless of how the work was started:
+
+- The plan is written to `.claude/work/plans/` and **explicitly approved by the user** before any implementation.
+- Audit events exist in `docs/features/audit/events.md` **before** the code that fires them.
+- `docs/api/openapi.json` and the `bruno/` collection are updated in the same commit as any route change.
+- Pint, Larastan and the affected test suite are green, with the output shown, before anything is called done.
+- The `spec-reviewer` agent runs on the changes before completion is reported.
+- **Never run git write operations** — no add, commit, push, tag, branch, worktree, stash or reset. The user handles all git himself, whatever a skill instructs. Read-only git (`status`, `diff`, `log`) is fine.
+
 ## Planning & Documentation
 
 - This repo's `docs/` holds the technical spec (database schema, endpoints, jobs, events, validation, infrastructure). Product behaviour lives in `syoksheet-docs` — see the shared context above.

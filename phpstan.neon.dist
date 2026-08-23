@@ -1,0 +1,72 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - vendor/nesbot/carbon/extension.neon
+    - vendor/pestphp/pest/extension.neon
+
+parameters:
+
+    level: 9
+
+    phpVersion: 80400
+
+    paths:
+        - app
+        - bootstrap
+        - config
+        - database
+        - routes
+        - tests
+
+    excludePaths:
+        analyseAndScan:
+            - bootstrap/cache
+
+    tmpDir: .phpstan.cache
+
+    # Pest binds $this in a test closure to the TestCase at runtime, but its PHPStan
+    # extension only registers object crates — it cannot express that binding. Scoped
+    # to tests so real method.notFound errors elsewhere still surface, and PHPStan
+    # reports this entry as unmatched if Pest ever ships the binding.
+    ignoreErrors:
+        -
+            identifier: method.notFound
+            message: '#Call to an undefined method Pest\\PendingCalls\\TestCall::#'
+            path: tests/*
+
+    # Docblocks are hand-written and can lie; don't let them silence real checks.
+    treatPhpDocTypesAsCertain: false
+
+    # --- Larastan ---
+
+    # Model attribute access is checked against the migrations, and casts are
+    # read from the Laravel 11+ casts() method rather than the $casts array.
+    checkModelProperties: true
+    parseModelCastsMethod: true
+
+    # Tier limits and other business numbers are config-driven, so config() reads
+    # are type-checked against the files that define them.
+    checkConfigTypes: true
+    configDirectories:
+        - config
+
+    # Not running Octane.
+    checkOctaneCompatibility: false
+
+    # --- Enable as the relevant directories land ---
+
+    # Phase 1, once the audit database has its own migrations path: list every
+    # migration directory here, or model property checks miss the log connection.
+    # databaseMigrationsPath:
+    #     - database/migrations
+    #     - database/migrations/audit
+
+    # Phase 3, with the first translated screen — catches __() keys that have no
+    # entry, which is how "no hardcoded user-facing text" gets enforced.
+    # checkMissingTranslations: true
+    # translationDirectories:
+    #     - lang
+
+    # Phase 13, once www.* has real Blade pages.
+    # checkUnusedViews: true
+    # viewDirectories:
+    #     - resources/views
