@@ -1,0 +1,303 @@
+<!-- @dsCard group="Forms" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Input &amp; form field — syoksheet Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --n-0:#fff;--n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
+    --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
+    --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
+    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
+    --amber-50:#fbf3e3;--amber-100:#f4e4be;--amber-700:#8a5e12;
+    --clay-50:#fbefea;--clay-100:#f4d8cd;--clay-500:#cb5638;--clay-600:#b2412a;--clay-700:#8f3120;
+    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
+    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
+    --radius-sm:5px;--radius:8px;--radius-lg:12px;--radius-xl:18px;
+    --shadow-xs:0 1px 2px rgba(10,10,11,.05);
+    --ring:rgba(0,64,64,.22);
+    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:var(--bg);color:var(--text);font-family:var(--fs);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  code{font-family:var(--fm);font-size:0.92em;}
+  .wrap{display:grid;grid-template-columns:248px 1fr;min-height:100vh;}
+  .docnav{position:sticky;top:0;height:100vh;overflow-y:auto;border-right:1px solid var(--border);padding:24px 16px;background:var(--surface);}
+  .docnav .home{display:flex;align-items:center;gap:9px;padding:4px 8px 18px;}
+  .docnav .home .mk{width:26px;height:26px;border-radius:6px;background:linear-gradient(180deg,var(--n-900),var(--n-700));color:#fff;display:inline-flex;align-items:center;justify-content:center;}
+  .docnav .home .mk svg{width:13px;height:13px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .docnav .home b{font-size:14px;font-weight:600;letter-spacing:-0.01em;}
+  .docnav .home span{display:block;font-family:var(--fm);font-size:9.5px;color:var(--text-3);}
+  .docnav .grp{font-family:var(--fm);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-3);padding:16px 10px 7px;}
+  .docnav a.n{display:block;padding:6px 10px;font-size:13px;color:var(--text-2);border-radius:6px;}
+  .docnav a.n:hover{background:var(--n-100);color:var(--text);}
+  .docnav a.n.on{background:var(--teal-50);color:var(--teal-700);font-weight:600;}
+  .doc{min-width:0;}
+  .content{max-width:760px;margin:0 auto;padding:0 40px 120px;}
+  .ph{padding:52px 0 32px;border-bottom:1px solid var(--border);}
+  .ph .crumb{font-family:var(--fm);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-3);}
+  .ph h1{font-size:46px;font-weight:600;letter-spacing:-0.03em;margin-top:14px;}
+  .ph p{font-size:17px;color:var(--text-2);margin-top:14px;line-height:1.55;max-width:600px;}
+  .ph .status{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--fm);font-size:11px;font-weight:500;padding:4px 10px;border-radius:999px;border:1px solid var(--border);color:var(--text-2);}
+  .pill.ok{background:var(--verify-50);border-color:var(--verify-100);color:var(--verify-700);}
+  .pill.ok::before{content:"";width:6px;height:6px;border-radius:999px;background:var(--verify-600);}
+  section.s{padding:44px 0;border-bottom:1px solid var(--hair);}
+  .s > h2{font-size:13px;font-family:var(--fm);font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-3);display:flex;align-items:center;gap:11px;margin-bottom:8px;}
+  .s > h2::before{content:"";width:16px;height:2px;background:var(--teal-600);border-radius:2px;}
+  .s > .lead{font-size:15px;color:var(--text-2);line-height:1.6;margin-bottom:24px;max-width:600px;}
+  .ex{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin:16px 0;}
+  .ex .stage{padding:30px;display:flex;flex-direction:column;gap:18px;align-items:stretch;background:var(--n-50);}
+  .ex .stage.row{flex-direction:row;flex-wrap:wrap;align-items:flex-end;}
+  .ex .cap{padding:10px 16px;border-top:1px solid var(--border);font-family:var(--fm);font-size:11px;color:var(--text-3);background:var(--surface);}
+
+  /* form (documented component) */
+  .field{display:flex;flex-direction:column;gap:7px;max-width:360px;}
+  .field-label{font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;justify-content:space-between;}
+  .field-label .req{color:var(--clay-600);margin-left:2px;}
+  .field-label .opt{font-family:var(--fm);font-size:10.5px;font-weight:500;text-transform:uppercase;letter-spacing:0.04em;color:var(--text-3);}
+  .field-hint{font-size:12px;color:var(--text-3);line-height:1.5;}
+  .input,.textarea,.select{width:100%;height:40px;padding:0 13px;font-family:var(--fs);font-size:14px;color:var(--text);background:var(--surface);border:1px solid var(--border-2);border-radius:var(--radius);box-shadow:var(--shadow-xs);transition:all .14s ease;}
+  .input::placeholder{color:var(--n-400);}
+  .input:hover,.textarea:hover{border-color:var(--n-400);}
+  .input:focus,.textarea:focus{outline:none;border-color:var(--teal-500);box-shadow:0 0 0 3px var(--ring);}
+  .textarea{height:auto;min-height:84px;padding:11px 13px;resize:vertical;line-height:1.5;}
+  .input.err{border-color:var(--clay-500);box-shadow:0 0 0 3px rgba(203,86,56,.12);}
+  .input.ok{border-color:var(--verify-500);}
+  .input[disabled]{background:var(--n-50);color:var(--text-3);cursor:not-allowed;}
+  .select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");background-repeat:no-repeat;background-position:right 13px center;padding-right:34px;}
+  .field-err{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--clay-600);font-weight:500;}
+  .field-err svg{width:12px;height:12px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .field-ok{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--verify-700);font-weight:500;}
+  .field-ok svg{width:12px;height:12px;stroke:currentColor;stroke-width:2.25;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .input-group{display:flex;align-items:stretch;border:1px solid var(--border-2);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow-xs);overflow:hidden;}
+  .input-group:focus-within{border-color:var(--teal-500);box-shadow:0 0 0 3px var(--ring);}
+  .input-group .prefix{display:inline-flex;align-items:center;padding:0 4px 0 12px;font-family:var(--fm);font-size:13px;color:var(--text-3);background:var(--n-50);border-right:1px solid var(--border);white-space:nowrap;}
+  .input-group .input{border:none;box-shadow:none;border-radius:0;background:transparent;}
+  .input-group .input:focus{box-shadow:none;}
+  .check-row{display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-size:14px;}
+  .check{appearance:none;width:18px;height:18px;border:1.5px solid var(--n-400);border-radius:5px;background:var(--surface);cursor:pointer;position:relative;flex-shrink:0;transition:all .12s ease;}
+  .check:checked{background:var(--teal-600);border-color:var(--teal-600);}
+  .check:checked::after{content:"";position:absolute;top:2px;left:5.5px;width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg);}
+  .radio{appearance:none;width:18px;height:18px;border:1.5px solid var(--n-400);border-radius:999px;background:var(--surface);cursor:pointer;flex-shrink:0;transition:border-width .12s ease,border-color .12s ease;}
+  .radio:checked{border-color:var(--teal-600);border-width:5.5px;}
+  .toggle{position:relative;display:inline-flex;cursor:pointer;}
+  .toggle input{position:absolute;opacity:0;}
+  .toggle .tk{width:34px;height:20px;background:var(--n-300);border-radius:999px;transition:background .15s;position:relative;}
+  .toggle .tk::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;background:#fff;border-radius:999px;box-shadow:var(--shadow-xs);transition:transform .15s;}
+  .toggle input:checked + .tk{background:var(--teal-600);}
+  .toggle input:checked + .tk::after{transform:translateX(14px);}
+
+  table.spec{width:100%;border:1px solid var(--border);border-radius:var(--radius-lg);border-collapse:separate;border-spacing:0;overflow:hidden;font-size:13.5px;margin:16px 0;}
+  table.spec th{text-align:left;font-family:var(--fm);font-size:10.5px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3);font-weight:600;padding:11px 14px;background:var(--n-50);border-bottom:1px solid var(--border);}
+  table.spec td{padding:11px 14px;border-bottom:1px solid var(--hair);vertical-align:top;}
+  table.spec tr:last-child td{border-bottom:none;}
+  table.spec td code{color:var(--teal-700);}
+  .states{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;}
+  .state{background:var(--surface);padding:22px;display:flex;flex-direction:column;gap:12px;}
+  .state .nm{font-family:var(--fm);font-size:11px;color:var(--text-3);}
+  .state .desc{font-size:12.5px;color:var(--text-2);line-height:1.5;}
+  .dd{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;}
+  .dd-card{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;}
+  .dd-card .hd{padding:10px 14px;font-family:var(--fm);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--hair);}
+  .dd-card.do .hd{color:var(--verify-700);} .dd-card.dont .hd{color:var(--clay-700);}
+  .dd-card .hd .m{width:16px;height:16px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;color:#fff;}
+  .dd-card.do .hd .m{background:var(--verify-600);} .dd-card.dont .hd .m{background:var(--clay-600);}
+  .dd-card .hd .m svg{width:9px;height:9px;stroke:currentColor;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .dd-card .demo{padding:22px;display:flex;justify-content:center;background:var(--n-50);min-height:110px;align-items:center;}
+  .dd-card p{font-size:12.5px;color:var(--text-2);line-height:1.5;padding:12px 14px;border-top:1px solid var(--hair);}
+  ul.rules{list-style:none;display:flex;flex-direction:column;gap:11px;margin:6px 0;}
+  ul.rules li{font-size:14px;color:var(--text-2);line-height:1.55;padding-left:24px;position:relative;}
+  ul.rules li::before{content:"";position:absolute;left:2px;top:8px;width:7px;height:7px;border-radius:2px;background:var(--teal-600);}
+  ul.rules li b{color:var(--text);font-weight:600;}
+  .note{display:flex;gap:11px;padding:13px 15px;border-radius:var(--radius);border:1px solid var(--teal-100);background:var(--teal-50);font-size:13px;color:var(--teal-700);line-height:1.5;margin:16px 0;}
+  .note svg{width:16px;height:16px;flex-shrink:0;margin-top:1px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .note b{font-weight:600;}
+  @media(max-width:900px){.wrap{grid-template-columns:1fr;}.docnav{display:none;}.dd,.states{grid-template-columns:1fr;}.content{padding:0 22px 80px;}.ph h1{font-size:34px;}}
+</style>
+</head>
+<body data-screen-label="DS · Form">
+<div class="wrap">
+
+  <nav class="docnav">
+    <a class="home" href="syoksheet Design System.html">
+      <span class="mk"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="14" rx="2"/><path d="M9 7h6M9 11h4"/><path d="M3 9v10a2 2 0 0 0 2 2h10"/></svg></span>
+      <span><b>syoksheet</b><span>Design System</span></span>
+    </a>
+    <div class="grp">Foundations</div>
+    <a class="n" href="DS Colour.html">Colour</a>
+    <a class="n" href="DS Iconography.html">Iconography &amp; motion</a>
+    <a class="n" href="DS Spacing.html">Spacing &amp; layout</a>
+    <a class="n" href="DS Typography.html">Typography</a>
+    <div class="grp">Actions</div>
+    <a class="n" href="DS Button.html">Button</a>
+    <a class="n" href="DS Menu.html">Menu</a>
+    <div class="grp">Forms</div>
+    <a class="n" href="DS Selection.html">Checkbox &amp; radio</a>
+    <a class="n" href="DS Upload.html">File upload</a>
+    <a class="n on" href="DS Form.html">Input &amp; form field</a>
+    <a class="n" href="DS Segmented.html">Segmented control</a>
+    <a class="n" href="DS Select.html">Select</a>
+    <a class="n" href="DS Toggle.html">Toggle &amp; switch</a>
+    <div class="grp">Data display</div>
+    <a class="n" href="DS Avatar.html">Avatar</a>
+    <a class="n" href="DS Badge.html">Badge</a>
+    <a class="n" href="DS Card.html">Card</a>
+    <a class="n" href="DS Data Table.html">Data table</a>
+    <a class="n" href="DS Table.html">Table</a>
+    <a class="n" href="DS Tag.html">Tag</a>
+    <a class="n" href="DS Verification Mark.html">Verification mark</a>
+    <div class="grp">Feedback</div>
+    <a class="n" href="DS Alert.html">Alert</a>
+    <a class="n" href="DS Empty State.html">Empty state</a>
+    <a class="n" href="DS Modal.html">Modal &amp; dialog</a>
+    <a class="n" href="DS Progress.html">Progress &amp; meter</a>
+    <a class="n" href="DS Skeleton.html">Skeleton</a>
+    <a class="n" href="DS Toast.html">Toast</a>
+    <a class="n" href="DS Tooltip.html">Tooltip</a>
+    <div class="grp">Navigation</div>
+    <a class="n" href="DS Breadcrumb.html">Breadcrumb</a>
+    <a class="n" href="DS Sidebar Nav.html">Sidebar nav</a>
+    <a class="n" href="DS Tabs.html">Tabs</a>
+  </nav>
+
+  <main class="doc">
+    <div class="content">
+
+      <header class="ph">
+        <div class="crumb">Components / Input &amp; form field</div>
+        <h1>Input &amp; form field</h1>
+        <p>A form field is a labelled control with optional hint and validation message. Fields are how members write brags, name organisations, and prove who they are — clarity and honest validation matter more here than anywhere.</p>
+        <div class="status">
+          <span class="pill" style="background:#fbf3e3;border-color:#f4e4be;color:#8a5e12;">Beta</span>
+          
+          <span class="pill">text · textarea · select · group · choice</span>
+        </div>
+      </header>
+
+      <!-- ANATOMY -->
+      <section class="s">
+        <h2>Anatomy</h2>
+        <p class="lead">Every field stacks the same four parts vertically with an 7px gap: label, control, and either a hint or a validation message (never both at once).</p>
+        <div class="ex">
+          <div class="stage">
+            <div class="field">
+              <label class="field-label"><span>Username <span class="req">*</span></span><span class="opt">Public</span></label>
+              <div class="input-group"><span class="prefix">syoksheet.com/</span><input class="input" type="text" value="davidc" /></div>
+              <span class="field-hint">Lowercase letters, numbers and hyphens. This is your public URL.</span>
+            </div>
+          </div>
+          <div class="cap">1 label (+ required / optional marker) · 2 control · 3 hint or validation message</div>
+        </div>
+      </section>
+
+      <!-- TYPES -->
+      <section class="s">
+        <h2>Field types</h2>
+        <p class="lead">Five control types cover every form in the product. Pick the lightest control that fits the data.</p>
+        <div class="ex">
+          <div class="stage">
+            <div class="field"><label class="field-label">Text input</label><input class="input" type="text" placeholder="Led migration to PostgreSQL 16" /></div>
+            <div class="field"><label class="field-label">Textarea</label><textarea class="textarea" placeholder="What did you do, and what was the impact?"></textarea></div>
+            <div class="field"><label class="field-label">Select</label><select class="select"><option>Public — anyone can view</option><option>On verification</option><option>Private</option></select></div>
+            <div class="field"><label class="field-label">Input group (prefix)</label><div class="input-group"><span class="prefix">https://</span><input class="input" type="text" value="davidchen.dev" /></div></div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap;">
+              <label class="check-row"><input class="check" type="checkbox" checked /> Checkbox</label>
+              <label class="check-row"><input class="radio" type="radio" name="r" checked /> Radio</label>
+              <label class="check-row"><span class="toggle"><input type="checkbox" checked /><span class="tk"></span></span> Toggle</label>
+            </div>
+          </div>
+          <div class="cap">Text · textarea · select · input group · choice controls (checkbox / radio / toggle).</div>
+        </div>
+        <table class="spec">
+          <thead><tr><th>Control</th><th>Use for</th></tr></thead>
+          <tbody>
+            <tr><td><b>Text input</b></td><td>Short single-line values — titles, names, URLs.</td></tr>
+            <tr><td><b>Textarea</b></td><td>Multi-line prose — brag descriptions, notes.</td></tr>
+            <tr><td><b>Select</b></td><td>One choice from a known, short list (visibility, role).</td></tr>
+            <tr><td><b>Input group</b></td><td>A value with a fixed prefix/suffix (domain, handle).</td></tr>
+            <tr><td><b>Checkbox / radio / toggle</b></td><td>Boolean or single-choice. Toggle = instant effect; checkbox = saved on submit.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- STATES -->
+      <section class="s">
+        <h2>States</h2>
+        <p class="lead">Validate on blur, not on every keystroke. Show success only when it carries information (e.g. a username is free); never decorate a valid field with green.</p>
+        <div class="states">
+          <div class="state"><span class="nm">default</span><div class="field"><label class="field-label">Organisation</label><input class="input" type="text" placeholder="e.g. Acme Corp" /></div></div>
+          <div class="state"><span class="nm">focus</span><div class="field"><label class="field-label">Organisation</label><input class="input" type="text" value="Acme Corp" style="border-color:var(--teal-500);box-shadow:0 0 0 3px var(--ring);" /></div></div>
+          <div class="state"><span class="nm">error</span><div class="field"><label class="field-label">Username</label><input class="input err" type="text" value="davidc" /><span class="field-err"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> That username is already taken.</span></div></div>
+          <div class="state"><span class="nm">success</span><div class="field"><label class="field-label">Username</label><input class="input ok" type="text" value="david-chen" /><span class="field-ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Available.</span></div></div>
+          <div class="state"><span class="nm">disabled</span><div class="field"><label class="field-label">Verified email</label><input class="input" type="text" value="david@acmecorp.com" disabled /></div></div>
+          <div class="state"><span class="nm">read-only / prefixed</span><div class="field"><label class="field-label">Wall URL</label><div class="input-group"><span class="prefix">syoksheet.com/</span><input class="input" type="text" value="davidc" readonly /></div></div></div>
+        </div>
+        <div class="note">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span><b>Error replaces the hint.</b> A field shows a hint <i>or</i> an error — never stacked. The error inherits the same line position so the form doesn't reflow.</span>
+        </div>
+      </section>
+
+      <!-- LAYOUT -->
+      <section class="s">
+        <h2>Layout</h2>
+        <ul class="rules">
+          <li><b>Labels above</b> the control, always — never floating or inline placeholders as labels.</li>
+          <li><b>One column</b> for a focused task (brag editor). Two columns only for short, related pairs (start / end date).</li>
+          <li><b>Mark the rarer case.</b> If most fields are required, mark the optional ones; if most are optional, mark the required ones — never both.</li>
+          <li><b>Group related fields</b> into a card section with its own header and Save, per the Card spec.</li>
+        </ul>
+      </section>
+
+      <!-- DO / DONT -->
+      <section class="s">
+        <h2>Do &amp; don't</h2>
+        <div class="dd">
+          <div class="dd-card do">
+            <div class="hd"><span class="m"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Do</div>
+            <div class="demo"><div class="field" style="max-width:none;"><label class="field-label">Title</label><input class="input" type="text" placeholder="Led migration to PG 16" /><span class="field-hint">A tight one-liner.</span></div></div>
+            <p>Visible label above, helpful hint below.</p>
+          </div>
+          <div class="dd-card dont">
+            <div class="hd"><span class="m"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Don't</div>
+            <div class="demo"><div class="field" style="max-width:none;"><input class="input" type="text" placeholder="Title" /></div></div>
+            <p>Placeholder used as the label — it vanishes on type and fails screen readers.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTENT -->
+      <section class="s">
+        <h2>Content</h2>
+        <ul class="rules">
+          <li><b>Labels are nouns</b>, sentence case, no colon: "Organisation", not "Organisation:".</li>
+          <li><b>Hints describe</b> the expectation or format; they don't repeat the label.</li>
+          <li><b>Errors are specific and kind</b>: "That username is taken" — say what's wrong and, where possible, how to fix it.</li>
+          <li><b>Placeholders are examples</b>, prefixed with "e.g." where it isn't obvious.</li>
+        </ul>
+      </section>
+
+      <!-- A11Y -->
+      <section class="s" style="border-bottom:none;">
+        <h2>Accessibility</h2>
+        <ul class="rules">
+          <li>Every control has a programmatic <code>&lt;label for&gt;</code> association.</li>
+          <li>Errors use <code>aria-invalid="true"</code> and link the message via <code>aria-describedby</code>.</li>
+          <li>Never rely on red alone — the error always carries an icon and text.</li>
+          <li>Focus ring (2px <code>--teal-500</code>, 3px soft halo) appears on keyboard focus of every control.</li>
+          <li>Minimum control height 40px; choice controls have a ≥18px target with a clickable label.</li>
+        </ul>
+      </section>
+
+    </div>
+  </main>
+</div>
+</body>
+</html>

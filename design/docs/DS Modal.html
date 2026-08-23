@@ -1,0 +1,274 @@
+<!-- @dsCard group="Feedback" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Modal &amp; dialog — syoksheet Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --n-0:#fff;--n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
+    --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
+    --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
+    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
+    --amber-50:#fbf3e3;--amber-100:#f4e4be;--amber-600:#b07815;--amber-700:#8a5e12;
+    --clay-50:#fbefea;--clay-100:#f4d8cd;--clay-500:#cb5638;--clay-600:#b2412a;--clay-700:#8f3120;
+    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
+    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
+    --radius-sm:5px;--radius:8px;--radius-lg:12px;--radius-xl:18px;
+    --shadow-xs:0 1px 2px rgba(10,10,11,.05);
+    --shadow-lg:0 22px 48px -18px rgba(10,10,11,.22),0 6px 14px -8px rgba(10,10,11,.1);
+    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:var(--bg);color:var(--text);font-family:var(--fs);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  code{font-family:var(--fm);font-size:0.92em;}
+  .wrap{display:grid;grid-template-columns:248px 1fr;min-height:100vh;}
+  .docnav{position:sticky;top:0;height:100vh;overflow-y:auto;border-right:1px solid var(--border);padding:24px 16px;background:var(--surface);}
+  .docnav .home{display:flex;align-items:center;gap:9px;padding:4px 8px 18px;}
+  .docnav .home .mk{width:26px;height:26px;border-radius:6px;background:linear-gradient(180deg,var(--n-900),var(--n-700));color:#fff;display:inline-flex;align-items:center;justify-content:center;}
+  .docnav .home .mk svg{width:13px;height:13px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .docnav .home b{font-size:14px;font-weight:600;letter-spacing:-0.01em;}
+  .docnav .home span{display:block;font-family:var(--fm);font-size:9.5px;color:var(--text-3);}
+  .docnav .grp{font-family:var(--fm);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-3);padding:16px 10px 7px;}
+  .docnav a.n{display:block;padding:6px 10px;font-size:13px;color:var(--text-2);border-radius:6px;}
+  .docnav a.n:hover{background:var(--n-100);color:var(--text);}
+  .docnav a.n.on{background:var(--teal-50);color:var(--teal-700);font-weight:600;}
+  .doc{min-width:0;}
+  .content{max-width:760px;margin:0 auto;padding:0 40px 120px;}
+  .ph{padding:52px 0 32px;border-bottom:1px solid var(--border);}
+  .ph .crumb{font-family:var(--fm);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-3);}
+  .ph h1{font-size:46px;font-weight:600;letter-spacing:-0.03em;margin-top:14px;}
+  .ph p{font-size:17px;color:var(--text-2);margin-top:14px;line-height:1.55;max-width:600px;}
+  .ph .status{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--fm);font-size:11px;font-weight:500;padding:4px 10px;border-radius:999px;border:1px solid var(--border);color:var(--text-2);}
+  .pill.ok{background:var(--verify-50);border-color:var(--verify-100);color:var(--verify-700);}
+  .pill.ok::before{content:"";width:6px;height:6px;border-radius:999px;background:var(--verify-600);}
+  section.s{padding:44px 0;border-bottom:1px solid var(--hair);}
+  .s > h2{font-size:13px;font-family:var(--fm);font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-3);display:flex;align-items:center;gap:11px;margin-bottom:8px;}
+  .s > h2::before{content:"";width:16px;height:2px;background:var(--teal-600);border-radius:2px;}
+  .s > .lead{font-size:15px;color:var(--text-2);line-height:1.6;margin-bottom:24px;max-width:600px;}
+  .ex{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin:16px 0;}
+  .ex .stage{padding:34px 24px;background:var(--n-50);display:flex;justify-content:center;}
+  .ex .cap{padding:10px 16px;border-top:1px solid var(--border);font-family:var(--fm);font-size:11px;color:var(--text-3);background:var(--surface);}
+
+  /* modal (documented) — shown statically on a faux scrim */
+  .scrim{width:100%;background:repeating-linear-gradient(45deg,rgba(10,10,11,.4),rgba(10,10,11,.4) 10px,rgba(10,10,11,.34) 10px,rgba(10,10,11,.34) 20px);border-radius:var(--radius);padding:30px;display:flex;justify-content:center;}
+  .modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);width:100%;max-width:440px;overflow:hidden;}
+  .modal .mh{padding:20px 22px 0;display:flex;gap:13px;}
+  .modal .mh .ic{width:38px;height:38px;border-radius:999px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;background:var(--clay-50);color:var(--clay-600);border:1px solid var(--clay-100);}
+  .modal .mh .ic svg{width:17px;height:17px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .modal h3{font-size:17px;font-weight:600;letter-spacing:-0.01em;line-height:1.3;}
+  .modal .mb{padding:12px 22px 18px 73px;font-size:13.5px;color:var(--text-2);line-height:1.55;}
+  .modal .mb b{color:var(--text);font-weight:600;}
+  .modal .mf{padding:14px 22px;background:var(--n-50);border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:34px;padding:0 13px;font-family:var(--fs);font-size:13px;font-weight:600;border-radius:var(--radius-sm);border:1px solid transparent;cursor:pointer;}
+  .btn-ghost{background:transparent;color:var(--text-2);}
+  .btn-ghost:hover{background:var(--n-100);color:var(--text);}
+  .btn-danger{background:var(--clay-600);color:#fff;}
+  .btn-primary{background:var(--teal-600);color:#fff;}
+  .modal .field{padding:0 22px 16px 73px;}
+  .modal .field label{font-size:12.5px;color:var(--text-2);display:block;margin-bottom:6px;}
+  .modal .field label code{color:var(--clay-700);}
+  .modal .field input{width:100%;height:34px;padding:0 12px;font-family:var(--fm);font-size:13px;border:1px solid var(--border-2);border-radius:var(--radius);}
+
+  table.spec{width:100%;border:1px solid var(--border);border-radius:var(--radius-lg);border-collapse:separate;border-spacing:0;overflow:hidden;font-size:13.5px;margin:16px 0;}
+  table.spec th{text-align:left;font-family:var(--fm);font-size:10.5px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3);font-weight:600;padding:11px 14px;background:var(--n-50);border-bottom:1px solid var(--border);}
+  table.spec td{padding:11px 14px;border-bottom:1px solid var(--hair);vertical-align:top;}
+  table.spec tr:last-child td{border-bottom:none;}
+  table.spec td code{color:var(--teal-700);}
+  .dd{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;}
+  .dd-card{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;}
+  .dd-card .hd{padding:10px 14px;font-family:var(--fm);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--hair);}
+  .dd-card.do .hd{color:var(--verify-700);} .dd-card.dont .hd{color:var(--clay-700);}
+  .dd-card .hd .m{width:16px;height:16px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;color:#fff;}
+  .dd-card.do .hd .m{background:var(--verify-600);} .dd-card.dont .hd .m{background:var(--clay-600);}
+  .dd-card .hd .m svg{width:9px;height:9px;stroke:currentColor;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .dd-card p{font-size:12.5px;color:var(--text-2);line-height:1.5;padding:12px 14px;}
+  ul.rules{list-style:none;display:flex;flex-direction:column;gap:11px;margin:6px 0;}
+  ul.rules li{font-size:14px;color:var(--text-2);line-height:1.55;padding-left:24px;position:relative;}
+  ul.rules li::before{content:"";position:absolute;left:2px;top:8px;width:7px;height:7px;border-radius:2px;background:var(--teal-600);}
+  ul.rules li b{color:var(--text);font-weight:600;}
+  .note{display:flex;gap:11px;padding:13px 15px;border-radius:var(--radius);border:1px solid var(--teal-100);background:var(--teal-50);font-size:13px;color:var(--teal-700);line-height:1.5;margin:16px 0;}
+  .note svg{width:16px;height:16px;flex-shrink:0;margin-top:1px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .note b{font-weight:600;}
+  @media(max-width:900px){.wrap{grid-template-columns:1fr;}.docnav{display:none;}.dd{grid-template-columns:1fr;}.content{padding:0 22px 80px;}.ph h1{font-size:34px;}}
+</style>
+</head>
+<body data-screen-label="DS · Modal">
+<div class="wrap">
+
+  <nav class="docnav">
+    <a class="home" href="syoksheet Design System.html">
+      <span class="mk"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="14" rx="2"/><path d="M9 7h6M9 11h4"/><path d="M3 9v10a2 2 0 0 0 2 2h10"/></svg></span>
+      <span><b>syoksheet</b><span>Design System</span></span>
+    </a>
+    <div class="grp">Foundations</div>
+    <a class="n" href="DS Colour.html">Colour</a>
+    <a class="n" href="DS Iconography.html">Iconography &amp; motion</a>
+    <a class="n" href="DS Spacing.html">Spacing &amp; layout</a>
+    <a class="n" href="DS Typography.html">Typography</a>
+    <div class="grp">Actions</div>
+    <a class="n" href="DS Button.html">Button</a>
+    <a class="n" href="DS Menu.html">Menu</a>
+    <div class="grp">Forms</div>
+    <a class="n" href="DS Selection.html">Checkbox &amp; radio</a>
+    <a class="n" href="DS Upload.html">File upload</a>
+    <a class="n" href="DS Form.html">Input &amp; form field</a>
+    <a class="n" href="DS Segmented.html">Segmented control</a>
+    <a class="n" href="DS Select.html">Select</a>
+    <a class="n" href="DS Toggle.html">Toggle &amp; switch</a>
+    <div class="grp">Data display</div>
+    <a class="n" href="DS Avatar.html">Avatar</a>
+    <a class="n" href="DS Badge.html">Badge</a>
+    <a class="n" href="DS Card.html">Card</a>
+    <a class="n" href="DS Data Table.html">Data table</a>
+    <a class="n" href="DS Table.html">Table</a>
+    <a class="n" href="DS Tag.html">Tag</a>
+    <a class="n" href="DS Verification Mark.html">Verification mark</a>
+    <div class="grp">Feedback</div>
+    <a class="n" href="DS Alert.html">Alert</a>
+    <a class="n" href="DS Empty State.html">Empty state</a>
+    <a class="n on" href="DS Modal.html">Modal &amp; dialog</a>
+    <a class="n" href="DS Progress.html">Progress &amp; meter</a>
+    <a class="n" href="DS Skeleton.html">Skeleton</a>
+    <a class="n" href="DS Toast.html">Toast</a>
+    <a class="n" href="DS Tooltip.html">Tooltip</a>
+    <div class="grp">Navigation</div>
+    <a class="n" href="DS Breadcrumb.html">Breadcrumb</a>
+    <a class="n" href="DS Sidebar Nav.html">Sidebar nav</a>
+    <a class="n" href="DS Tabs.html">Tabs</a>
+  </nav>
+
+  <main class="doc">
+    <div class="content">
+
+      <header class="ph">
+        <div class="crumb">Components / Modal &amp; dialog</div>
+        <h1>Modal &amp; dialog</h1>
+        <p>A modal interrupts the flow to demand a focused decision or a short, self-contained task. It's the heaviest interruption in the system, so it's reserved for moments that genuinely can't happen inline.</p>
+        <div class="status">
+          <span class="pill" style="background:#fbf3e3;border-color:#f4e4be;color:#8a5e12;">Beta</span>
+          
+          <span class="pill">2 types</span>
+        </div>
+      </header>
+
+      <!-- ANATOMY -->
+      <section class="s">
+        <h2>Anatomy</h2>
+        <p class="lead">A dimmed scrim over the page, a centred surface with a header (optional status icon + title), a body, and a right-aligned footer of actions. The primary/confirming action is right-most, exactly like a card footer.</p>
+        <div class="ex">
+          <div class="stage">
+            <div class="scrim">
+              <div class="modal">
+                <div class="mh">
+                  <span class="ic"><svg viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+                  <h3>Unlock this brag?</h3>
+                </div>
+                <div class="mb">Unlocking returns it to draft and <b>removes all 3 verifications</b>. You'll need to request verification again.</div>
+                <div class="mf"><button class="btn btn-ghost">Cancel</button><button class="btn btn-danger">Unlock brag</button></div>
+              </div>
+            </div>
+          </div>
+          <div class="cap">scrim · surface · header (icon + title) · body · footer (Cancel + confirm).</div>
+        </div>
+      </section>
+
+      <!-- TYPES -->
+      <section class="s">
+        <h2>Types</h2>
+        <p class="lead">Two only. A <b>confirmation dialog</b> for a single yes/no decision, and a <b>task modal</b> for a short form. Anything longer belongs on its own page or an inline section.</p>
+        <table class="spec">
+          <thead><tr><th>Type</th><th>Use for</th><th>Width</th><th>Footer</th></tr></thead>
+          <tbody>
+            <tr><td><b>Confirmation</b></td><td>Destructive or consequential yes/no</td><td><code>440px</code></td><td>Cancel + confirm</td></tr>
+            <tr><td><b>Task modal</b></td><td>A short focused form (add email, invite)</td><td><code>480–520px</code></td><td>Cancel + primary</td></tr>
+          </tbody>
+        </table>
+        <div class="note">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span><b>Prefer inline over modal.</b> Routine settings expand in place as sections — reach for a modal only when the decision must block everything else (e.g. unlock, disband, leave).</span>
+        </div>
+      </section>
+
+      <!-- CONFIRMATION PATTERN -->
+      <section class="s">
+        <h2>Destructive confirmation</h2>
+        <p class="lead">High-consequence actions add a type-to-confirm gate: the danger button stays disabled until the user types an exact phrase. This prevents reflexive clicks on irreversible actions.</p>
+        <div class="ex">
+          <div class="stage">
+            <div class="scrim">
+              <div class="modal">
+                <div class="mh">
+                  <span class="ic"><svg viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+                  <h3>Disband Acme Corp?</h3>
+                </div>
+                <div class="mb">Releases DNS verification, removes the public wall, and unbinds all 84 brags. This cannot be undone.</div>
+                <div class="field"><label>Type <code>disband acme corp</code> to confirm</label><input type="text" placeholder="disband acme corp" /></div>
+                <div class="mf"><button class="btn btn-ghost">Cancel</button><button class="btn btn-danger" style="opacity:.5;">Disband organisation</button></div>
+              </div>
+            </div>
+          </div>
+          <div class="cap">Danger button disabled until the typed phrase matches exactly.</div>
+        </div>
+      </section>
+
+      <!-- BEHAVIOR -->
+      <section class="s">
+        <h2>Behaviour</h2>
+        <ul class="rules">
+          <li><b>Focus moves in</b> on open (to the first field, or Cancel for a confirmation) and is trapped inside until close.</li>
+          <li><b>Dismiss</b> via Cancel, the scrim, or <code>Esc</code> — all three close a modal. A destructive type-to-confirm still requires the typed phrase to <em>act</em>, but can always be cancelled.</li>
+          <li><b>Scrim</b> is <code>rgba(10,10,11,.45)</code> with a 2px blur; the page beneath does not scroll.</li>
+          <li><b>Enter/exit</b> at 160–200ms — surface scales from 0.96 + fades, scrim fades. No bounce.</li>
+          <li><b>One modal at a time</b> — never stack. A modal never opens another modal.</li>
+        </ul>
+      </section>
+
+      <!-- DO / DONT -->
+      <section class="s">
+        <h2>Do &amp; don't</h2>
+        <div class="dd">
+          <div class="dd-card do">
+            <div class="hd"><span class="m"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Do</div>
+            <p>Keep it to one decision or one short form. Title asks the question; confirm button echoes it ("Leave Acme Corp").</p>
+          </div>
+          <div class="dd-card dont">
+            <div class="hd"><span class="m"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Don't</div>
+            <p>Don't put multi-step settings, long forms, or tabbed content in a modal — use a page or inline sections instead.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTENT -->
+      <section class="s">
+        <h2>Content</h2>
+        <ul class="rules">
+          <li><b>Title is the question</b> — "Unlock this brag?", "Disband Acme Corp?"</li>
+          <li><b>Body states the consequence</b> concretely, bolding what's lost ("removes all 3 verifications").</li>
+          <li><b>Confirm button echoes the title's verb + object</b>, never "OK" or "Yes".</li>
+          <li><b>Cancel is always present</b> and always ghost.</li>
+        </ul>
+      </section>
+
+      <!-- ACCESSIBILITY -->
+      <section class="s" style="border-bottom:none;">
+        <h2>Accessibility</h2>
+        <ul class="rules">
+          <li>Container is <code>role="dialog"</code> with <code>aria-modal="true"</code> and an <code>aria-labelledby</code> pointing at the title.</li>
+          <li>Focus is trapped while open and <b>returns to the trigger</b> on close.</li>
+          <li><code>Esc</code> closes; the scrim is click-to-close but never the only path.</li>
+          <li>Background content gets <code>aria-hidden</code> / <code>inert</code> so it's skipped by AT and tab order.</li>
+        </ul>
+      </section>
+
+    </div>
+  </main>
+</div>
+</body>
+</html>

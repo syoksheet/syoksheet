@@ -1,0 +1,230 @@
+<!-- @dsCard group="Forms" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Select — syoksheet Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --n-0:#fff;--n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
+    --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
+    --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
+    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
+    --clay-50:#fbefea;--clay-100:#f4d8cd;--clay-600:#b2412a;--clay-700:#8f3120;
+    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
+    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
+    --radius-sm:5px;--radius:8px;--radius-lg:12px;--shadow-xs:0 1px 2px rgba(10,10,11,.05);
+    --shadow-md:0 8px 22px -10px rgba(10,10,11,.16),0 2px 6px -3px rgba(10,10,11,.08);
+    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:var(--bg);color:var(--text);font-family:var(--fs);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  code{font-family:var(--fm);font-size:0.92em;}
+  .wrap{display:grid;grid-template-columns:248px 1fr;min-height:100vh;}
+  .docnav{position:sticky;top:0;height:100vh;overflow-y:auto;border-right:1px solid var(--border);padding:24px 16px;background:var(--surface);}
+  .docnav .home{display:flex;align-items:center;gap:9px;padding:4px 8px 18px;}
+  .docnav .home .mk{width:26px;height:26px;border-radius:6px;background:linear-gradient(180deg,var(--n-900),var(--n-700));color:#fff;display:inline-flex;align-items:center;justify-content:center;}
+  .docnav .home .mk svg{width:13px;height:13px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .docnav .home b{font-size:14px;font-weight:600;letter-spacing:-0.01em;}
+  .docnav .home span{display:block;font-family:var(--fm);font-size:9.5px;color:var(--text-3);}
+  .docnav .grp{font-family:var(--fm);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-3);padding:16px 10px 7px;}
+  .docnav a.n{display:block;padding:6px 10px;font-size:13px;color:var(--text-2);border-radius:6px;}
+  .docnav a.n:hover{background:var(--n-100);color:var(--text);}
+  .docnav a.n.on{background:var(--teal-50);color:var(--teal-700);font-weight:600;}
+  .doc{min-width:0;}
+  .content{max-width:760px;margin:0 auto;padding:0 40px 120px;}
+  .ph{padding:52px 0 32px;border-bottom:1px solid var(--border);}
+  .ph .crumb{font-family:var(--fm);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-3);}
+  .ph h1{font-size:46px;font-weight:600;letter-spacing:-0.03em;margin-top:14px;}
+  .ph p{font-size:17px;color:var(--text-2);margin-top:14px;line-height:1.55;max-width:600px;}
+  .ph .status{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--fm);font-size:11px;font-weight:500;padding:4px 10px;border-radius:999px;border:1px solid var(--border);color:var(--text-2);}
+  .pill.ok{background:var(--verify-50);border-color:var(--verify-100);color:var(--verify-700);}
+  .pill.ok::before{content:"";width:6px;height:6px;border-radius:999px;background:var(--verify-600);}
+  section.s{padding:44px 0;border-bottom:1px solid var(--hair);}
+  .s > h2{font-size:13px;font-family:var(--fm);font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-3);display:flex;align-items:center;gap:11px;margin-bottom:8px;}
+  .s > h2::before{content:"";width:16px;height:2px;background:var(--teal-600);border-radius:2px;}
+  .s > .lead{font-size:15px;color:var(--text-2);line-height:1.6;margin-bottom:24px;max-width:600px;}
+  .ex{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin:16px 0;}
+  .ex .stage{padding:28px 24px;background:var(--n-50);display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start;}
+  .ex .cap{padding:10px 16px;border-top:1px solid var(--border);font-family:var(--fm);font-size:11px;color:var(--text-3);background:var(--surface);}
+
+  /* native select */
+  .sel{appearance:none;-webkit-appearance:none;height:38px;width:220px;padding:0 36px 0 12px;font-family:var(--fs);font-size:14px;color:var(--text);background:var(--surface);border:1px solid var(--border-2);border-radius:var(--radius);box-shadow:var(--shadow-xs);cursor:pointer;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");background-repeat:no-repeat;background-position:right 12px center;}
+  .sel:hover{border-color:var(--n-400);}
+  .sel:focus{outline:none;border-color:var(--teal-500);box-shadow:0 0 0 3px rgba(0,64,64,.16);}
+  .sel[disabled]{background-color:var(--n-50);color:var(--text-3);cursor:not-allowed;}
+
+  /* custom dropdown menu (popover) */
+  .ddwrap{position:relative;width:240px;}
+  .ddbtn{height:38px;width:100%;padding:0 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:14px;color:var(--text);background:var(--surface);border:1px solid var(--teal-500);border-radius:var(--radius);box-shadow:0 0 0 3px rgba(0,64,64,.16);cursor:pointer;}
+  .ddbtn svg{width:14px;height:14px;stroke:var(--text-3);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .ddmenu{margin-top:6px;width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-md);padding:5px;}
+  .ddmenu .it{display:flex;align-items:center;gap:9px;padding:8px 10px;font-size:13.5px;border-radius:var(--radius-sm);cursor:pointer;color:var(--text);}
+  .ddmenu .it:hover{background:var(--n-100);}
+  .ddmenu .it.sel{background:var(--teal-50);color:var(--teal-700);font-weight:600;}
+  .ddmenu .it .ck{margin-left:auto;color:var(--teal-600);}
+  .ddmenu .it .ck svg{width:14px;height:14px;stroke:currentColor;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .ddmenu .srch{width:100%;height:30px;padding:0 10px;font-size:12.5px;border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:5px;background:var(--n-50);}
+
+  .field{display:flex;flex-direction:column;gap:7px;}
+  .field .fl{font-size:13px;font-weight:600;}
+  .field .fh{font-size:12px;color:var(--text-3);}
+
+  table.spec{width:100%;border:1px solid var(--border);border-radius:var(--radius-lg);border-collapse:separate;border-spacing:0;overflow:hidden;font-size:13.5px;margin:16px 0;}
+  table.spec th{text-align:left;font-family:var(--fm);font-size:10.5px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3);font-weight:600;padding:11px 14px;background:var(--n-50);border-bottom:1px solid var(--border);}
+  table.spec td{padding:11px 14px;border-bottom:1px solid var(--hair);vertical-align:top;}
+  table.spec tr:last-child td{border-bottom:none;}
+  table.spec td code{color:var(--teal-700);}
+  .dd{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;}
+  .dd-card{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;}
+  .dd-card .hd{padding:10px 14px;font-family:var(--fm);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--hair);}
+  .dd-card.do .hd{color:var(--verify-700);} .dd-card.dont .hd{color:var(--clay-700);}
+  .dd-card .hd .m{width:16px;height:16px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;color:#fff;}
+  .dd-card.do .hd .m{background:var(--verify-600);} .dd-card.dont .hd .m{background:var(--clay-600);}
+  .dd-card .hd .m svg{width:9px;height:9px;stroke:currentColor;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .dd-card p{font-size:12.5px;color:var(--text-2);line-height:1.5;padding:12px 14px;}
+  ul.rules{list-style:none;display:flex;flex-direction:column;gap:11px;margin:6px 0;}
+  ul.rules li{font-size:14px;color:var(--text-2);line-height:1.55;padding-left:24px;position:relative;}
+  ul.rules li::before{content:"";position:absolute;left:2px;top:8px;width:7px;height:7px;border-radius:2px;background:var(--teal-600);}
+  ul.rules li b{color:var(--text);font-weight:600;}
+  .note{display:flex;gap:11px;padding:13px 15px;border-radius:var(--radius);border:1px solid var(--teal-100);background:var(--teal-50);font-size:13px;color:var(--teal-700);line-height:1.5;margin:16px 0;}
+  .note svg{width:16px;height:16px;flex-shrink:0;margin-top:1px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .note b{font-weight:600;}
+  @media(max-width:900px){.wrap{grid-template-columns:1fr;}.docnav{display:none;}.dd{grid-template-columns:1fr;}.content{padding:0 22px 80px;}.ph h1{font-size:34px;}}
+</style>
+</head>
+<body data-screen-label="DS · Select">
+<div class="wrap">
+  <nav class="docnav">
+    <a class="home" href="syoksheet Design System.html">
+      <span class="mk"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="14" rx="2"/><path d="M9 7h6M9 11h4"/><path d="M3 9v10a2 2 0 0 0 2 2h10"/></svg></span>
+      <span><b>syoksheet</b><span>Design System</span></span>
+    </a>
+    <div class="grp">Foundations</div>
+    <a class="n" href="DS Colour.html">Colour</a>
+    <a class="n" href="DS Iconography.html">Iconography &amp; motion</a>
+    <a class="n" href="DS Spacing.html">Spacing &amp; layout</a>
+    <a class="n" href="DS Typography.html">Typography</a>
+    <div class="grp">Actions</div>
+    <a class="n" href="DS Button.html">Button</a>
+    <a class="n" href="DS Menu.html">Menu</a>
+    <div class="grp">Forms</div>
+    <a class="n" href="DS Selection.html">Checkbox &amp; radio</a>
+    <a class="n" href="DS Upload.html">File upload</a>
+    <a class="n" href="DS Form.html">Input &amp; form field</a>
+    <a class="n" href="DS Segmented.html">Segmented control</a>
+    <a class="n on" href="DS Select.html">Select</a>
+    <a class="n" href="DS Toggle.html">Toggle &amp; switch</a>
+    <div class="grp">Data display</div>
+    <a class="n" href="DS Avatar.html">Avatar</a>
+    <a class="n" href="DS Badge.html">Badge</a>
+    <a class="n" href="DS Card.html">Card</a>
+    <a class="n" href="DS Data Table.html">Data table</a>
+    <a class="n" href="DS Table.html">Table</a>
+    <a class="n" href="DS Tag.html">Tag</a>
+    <a class="n" href="DS Verification Mark.html">Verification mark</a>
+    <div class="grp">Feedback</div>
+    <a class="n" href="DS Alert.html">Alert</a>
+    <a class="n" href="DS Empty State.html">Empty state</a>
+    <a class="n" href="DS Modal.html">Modal &amp; dialog</a>
+    <a class="n" href="DS Progress.html">Progress &amp; meter</a>
+    <a class="n" href="DS Skeleton.html">Skeleton</a>
+    <a class="n" href="DS Toast.html">Toast</a>
+    <a class="n" href="DS Tooltip.html">Tooltip</a>
+    <div class="grp">Navigation</div>
+    <a class="n" href="DS Breadcrumb.html">Breadcrumb</a>
+    <a class="n" href="DS Sidebar Nav.html">Sidebar nav</a>
+    <a class="n" href="DS Tabs.html">Tabs</a>
+  </nav>
+
+  <main class="doc">
+    <div class="content">
+      <header class="ph">
+        <div class="crumb">Components / Select</div>
+        <h1>Select</h1>
+        <p>A select picks one value from a list too long for a segmented control. Native by default; a custom popover only when options need search, icons, or rich rows.</p>
+        <div class="status"><span class="pill" style="background:#fbf3e3;border-color:#f4e4be;color:#8a5e12;">Beta</span><span class="pill">2 kinds</span></div>
+      </header>
+
+      <section class="s">
+        <h2>Native select</h2>
+        <p class="lead">The default. Matches input height and border, with a chevron affordance. Use it for plain text options — re-check cadence, category, sort.</p>
+        <div class="ex">
+          <div class="stage">
+            <div class="field"><span class="fl">Re-check cadence</span>
+              <select class="sel"><option>Every 24 hours</option><option>Every 12 hours</option><option>Every 6 hours</option></select>
+            </div>
+            <div class="field"><span class="fl">Disabled</span>
+              <select class="sel" disabled><option>Locked</option></select>
+            </div>
+          </div>
+          <div class="cap">38px tall · chevron right · same border/focus as inputs.</div>
+        </div>
+      </section>
+
+      <section class="s">
+        <h2>Custom dropdown</h2>
+        <p class="lead">When options need search, a check on the selected row, or secondary text, use a popover menu opened from a select-styled button. Shown open below.</p>
+        <div class="ex">
+          <div class="stage">
+            <div class="ddwrap">
+              <button class="ddbtn">Most recent <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+              <div class="ddmenu">
+                <input class="srch" placeholder="Filter…" />
+                <div class="it sel">Most recent <span class="ck"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                <div class="it">Oldest first</div>
+                <div class="it">Most verified</div>
+                <div class="it">A–Z</div>
+              </div>
+            </div>
+          </div>
+          <div class="cap">Button mirrors the native control; menu adds search + selected check.</div>
+        </div>
+        <div class="note">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span><b>Prefer native.</b> The OS select is accessible and fast on mobile. Only build the custom popover when you genuinely need search or rich option rows.</span>
+        </div>
+      </section>
+
+      <section class="s">
+        <h2>Which control</h2>
+        <table class="spec">
+          <thead><tr><th>Options</th><th>Use</th></tr></thead>
+          <tbody>
+            <tr><td>2–3 short, exclusive</td><td>Segmented control</td></tr>
+            <tr><td>4–15 plain text</td><td>Native select</td></tr>
+            <tr><td>Many, or needs search / icons</td><td>Custom dropdown</td></tr>
+            <tr><td>Pick several</td><td>Checkbox list / multi-select</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="s">
+        <h2>Do &amp; don't</h2>
+        <div class="dd">
+          <div class="dd-card do"><div class="hd"><span class="m"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Do</div><p>Default the most common value. Keep labels short; order logically (frequency, then alphabetical).</p></div>
+          <div class="dd-card dont"><div class="hd"><span class="m"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Don't</div><p>Don't use a select for 2–3 options (use segmented), or for actions (use a menu).</p></div>
+        </div>
+      </section>
+
+      <section class="s" style="border-bottom:none;">
+        <h2>Accessibility</h2>
+        <ul class="rules">
+          <li>Native select is a real <code>&lt;select&gt;</code> with an associated <code>&lt;label&gt;</code>.</li>
+          <li>Custom dropdown uses <code>role="listbox"</code>/<code>option</code>, full keyboard support (↑↓, type-ahead, Esc), and returns focus to the button on close.</li>
+          <li>The trigger exposes <code>aria-expanded</code> and the current value as its accessible name.</li>
+          <li>Focus ring matches inputs; selected option is marked with <code>aria-selected</code>, not colour alone.</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!-- @dsCard group="Actions" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Button — syoksheet DS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --n-0:#fff;--n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
+    --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
+    --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
+    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
+    --amber-50:#fbf3e3;--amber-100:#f4e4be;--amber-700:#8a5e12;
+    --clay-50:#fbefea;--clay-100:#f4d8cd;--clay-500:#cb5638;--clay-600:#b2412a;--clay-700:#8f3120;
+    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
+    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
+    --radius-sm:5px;--radius:8px;--radius-lg:12px;--radius-xl:18px;
+    --shadow-xs:0 1px 2px rgba(10,10,11,.05);
+    --shadow-sm:0 1px 3px rgba(10,10,11,.07),0 1px 2px rgba(10,10,11,.04);
+    --shadow-lg:0 22px 48px -18px rgba(10,10,11,.22),0 6px 14px -8px rgba(10,10,11,.1);
+    --ring:rgba(0,64,64,.22);
+    --fd:'Geist',system-ui,sans-serif;--fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#fff;color:var(--text);font-family:var(--fs);font-size:15px;-webkit-font-smoothing:antialiased;padding:28px;display:flex;flex-direction:column;gap:22px;}
+  .row{display:flex;flex-wrap:wrap;gap:14px;align-items:center;}
+  .cap{font-family:var(--fm);font-size:11px;color:var(--text-3);margin-bottom:10px;display:block;}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:38px;padding:0 16px;font-family:var(--fs);font-size:14px;font-weight:600;line-height:1;border-radius:var(--radius);border:1px solid transparent;cursor:pointer;transition:all .14s ease;white-space:nowrap;}
+  .btn:focus-visible{outline:2px solid var(--teal-500);outline-offset:2px;}
+  .btn .i{width:15px;height:15px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .btn-primary{background:var(--teal-600);color:#fff;}
+  .btn-primary:hover{background:var(--teal-700);}
+  .btn-verify{background:var(--verify-600);color:#fff;}
+  .btn-verify:hover{background:var(--verify-700);}
+  .btn-secondary{background:var(--surface);color:var(--text);border-color:var(--border-2);box-shadow:var(--shadow-xs);}
+  .btn-secondary:hover{background:var(--n-50);border-color:var(--n-400);}
+  .btn-ghost{background:transparent;color:var(--text-2);}
+  .btn-ghost:hover{background:var(--n-100);color:var(--text);}
+  .btn-destructive{background:var(--surface);color:var(--clay-600);border-color:var(--clay-100);}
+  .btn-destructive:hover{background:var(--clay-50);border-color:var(--clay-500);}
+  .btn-danger{background:var(--clay-600);color:#fff;}
+  .btn-danger:hover{background:var(--clay-700);}
+  .btn-sm{height:31px;padding:0 12px;font-size:13px;border-radius:var(--radius-sm);}
+  .btn-lg{height:46px;padding:0 22px;font-size:15px;}
+  .btn[disabled]{opacity:.5;cursor:not-allowed;}
+  .spin{width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:999px;animation:sp .7s linear infinite;}
+  @keyframes sp{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+
+  <div>
+    <span class="cap">variants · primary → secondary → ghost · verify &amp; danger are semantic</span>
+    <div class="row">
+      <button class="btn btn-primary">Primary</button>
+      <button class="btn btn-secondary">Secondary</button>
+      <button class="btn btn-ghost">Ghost</button>
+      <button class="btn btn-verify"><svg class="i" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Verify</button>
+      <button class="btn btn-destructive">Destructive</button>
+      <button class="btn btn-danger">Danger (solid)</button>
+    </div>
+  </div>
+
+  <div>
+    <span class="cap">sizes</span>
+    <div class="row" style="align-items:flex-end;">
+      <button class="btn btn-primary btn-lg">Large · 46px</button>
+      <button class="btn btn-primary">Default · 38px</button>
+      <button class="btn btn-primary btn-sm">Small · 31px</button>
+    </div>
+  </div>
+
+  <div>
+    <span class="cap">states</span>
+    <div class="row">
+      <button class="btn btn-primary" style="background:var(--teal-700);">Hover</button>
+      <button class="btn btn-primary" style="outline:2px solid var(--teal-500);outline-offset:2px;">Focus-visible</button>
+      <button class="btn btn-primary"><span class="spin"></span> Saving…</button>
+      <button class="btn btn-primary" disabled>Disabled</button>
+    </div>
+  </div>
+
+</body>
+</html>

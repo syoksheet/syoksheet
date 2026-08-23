@@ -1,0 +1,81 @@
+<!-- @dsCard group="Data display" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Avatar — syoksheet DS</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --n-0:#fff;--n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
+    --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
+    --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
+    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
+    --amber-50:#fbf3e3;--amber-100:#f4e4be;--amber-700:#8a5e12;
+    --clay-50:#fbefea;--clay-100:#f4d8cd;--clay-500:#cb5638;--clay-600:#b2412a;--clay-700:#8f3120;
+    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
+    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
+    --radius-sm:5px;--radius:8px;--radius-lg:12px;--radius-xl:18px;
+    --shadow-xs:0 1px 2px rgba(10,10,11,.05);
+    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#fff;color:var(--text);font-family:var(--fs);font-size:15px;-webkit-font-smoothing:antialiased;padding:28px;display:flex;flex-direction:column;gap:22px;}
+  .cap{font-family:var(--fm);font-size:11px;color:var(--text-3);}
+  .demo{display:flex;flex-direction:column;gap:12px;align-items:flex-start;}
+  .row{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-end;}
+  .avatar{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;color:#fff;font-weight:600;flex-shrink:0;user-select:none;}
+  .avatar.xs{width:22px;height:22px;font-size:9px;}
+  .avatar.sm{width:26px;height:26px;font-size:10px;}
+  .avatar.md{width:34px;height:34px;font-size:12px;}
+  .avatar.lg{width:44px;height:44px;font-size:15px;}
+  .avatar.xl{width:64px;height:64px;font-size:22px;}
+  .b1{background:var(--teal-600);} .b2{background:var(--verify-700);} .b3{background:#9a4a2f;} .b4{background:#5b4a86;} .b5{background:#8a5e12;}
+  .avatar-stack{display:inline-flex;}
+  .avatar-stack .avatar + .avatar{margin-left:-8px;box-shadow:0 0 0 2px var(--surface);}
+  .orglogo{display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:600;border-radius:12px;flex-shrink:0;}
+  .orglogo.md{width:44px;height:44px;font-size:16px;border-radius:11px;}
+  .lab{display:flex;flex-direction:column;align-items:center;gap:9px;}
+  .lab .c{font-family:var(--fm);font-size:10.5px;color:var(--text-3);}
+</style>
+</head>
+<body>
+  <div class="demo">
+    <div class="row">
+      <div class="lab"><span class="avatar xl b1">DC</span><span class="c">64 · profile</span></div>
+      <div class="lab"><span class="avatar lg b1">DC</span><span class="c">44 · header</span></div>
+      <div class="lab"><span class="avatar md b1">DC</span><span class="c">34 · default</span></div>
+      <div class="lab"><span class="avatar sm b1">DC</span><span class="c">26 · row</span></div>
+      <div class="lab"><span class="avatar xs b1">DC</span><span class="c">22 · stack</span></div>
+    </div>
+    <span class="cap">sizes 22 / 26 / 34 / 44 / 64</span>
+  </div>
+  <div class="demo">
+    <div class="row">
+      <div class="lab"><span class="avatar lg b1">DC</span><span class="c">person · circle</span></div>
+      <div class="lab"><span class="orglogo md" style="background:linear-gradient(135deg,#18181b,#3f3f46);">A</span><span class="c">organisation · rounded square</span></div>
+    </div>
+    <span class="cap">shape encodes type</span>
+  </div>
+  <div class="demo">
+    <div class="row">
+      <span class="avatar md b1">DC</span>
+      <span class="avatar md b2">PK</span>
+      <span class="avatar md b3">MO</span>
+      <span class="avatar md b4">AT</span>
+      <span class="avatar md b5">RS</span>
+    </div>
+    <span class="cap">fallback initials · deterministic colour hashed from user id</span>
+  </div>
+  <div class="demo">
+    <span class="avatar-stack">
+      <span class="avatar md b1">DC</span>
+      <span class="avatar md b2">PK</span>
+      <span class="avatar md b3">MO</span>
+      <span class="avatar md" style="background:var(--n-400);">+5</span>
+    </span>
+    <span class="cap">stack · −8px overlap, 2px surface ring, +N chip</span>
+  </div>
+</body>
+</html>

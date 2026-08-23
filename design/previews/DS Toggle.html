@@ -1,0 +1,59 @@
+<!-- @dsCard group="Forms" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Toggle &amp; switch — syoksheet DS</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --n-0:#fff;--n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
+    --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
+    --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
+    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
+    --clay-50:#fbefea;--clay-100:#f4d8cd;--clay-600:#b2412a;--clay-700:#8f3120;
+    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
+    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
+    --radius-sm:5px;--radius:8px;--radius-lg:12px;--shadow-xs:0 1px 2px rgba(10,10,11,.05);
+    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#fff;color:var(--text);font-family:var(--fs);font-size:15px;-webkit-font-smoothing:antialiased;padding:28px;display:flex;flex-direction:column;gap:22px;}
+  .cap{font-family:var(--fm);font-size:11px;color:var(--text-3);}
+  .demo{display:flex;flex-direction:column;gap:12px;align-items:flex-start;}
+  .row{display:flex;flex-wrap:wrap;gap:22px;align-items:center;}
+  .tg{position:relative;display:inline-flex;cursor:pointer;}
+  .tg input{position:absolute;opacity:0;}
+  .tg .tk{width:36px;height:21px;background:var(--n-300);border-radius:999px;transition:background .15s ease;position:relative;}
+  .tg .tk::after{content:"";position:absolute;top:2px;left:2px;width:17px;height:17px;background:#fff;border-radius:999px;box-shadow:var(--shadow-xs);transition:transform .15s ease;}
+  .tg input:checked + .tk{background:var(--teal-600);}
+  .tg input:checked + .tk::after{transform:translateX(15px);}
+  .tg input:focus-visible + .tk{outline:2px solid var(--teal-500);outline-offset:2px;}
+  .tg.verify input:checked + .tk{background:var(--verify-600);}
+  .tg.sm .tk{width:30px;height:18px;}
+  .tg.sm .tk::after{width:14px;height:14px;}
+  .tg.sm input:checked + .tk::after{transform:translateX(12px);}
+  .settingrow{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;max-width:440px;padding:13px 15px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);}
+  .settingrow .l .t{font-size:13.5px;font-weight:600;}
+  .settingrow .l .d{font-size:12px;color:var(--text-3);margin-top:2px;}
+</style>
+</head>
+<body>
+  <div class="demo">
+    <div class="row">
+      <label class="tg"><input type="checkbox" /><span class="tk"></span></label>
+      <label class="tg"><input type="checkbox" checked /><span class="tk"></span></label>
+      <label class="tg verify"><input type="checkbox" checked /><span class="tk"></span></label>
+      <label class="tg" style="opacity:.5;"><input type="checkbox" disabled /><span class="tk"></span></label>
+      <label class="tg sm"><input type="checkbox" checked /><span class="tk"></span></label>
+    </div>
+    <span class="cap">off · on (teal) · on (verify forest) · disabled · small 30×18</span>
+  </div>
+  <div class="demo">
+    <div class="settingrow"><div class="l"><div class="t">Two-factor authentication</div><div class="d">Require a second factor at sign-in.</div></div><label class="tg"><input type="checkbox" checked /><span class="tk"></span></label></div>
+    <div class="settingrow"><div class="l"><div class="t">Weekly wall digest</div><div class="d">A summary of who viewed your wall.</div></div><label class="tg"><input type="checkbox" /><span class="tk"></span></label></div>
+    <span class="cap">setting rows · label left, switch right · saves on flip</span>
+  </div>
+</body>
+</html>

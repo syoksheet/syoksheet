@@ -1,0 +1,74 @@
+<!-- @dsCard group="Feedback" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Empty state — syoksheet DS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --n-0:#fff;--n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
+    --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
+    --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
+    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
+    --amber-50:#fbf3e3;--amber-100:#f4e4be;--amber-600:#b07815;--amber-700:#8a5e12;
+    --clay-50:#fbefea;--clay-100:#f4d8cd;--clay-500:#cb5638;--clay-600:#b2412a;--clay-700:#8f3120;
+    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
+    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
+    --radius-sm:5px;--radius:8px;--radius-lg:12px;--radius-xl:18px;
+    --shadow-xs:0 1px 2px rgba(10,10,11,.05);
+    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#fff;color:var(--text);font-family:var(--fs);font-size:15px;-webkit-font-smoothing:antialiased;padding:28px;display:flex;flex-direction:column;gap:22px;}
+  .cap{font-family:var(--fm);font-size:11px;color:var(--text-3);}
+  .demo{display:flex;flex-direction:column;gap:10px;}
+
+  .empty{background:var(--surface);border:1px dashed var(--border-2);border-radius:var(--radius-lg);padding:48px 32px;text-align:center;}
+  .empty .ico{width:52px;height:52px;margin:0 auto 18px;border-radius:14px;background:var(--teal-50);border:1px solid var(--teal-100);color:var(--teal-600);display:inline-flex;align-items:center;justify-content:center;}
+  .empty .ico svg{width:24px;height:24px;stroke:currentColor;stroke-width:1.75;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .empty .t{font-size:18px;font-weight:600;letter-spacing:-0.01em;color:var(--text);}
+  .empty .m{font-size:13.5px;color:var(--text-2);margin:8px auto 20px;max-width:340px;line-height:1.6;}
+  .empty .cta{display:inline-flex;gap:8px;}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 15px;font-family:var(--fs);font-size:13.5px;font-weight:600;border-radius:var(--radius);border:1px solid transparent;cursor:pointer;}
+  .btn .i{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .btn-primary{background:var(--teal-600);color:#fff;}
+  .btn-secondary{background:var(--surface);color:var(--text);border-color:var(--border-2);box-shadow:var(--shadow-xs);}
+  .empty.compact{padding:34px 24px;}
+  .empty.compact .ico{width:42px;height:42px;border-radius:11px;margin-bottom:14px;}
+  .empty.compact .ico svg{width:20px;height:20px;}
+  .empty.compact .t{font-size:15px;}
+</style>
+</head>
+<body>
+
+  <div class="demo">
+    <div class="cap">First-run · icon · title · guidance · single primary CTA</div>
+    <div class="empty">
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg></div>
+      <div class="t">No brags yet</div>
+      <div class="m">Document your first achievement — a launch, a migration, a cross-team save. Request verification once it's drafted.</div>
+      <div class="cta"><button class="btn btn-primary"><svg class="i" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Add your first brag</button></div>
+    </div>
+  </div>
+
+  <div class="demo">
+    <div class="cap">All-clear (no CTA) · no results (clear-filters CTA)</div>
+    <div class="empty compact">
+      <div class="ico" style="background:var(--verify-50);border-color:var(--verify-100);color:var(--verify-600);"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <div class="t">You're all caught up</div>
+      <div class="m">No pending verifications. New requests will appear here.</div>
+    </div>
+    <div class="empty compact">
+      <div class="ico" style="background:var(--n-100);border-color:var(--border);color:var(--text-3);"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      <div class="t">No brags match &ldquo;kubernetes&rdquo;</div>
+      <div class="m">Try a different keyword or clear the filters.</div>
+      <div class="cta"><button class="btn btn-secondary">Clear filters</button></div>
+    </div>
+  </div>
+
+</body>
+</html>

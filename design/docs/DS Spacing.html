@@ -1,0 +1,241 @@
+<!-- @dsCard group="Foundations" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Spacing &amp; layout — syoksheet Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --n-0:#fff;--n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
+    --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
+    --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-200:#93c7c5;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
+    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
+    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
+    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
+    --radius-sm:5px;--radius:8px;--radius-lg:12px;--radius-xl:18px;
+    --shadow-xs:0 1px 2px rgba(10,10,11,.05);
+    --shadow-sm:0 1px 3px rgba(10,10,11,.07),0 1px 2px rgba(10,10,11,.04);
+    --shadow-md:0 8px 22px -10px rgba(10,10,11,.16),0 2px 6px -3px rgba(10,10,11,.08);
+    --shadow-lg:0 22px 48px -18px rgba(10,10,11,.22),0 6px 14px -8px rgba(10,10,11,.1);
+    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:var(--bg);color:var(--text);font-family:var(--fs);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  code{font-family:var(--fm);font-size:0.92em;}
+  .wrap{display:grid;grid-template-columns:248px 1fr;min-height:100vh;}
+  .docnav{position:sticky;top:0;height:100vh;overflow-y:auto;border-right:1px solid var(--border);padding:24px 16px;background:var(--surface);}
+  .docnav .home{display:flex;align-items:center;gap:9px;padding:4px 8px 18px;}
+  .docnav .home .mk{width:26px;height:26px;border-radius:6px;background:linear-gradient(180deg,var(--n-900),var(--n-700));color:#fff;display:inline-flex;align-items:center;justify-content:center;}
+  .docnav .home .mk svg{width:13px;height:13px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .docnav .home b{font-size:14px;font-weight:600;letter-spacing:-0.01em;}
+  .docnav .home span{display:block;font-family:var(--fm);font-size:9.5px;color:var(--text-3);}
+  .docnav .grp{font-family:var(--fm);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-3);padding:16px 10px 7px;}
+  .docnav a.n{display:block;padding:6px 10px;font-size:13px;color:var(--text-2);border-radius:6px;}
+  .docnav a.n:hover{background:var(--n-100);color:var(--text);}
+  .docnav a.n.on{background:var(--teal-50);color:var(--teal-700);font-weight:600;}
+  .doc{min-width:0;}
+  .content{max-width:760px;margin:0 auto;padding:0 40px 120px;}
+  .ph{padding:52px 0 32px;border-bottom:1px solid var(--border);}
+  .ph .crumb{font-family:var(--fm);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-3);}
+  .ph h1{font-size:46px;font-weight:600;letter-spacing:-0.03em;margin-top:14px;}
+  .ph p{font-size:17px;color:var(--text-2);margin-top:14px;line-height:1.55;max-width:600px;}
+  .ph .status{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--fm);font-size:11px;font-weight:500;padding:4px 10px;border-radius:999px;border:1px solid var(--border);color:var(--text-2);}
+  .pill.ok{background:var(--verify-50);border-color:var(--verify-100);color:var(--verify-700);}
+  .pill.ok::before{content:"";width:6px;height:6px;border-radius:999px;background:var(--verify-600);}
+  section.s{padding:44px 0;border-bottom:1px solid var(--hair);}
+  .s > h2{font-size:13px;font-family:var(--fm);font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-3);display:flex;align-items:center;gap:11px;margin-bottom:8px;}
+  .s > h2::before{content:"";width:16px;height:2px;background:var(--teal-600);border-radius:2px;}
+  .s > .lead{font-size:15px;color:var(--text-2);line-height:1.6;margin-bottom:24px;max-width:600px;}
+
+  .scale{display:flex;flex-direction:column;gap:2px;margin:8px 0;}
+  .srow{display:grid;grid-template-columns:90px 1fr 64px;gap:16px;align-items:center;padding:7px 0;border-bottom:1px solid var(--hair);}
+  .srow:last-child{border-bottom:none;}
+  .srow .tok{font-family:var(--fm);font-size:12px;color:var(--teal-700);}
+  .srow .bar{height:15px;background:var(--teal-100);border:1px solid var(--teal-200);border-radius:3px;}
+  .srow .px{font-family:var(--fm);font-size:11.5px;color:var(--text-3);text-align:right;}
+
+  .rg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:16px 0;}
+  .rcell{height:78px;background:var(--teal-50);border:1px solid var(--teal-200);display:flex;align-items:flex-end;justify-content:center;padding:8px;font-family:var(--fm);font-size:10.5px;color:var(--teal-700);}
+  .eg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:16px 0;}
+  .ecell{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);height:90px;display:flex;align-items:flex-end;padding:12px;}
+  .ecell .l{font-family:var(--fm);font-size:10.5px;color:var(--text-3);}
+  .ecell.xs{box-shadow:var(--shadow-xs);}.ecell.sm{box-shadow:var(--shadow-sm);}.ecell.md{box-shadow:var(--shadow-md);}.ecell.lg{box-shadow:var(--shadow-lg);}
+
+  table.spec{width:100%;border:1px solid var(--border);border-radius:var(--radius-lg);border-collapse:separate;border-spacing:0;overflow:hidden;font-size:13.5px;margin:16px 0;}
+  table.spec th{text-align:left;font-family:var(--fm);font-size:10.5px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3);font-weight:600;padding:11px 14px;background:var(--n-50);border-bottom:1px solid var(--border);}
+  table.spec td{padding:11px 14px;border-bottom:1px solid var(--hair);vertical-align:top;}
+  table.spec tr:last-child td{border-bottom:none;}
+  table.spec td code{color:var(--teal-700);}
+  ul.rules{list-style:none;display:flex;flex-direction:column;gap:11px;margin:6px 0;}
+  ul.rules li{font-size:14px;color:var(--text-2);line-height:1.55;padding-left:24px;position:relative;}
+  ul.rules li::before{content:"";position:absolute;left:2px;top:8px;width:7px;height:7px;border-radius:2px;background:var(--teal-600);}
+  ul.rules li b{color:var(--text);font-weight:600;}
+  .note{display:flex;gap:11px;padding:13px 15px;border-radius:var(--radius);border:1px solid var(--teal-100);background:var(--teal-50);font-size:13px;color:var(--teal-700);line-height:1.5;margin:16px 0;}
+  .note svg{width:16px;height:16px;flex-shrink:0;margin-top:1px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .note b{font-weight:600;}
+  .layout{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin:16px 0;}
+  .layout .demo{display:grid;grid-template-columns:62px 1fr;height:180px;background:var(--n-50);}
+  .layout .rail{background:var(--surface);border-right:1px solid var(--border);padding:10px 8px;}
+  .layout .rail .b{height:8px;background:var(--n-200);border-radius:3px;margin-bottom:7px;}
+  .layout .main{padding:16px;}
+  .layout .main .h{height:14px;width:50%;background:var(--n-300);border-radius:3px;margin-bottom:12px;}
+  .layout .main .card{background:var(--surface);border:1px solid var(--border);border-radius:8px;height:90px;}
+  .layout .cap{padding:10px 16px;border-top:1px solid var(--border);background:var(--surface);font-family:var(--fm);font-size:11px;color:var(--text-3);}
+  @media(max-width:900px){.wrap{grid-template-columns:1fr;}.docnav{display:none;}.content{padding:0 22px 80px;}.ph h1{font-size:34px;}.rg,.eg{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body data-screen-label="DS · Spacing">
+<div class="wrap">
+
+  <nav class="docnav">
+    <a class="home" href="syoksheet Design System.html">
+      <span class="mk"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="14" rx="2"/><path d="M9 7h6M9 11h4"/><path d="M3 9v10a2 2 0 0 0 2 2h10"/></svg></span>
+      <span><b>syoksheet</b><span>Design System</span></span>
+    </a>
+    <div class="grp">Foundations</div>
+    <a class="n" href="DS Colour.html">Colour</a>
+    <a class="n" href="DS Iconography.html">Iconography &amp; motion</a>
+    <a class="n on" href="DS Spacing.html">Spacing &amp; layout</a>
+    <a class="n" href="DS Typography.html">Typography</a>
+    <div class="grp">Actions</div>
+    <a class="n" href="DS Button.html">Button</a>
+    <a class="n" href="DS Menu.html">Menu</a>
+    <div class="grp">Forms</div>
+    <a class="n" href="DS Selection.html">Checkbox &amp; radio</a>
+    <a class="n" href="DS Upload.html">File upload</a>
+    <a class="n" href="DS Form.html">Input &amp; form field</a>
+    <a class="n" href="DS Segmented.html">Segmented control</a>
+    <a class="n" href="DS Select.html">Select</a>
+    <a class="n" href="DS Toggle.html">Toggle &amp; switch</a>
+    <div class="grp">Data display</div>
+    <a class="n" href="DS Avatar.html">Avatar</a>
+    <a class="n" href="DS Badge.html">Badge</a>
+    <a class="n" href="DS Card.html">Card</a>
+    <a class="n" href="DS Data Table.html">Data table</a>
+    <a class="n" href="DS Table.html">Table</a>
+    <a class="n" href="DS Tag.html">Tag</a>
+    <a class="n" href="DS Verification Mark.html">Verification mark</a>
+    <div class="grp">Feedback</div>
+    <a class="n" href="DS Alert.html">Alert</a>
+    <a class="n" href="DS Empty State.html">Empty state</a>
+    <a class="n" href="DS Modal.html">Modal &amp; dialog</a>
+    <a class="n" href="DS Progress.html">Progress &amp; meter</a>
+    <a class="n" href="DS Skeleton.html">Skeleton</a>
+    <a class="n" href="DS Toast.html">Toast</a>
+    <a class="n" href="DS Tooltip.html">Tooltip</a>
+    <div class="grp">Navigation</div>
+    <a class="n" href="DS Breadcrumb.html">Breadcrumb</a>
+    <a class="n" href="DS Sidebar Nav.html">Sidebar nav</a>
+    <a class="n" href="DS Tabs.html">Tabs</a>
+  </nav>
+
+  <main class="doc">
+    <div class="content">
+
+      <header class="ph">
+        <div class="crumb">Foundations / Spacing &amp; layout</div>
+        <h1>Spacing &amp; layout</h1>
+        <p>An 8px-based scale governs every gap, pad and margin. Spacing is applied with flex/grid <code>gap</code>, never ad-hoc margins between siblings — so layouts stay even and survive edits.</p>
+        <div class="status">
+          <span class="pill" style="background:#fbf3e3;border-color:#f4e4be;color:#8a5e12;">Beta</span>
+
+          <span class="pill">8px base</span>
+        </div>
+      </header>
+
+      <!-- SCALE -->
+      <section class="s">
+        <h2>Spacing scale</h2>
+        <p class="lead">Steps are multiples of 8px, with 4px half-steps for tight UI. Pick a token; don't type arbitrary pixel values.</p>
+        <div class="scale">
+          <div class="srow"><span class="tok">space-1</span><span class="bar" style="width:4px;"></span><span class="px">4px</span></div>
+          <div class="srow"><span class="tok">space-2</span><span class="bar" style="width:8px;"></span><span class="px">8px</span></div>
+          <div class="srow"><span class="tok">space-3</span><span class="bar" style="width:12px;"></span><span class="px">12px</span></div>
+          <div class="srow"><span class="tok">space-4</span><span class="bar" style="width:16px;"></span><span class="px">16px</span></div>
+          <div class="srow"><span class="tok">space-5</span><span class="bar" style="width:20px;"></span><span class="px">20px</span></div>
+          <div class="srow"><span class="tok">space-6</span><span class="bar" style="width:24px;"></span><span class="px">24px</span></div>
+          <div class="srow"><span class="tok">space-8</span><span class="bar" style="width:32px;"></span><span class="px">32px</span></div>
+          <div class="srow"><span class="tok">space-12</span><span class="bar" style="width:48px;"></span><span class="px">48px</span></div>
+          <div class="srow"><span class="tok">space-16</span><span class="bar" style="width:64px;"></span><span class="px">64px</span></div>
+        </div>
+        <table class="spec">
+          <thead><tr><th>Context</th><th>Spacing</th></tr></thead>
+          <tbody>
+            <tr><td>Inline control gaps (button↔button, icon↔label)</td><td><code>8–12px</code></td></tr>
+            <tr><td>Form field vertical rhythm</td><td><code>16–20px</code></td></tr>
+            <tr><td>Card padding</td><td><code>18–26px</code></td></tr>
+            <tr><td>Section rhythm (page)</td><td><code>44–88px</code></td></tr>
+            <tr><td>Page container max-width</td><td><code>1080px</code></td></tr>
+          </tbody>
+        </table>
+        <div class="note">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span><b>Always space with <code>gap</code>.</b> Use flex/grid <code>gap</code> for rows and groups — not bare margins on siblings. Gap spacing is explicit and survives drag-reorder, delete, and duplicate cleanly.</span>
+        </div>
+      </section>
+
+      <!-- RADIUS -->
+      <section class="s">
+        <h2>Corner radius</h2>
+        <p class="lead">Four radii. Small for chips/inputs-in-groups, base for buttons/inputs, large for cards, xl for hero panels and modals.</p>
+        <div class="rg">
+          <div class="rcell" style="border-radius:5px;">sm · 5</div>
+          <div class="rcell" style="border-radius:8px;">base · 8</div>
+          <div class="rcell" style="border-radius:12px;">lg · 12</div>
+          <div class="rcell" style="border-radius:18px;">xl · 18</div>
+        </div>
+      </section>
+
+      <!-- ELEVATION -->
+      <section class="s">
+        <h2>Elevation</h2>
+        <p class="lead">Soft, low-contrast "paper" shadows. Elevation signals interactivity and overlay depth — it's not decoration, and most surfaces have none.</p>
+        <div class="eg">
+          <div class="ecell xs"><span class="l">xs · inputs, chips</span></div>
+          <div class="ecell sm"><span class="l">sm · card hover</span></div>
+          <div class="ecell md"><span class="l">md · popovers</span></div>
+          <div class="ecell lg"><span class="l">lg · modals</span></div>
+        </div>
+      </section>
+
+      <!-- LAYOUT -->
+      <section class="s">
+        <h2>App layout</h2>
+        <p class="lead">Every signed-in page is a fixed sidebar rail plus a centred content column. Content maxes at 760px for reading pages, up to 1080px for dense, multi-column views.</p>
+        <div class="layout">
+          <div class="demo">
+            <div class="rail"><div class="b" style="width:70%;"></div><div class="b"></div><div class="b" style="width:80%;"></div><div class="b" style="width:60%;"></div></div>
+            <div class="main"><div class="h"></div><div class="card"></div></div>
+          </div>
+          <div class="cap">252px sidebar · centred content · 40px page gutters.</div>
+        </div>
+        <ul class="rules">
+          <li><b>Sidebar 252px</b>, collapses to a 64px icon rail below 980px.</li>
+          <li><b>Content column centred</b>; 760px for forms/reading, 1080px for tables/grids.</li>
+          <li><b>Page gutters 40px</b> desktop, 20–22px on small screens.</li>
+          <li><b>Cards stack with 16px gap</b>; section headers get 44–88px above.</li>
+        </ul>
+      </section>
+
+      <!-- RULES -->
+      <section class="s" style="border-bottom:none;">
+        <h2>Rules</h2>
+        <ul class="rules">
+          <li><b>Snap to the scale.</b> If a value isn't on the 4/8 grid, round it until it is.</li>
+          <li><b>Consistency over precision.</b> Reuse the same padding across sibling cards rather than fine-tuning each.</li>
+          <li><b>Whitespace is the premium signal</b> — when in doubt, add a step rather than crowd.</li>
+          <li><b>Don't nest shadows.</b> A raised card inside a raised card flattens the hierarchy; pick one.</li>
+        </ul>
+      </section>
+
+    </div>
+  </main>
+</div>
+</body>
+</html>

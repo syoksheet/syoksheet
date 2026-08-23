@@ -1,0 +1,305 @@
+<!-- @dsCard group="Navigation" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sidebar nav — syoksheet Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --n-0:#fff;--n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
+    --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
+    --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
+    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
+    --amber-50:#fbf3e3;--amber-100:#f4e4be;--amber-600:#b07815;--amber-700:#8a5e12;
+    --clay-50:#fbefea;--clay-100:#f4d8cd;--clay-500:#cb5638;--clay-600:#b2412a;--clay-700:#8f3120;
+    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
+    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
+    --radius-sm:6px;--radius:8px;--radius-lg:12px;--radius-xl:18px;
+    --shadow-xs:0 1px 2px rgba(10,10,11,.05);
+    --green-600:#157a5b;
+    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:var(--bg);color:var(--text);font-family:var(--fs);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  code{font-family:var(--fm);font-size:0.92em;}
+  .wrap{display:grid;grid-template-columns:248px 1fr;min-height:100vh;}
+  .docnav{position:sticky;top:0;height:100vh;overflow-y:auto;border-right:1px solid var(--border);padding:24px 16px;background:var(--surface);}
+  .docnav .home{display:flex;align-items:center;gap:9px;padding:4px 8px 18px;}
+  .docnav .home .mk{width:26px;height:26px;border-radius:6px;background:linear-gradient(180deg,var(--n-900),var(--n-700));color:#fff;display:inline-flex;align-items:center;justify-content:center;}
+  .docnav .home .mk svg{width:13px;height:13px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .docnav .home b{font-size:14px;font-weight:600;letter-spacing:-0.01em;}
+  .docnav .home span{display:block;font-family:var(--fm);font-size:9.5px;color:var(--text-3);}
+  .docnav .grp{font-family:var(--fm);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-3);padding:16px 10px 7px;}
+  .docnav a.n{display:block;padding:6px 10px;font-size:13px;color:var(--text-2);border-radius:6px;}
+  .docnav a.n:hover{background:var(--n-100);color:var(--text);}
+  .docnav a.n.on{background:var(--teal-50);color:var(--teal-700);font-weight:600;}
+  .doc{min-width:0;}
+  .content{max-width:760px;margin:0 auto;padding:0 40px 120px;}
+  .ph{padding:52px 0 32px;border-bottom:1px solid var(--border);}
+  .ph .crumb{font-family:var(--fm);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-3);}
+  .ph h1{font-size:46px;font-weight:600;letter-spacing:-0.03em;margin-top:14px;}
+  .ph p{font-size:17px;color:var(--text-2);margin-top:14px;line-height:1.55;max-width:600px;}
+  .ph .status{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--fm);font-size:11px;font-weight:500;padding:4px 10px;border-radius:999px;border:1px solid var(--border);color:var(--text-2);}
+  .pill.ok{background:var(--verify-50);border-color:var(--verify-100);color:var(--verify-700);}
+  .pill.ok::before{content:"";width:6px;height:6px;border-radius:999px;background:var(--verify-600);}
+  section.s{padding:44px 0;border-bottom:1px solid var(--hair);}
+  .s > h2{font-size:13px;font-family:var(--fm);font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-3);display:flex;align-items:center;gap:11px;margin-bottom:8px;}
+  .s > h2::before{content:"";width:16px;height:2px;background:var(--teal-600);border-radius:2px;}
+  .s > .lead{font-size:15px;color:var(--text-2);line-height:1.6;margin-bottom:24px;max-width:600px;}
+  .ex{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin:16px 0;}
+  .ex .stage{padding:24px;background:var(--n-50);display:flex;gap:24px;flex-wrap:wrap;}
+  .ex .cap{padding:10px 16px;border-top:1px solid var(--border);font-family:var(--fm);font-size:11px;color:var(--text-3);background:var(--surface);}
+
+  /* sidebar (documented) */
+  .sb{width:230px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 12px;flex-shrink:0;}
+  .sb .brand{display:flex;align-items:center;gap:9px;padding:4px 8px 14px;}
+  .sb .brand .mk{width:26px;height:26px;border-radius:6px;background:linear-gradient(180deg,var(--n-900),var(--n-700));color:#fff;display:inline-flex;align-items:center;justify-content:center;}
+  .sb .brand .mk svg{width:13px;height:13px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .sb .brand b{font-size:14px;font-weight:600;letter-spacing:-0.01em;}
+  .sb .brand span{display:block;font-family:var(--fm);font-size:9px;color:var(--text-3);}
+  .grp{font-family:var(--fm);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);padding:13px 10px 6px;}
+  .ni{display:flex;align-items:center;gap:10px;padding:7px 10px;font-size:13px;font-weight:500;color:var(--text-2);border-radius:var(--radius-sm);cursor:pointer;}
+  .ni:hover{background:var(--n-100);color:var(--text);}
+  .ni.on{background:var(--teal-50);color:var(--teal-700);}
+  .ni svg{width:16px;height:16px;stroke:currentColor;stroke-width:1.75;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
+  .ni.on svg{stroke-width:2;}
+  .ni .ct{margin-left:auto;font-family:var(--fm);font-size:11px;color:var(--text-3);background:var(--n-100);padding:1px 6px;border-radius:4px;}
+  .ni.on .ct{background:rgba(0,64,64,.12);color:var(--teal-700);}
+  .ni .ct.alert{background:var(--clay-50);color:var(--clay-600);}
+  .ni.sub{padding-left:34px;font-size:12.5px;}
+  .ni.sub2{padding-left:48px;font-size:12px;}
+  .orow{display:flex;align-items:center;gap:10px;width:100%;padding:7px 10px;background:transparent;border:none;border-radius:var(--radius-sm);cursor:pointer;font-family:inherit;font-size:13px;font-weight:500;color:var(--text-2);}
+  .orow:hover{background:var(--n-100);color:var(--text);}
+  .omini{position:relative;width:20px;height:20px;border-radius:5px;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;}
+  .omini .stamp{position:absolute;right:-3px;bottom:-3px;width:11px;height:11px;background:var(--green-600);border:1.5px solid var(--surface);border-radius:999px;display:inline-flex;align-items:center;justify-content:center;}
+  .omini .stamp svg{width:6px;height:6px;stroke:#fff;stroke-width:4;fill:none;}
+  .ochev{margin-left:auto;color:var(--text-3);display:inline-flex;}
+  .ochev svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .og.open .ochev{transform:rotate(90deg);}
+  .osub{display:none;flex-direction:column;gap:1px;padding:2px 0 4px;}
+  .og.open .osub{display:flex;}
+
+  /* labelled call-outs next to the live sidebar */
+  .callouts{flex:1;min-width:180px;display:flex;flex-direction:column;gap:14px;padding-top:8px;}
+  .callout{font-size:12.5px;color:var(--text-2);line-height:1.5;padding-left:16px;border-left:2px solid var(--teal-100);}
+  .callout b{color:var(--text);font-weight:600;display:block;font-size:13px;}
+
+  table.spec{width:100%;border:1px solid var(--border);border-radius:var(--radius-lg);border-collapse:separate;border-spacing:0;overflow:hidden;font-size:13.5px;margin:16px 0;}
+  table.spec th{text-align:left;font-family:var(--fm);font-size:10.5px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3);font-weight:600;padding:11px 14px;background:var(--n-50);border-bottom:1px solid var(--border);}
+  table.spec td{padding:11px 14px;border-bottom:1px solid var(--hair);vertical-align:top;}
+  table.spec tr:last-child td{border-bottom:none;}
+  table.spec td code{color:var(--teal-700);}
+  .dd{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;}
+  .dd-card{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;}
+  .dd-card .hd{padding:10px 14px;font-family:var(--fm);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--hair);}
+  .dd-card.do .hd{color:var(--verify-700);} .dd-card.dont .hd{color:var(--clay-700);}
+  .dd-card .hd .m{width:16px;height:16px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;color:#fff;}
+  .dd-card.do .hd .m{background:var(--verify-600);} .dd-card.dont .hd .m{background:var(--clay-600);}
+  .dd-card .hd .m svg{width:9px;height:9px;stroke:currentColor;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .dd-card p{font-size:12.5px;color:var(--text-2);line-height:1.5;padding:12px 14px;}
+  ul.rules{list-style:none;display:flex;flex-direction:column;gap:11px;margin:6px 0;}
+  ul.rules li{font-size:14px;color:var(--text-2);line-height:1.55;padding-left:24px;position:relative;}
+  ul.rules li::before{content:"";position:absolute;left:2px;top:8px;width:7px;height:7px;border-radius:2px;background:var(--teal-600);}
+  ul.rules li b{color:var(--text);font-weight:600;}
+  .note{display:flex;gap:11px;padding:13px 15px;border-radius:var(--radius);border:1px solid var(--teal-100);background:var(--teal-50);font-size:13px;color:var(--teal-700);line-height:1.5;margin:16px 0;}
+  .note svg{width:16px;height:16px;flex-shrink:0;margin-top:1px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .note b{font-weight:600;}
+  @media(max-width:900px){.wrap{grid-template-columns:1fr;}.docnav{display:none;}.dd{grid-template-columns:1fr;}.content{padding:0 22px 80px;}.ph h1{font-size:34px;}.ex .stage{flex-direction:column;}}
+</style>
+</head>
+<body data-screen-label="DS · Sidebar nav">
+<div class="wrap">
+
+  <nav class="docnav">
+    <a class="home" href="syoksheet Design System.html">
+      <span class="mk"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="14" rx="2"/><path d="M9 7h6M9 11h4"/><path d="M3 9v10a2 2 0 0 0 2 2h10"/></svg></span>
+      <span><b>syoksheet</b><span>Design System</span></span>
+    </a>
+    <div class="grp">Foundations</div>
+    <a class="n" href="DS Colour.html">Colour</a>
+    <a class="n" href="DS Iconography.html">Iconography &amp; motion</a>
+    <a class="n" href="DS Spacing.html">Spacing &amp; layout</a>
+    <a class="n" href="DS Typography.html">Typography</a>
+    <div class="grp">Actions</div>
+    <a class="n" href="DS Button.html">Button</a>
+    <a class="n" href="DS Menu.html">Menu</a>
+    <div class="grp">Forms</div>
+    <a class="n" href="DS Selection.html">Checkbox &amp; radio</a>
+    <a class="n" href="DS Upload.html">File upload</a>
+    <a class="n" href="DS Form.html">Input &amp; form field</a>
+    <a class="n" href="DS Segmented.html">Segmented control</a>
+    <a class="n" href="DS Select.html">Select</a>
+    <a class="n" href="DS Toggle.html">Toggle &amp; switch</a>
+    <div class="grp">Data display</div>
+    <a class="n" href="DS Avatar.html">Avatar</a>
+    <a class="n" href="DS Badge.html">Badge</a>
+    <a class="n" href="DS Card.html">Card</a>
+    <a class="n" href="DS Data Table.html">Data table</a>
+    <a class="n" href="DS Table.html">Table</a>
+    <a class="n" href="DS Tag.html">Tag</a>
+    <a class="n" href="DS Verification Mark.html">Verification mark</a>
+    <div class="grp">Feedback</div>
+    <a class="n" href="DS Alert.html">Alert</a>
+    <a class="n" href="DS Empty State.html">Empty state</a>
+    <a class="n" href="DS Modal.html">Modal &amp; dialog</a>
+    <a class="n" href="DS Progress.html">Progress &amp; meter</a>
+    <a class="n" href="DS Skeleton.html">Skeleton</a>
+    <a class="n" href="DS Toast.html">Toast</a>
+    <a class="n" href="DS Tooltip.html">Tooltip</a>
+    <div class="grp">Navigation</div>
+    <a class="n" href="DS Breadcrumb.html">Breadcrumb</a>
+    <a class="n on" href="DS Sidebar Nav.html">Sidebar nav</a>
+    <a class="n" href="DS Tabs.html">Tabs</a>
+  </nav>
+
+  <main class="doc">
+    <div class="content">
+
+      <header class="ph">
+        <div class="crumb">Components / Sidebar nav</div>
+        <h1>Sidebar nav</h1>
+        <p>The primary navigation for the whole app. One fixed rail, identical on every signed-in page, that groups destinations and nests each organisation's sections. It's the backbone of the product's information architecture.</p>
+        <div class="status">
+          <span class="pill" style="background:#fbf3e3;border-color:#f4e4be;color:#8a5e12;">Beta</span>
+
+          <span class="pill">shared component</span>
+        </div>
+      </header>
+
+      <!-- ANATOMY -->
+      <section class="s">
+        <h2>Anatomy</h2>
+        <p class="lead">Brand lockup at the top, then labelled groups of nav items, an account card pinned at the bottom. Items have an icon + label, an optional trailing count, and one active item per page.</p>
+        <div class="ex">
+          <div class="stage">
+            <nav class="sb">
+              <div class="brand"><span class="mk"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="14" rx="2"/><path d="M9 7h6M9 11h4"/><path d="M3 9v10a2 2 0 0 0 2 2h10"/></svg></span><span><b>syoksheet</b><span>app.syoksheet.com</span></span></div>
+              <div class="grp">Workspace</div>
+              <div class="ni on"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> My Brags <span class="ct">18</span></div>
+              <div class="ni"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg> Organisations</div>
+              <div class="ni"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg> Billing</div>
+              <div class="grp">Account</div>
+              <div class="ni"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Profile</div>
+              <div class="ni"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Security</div>
+            </nav>
+            <div class="callouts">
+              <div class="callout"><b>Brand lockup</b> Links home (My Brags).</div>
+              <div class="callout"><b>Group label</b> Mono, uppercase, quiet.</div>
+              <div class="callout"><b>Nav item</b> Icon + label + optional count.</div>
+              <div class="callout"><b>Active item</b> Teal-50 fill, teal text, heavier icon.</div>
+            </div>
+          </div>
+          <div class="cap">brand · groups of items · active state · (account card pinned bottom, not shown).</div>
+        </div>
+      </section>
+
+      <!-- GROUPS -->
+      <section class="s">
+        <h2>Groups</h2>
+        <p class="lead">Four fixed groups, always in this order. Grouping is by mental model, not feature count.</p>
+        <table class="spec">
+          <thead><tr><th>Group</th><th>Holds</th></tr></thead>
+          <tbody>
+            <tr><td><b>Workspace</b></td><td>My Brags · Organisations · Billing — the things you own.</td></tr>
+            <tr><td><b>Account</b></td><td>Profile · Security · Notifications — who you are.</td></tr>
+            <tr><td><b>Organisations</b></td><td>One expandable group per org you belong to.</td></tr>
+            <tr><td><b>Discover</b></td><td>Browse profiles · Activity — outward-facing.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- ORG NESTING -->
+      <section class="s">
+        <h2>Organisation nesting</h2>
+        <p class="lead">Each org is an expandable row. Open one and its sections appear, indented; one org is open at a time. A nested <b>Brags</b> group holds Verification and Moderation a level deeper. Sections shown depend on the member's role.</p>
+        <div class="ex">
+          <div class="stage">
+            <nav class="sb">
+              <div class="grp">Organisations</div>
+              <div class="og open">
+                <button class="orow"><span class="omini" style="background:linear-gradient(135deg,#18181b,#3f3f46);">A<span class="stamp"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></span> Acme Corp <span class="ct alert" style="margin-left:auto;">2</span><span class="ochev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span></button>
+                <div class="osub">
+                  <div class="ni sub on"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> Overview</div>
+                  <div class="ni sub"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> Members</div>
+                  <div class="ni sub"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Brags <span class="ct alert">2</span></div>
+                  <div class="ni sub2"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg> Verification</div>
+                  <div class="ni sub2"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Moderation</div>
+                  <div class="ni sub"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Membership</div>
+                  <div class="ni sub"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Settings</div>
+                  <div class="ni sub"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg> Billing</div>
+                </div>
+              </div>
+              <div class="og">
+                <button class="orow"><span class="omini" style="background:linear-gradient(135deg,#0f766e,#0d9488);">N<span class="stamp"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></span> Northwind Labs <span class="ochev" style="margin-left:auto;"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span></button>
+              </div>
+              <div class="og">
+                <button class="orow"><span class="omini" style="background:linear-gradient(135deg,#a1a1aa,#71717a);">H</span> Helio Labs <span class="ochev" style="margin-left:auto;"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span></button>
+              </div>
+            </nav>
+            <div class="callouts">
+              <div class="callout"><b>Verified org</b> Green stamp on the mini-logo.</div>
+              <div class="callout"><b>Alert count</b> Pending items use a clay count (here, 2 in the queue).</div>
+              <div class="callout"><b>Two-level nesting</b> Brags → Verification / Moderation indents one step further.</div>
+              <div class="callout"><b>Role-gated</b> A Member sees only Overview + Membership; admins see all sections.</div>
+            </div>
+          </div>
+          <div class="cap">Accordion: one org open at a time. Indent levels: item · sub (34px) · sub2 (48px).</div>
+        </div>
+        <div class="note">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span><b>One shared component.</b> The sidebar is generated by <code>sidebar.js</code> and injected into every page; each page sets <code>data-nav</code> to mark its active item. Never hand-copy the sidebar into a page.</span>
+        </div>
+      </section>
+
+      <!-- STATES -->
+      <section class="s">
+        <h2>Item states</h2>
+        <table class="spec">
+          <thead><tr><th>State</th><th>Treatment</th></tr></thead>
+          <tbody>
+            <tr><td>Default</td><td>Text-2 label, 1.75 icon, transparent</td></tr>
+            <tr><td>Hover</td><td>n-100 fill, text colour darkens</td></tr>
+            <tr><td>Active</td><td>teal-50 fill, teal-700 text, icon stroke 2</td></tr>
+            <tr><td>With count</td><td>Mono chip right-aligned; clay variant for pending/alerts</td></tr>
+            <tr><td>Collapsed (narrow)</td><td>Below 980px the rail shows icons only; labels hide</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- DO / DONT -->
+      <section class="s">
+        <h2>Do &amp; don't</h2>
+        <div class="dd">
+          <div class="dd-card do">
+            <div class="hd"><span class="m"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Do</div>
+            <p>Keep exactly one active item per page, matching the breadcrumb. Use counts only where a number is actionable.</p>
+          </div>
+          <div class="dd-card dont">
+            <div class="hd"><span class="m"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Don't</div>
+            <p>Don't expand multiple orgs at once, nest deeper than two levels, or duplicate a destination across groups.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACCESSIBILITY -->
+      <section class="s" style="border-bottom:none;">
+        <h2>Accessibility</h2>
+        <ul class="rules">
+          <li>Rail is a <code>&lt;nav aria-label="Primary"&gt;</code>; the active item carries <code>aria-current="page"</code>.</li>
+          <li>Org rows are real <code>&lt;button&gt;</code>s with <code>aria-expanded</code> reflecting open/closed.</li>
+          <li>Active state is conveyed by fill <em>and</em> weight, not colour alone.</li>
+          <li>Fully keyboard-navigable; counts that mean "alerts" include visually-hidden text ("2 pending").</li>
+        </ul>
+      </section>
+
+    </div>
+  </main>
+</div>
+</body>
+</html>

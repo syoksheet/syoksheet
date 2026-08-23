@@ -1,0 +1,84 @@
+<!-- @dsCard group="Overview" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>syoksheet Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
+    --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
+    --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
+    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
+    --amber-500:#d39a2a;--clay-500:#cb5638;
+    --border:var(--n-200);--hair:var(--n-150);--text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
+    --radius:8px;--radius-lg:12px;
+    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+    --logo-mask:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect x='3' y='30.5' width='20' height='10' rx='5'/%3E%3Crect x='14' y='18.5' width='20' height='10' rx='5'/%3E%3Crect x='25' y='6.5' width='20' height='10' rx='5'/%3E%3C/svg%3E");
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#fff;color:var(--text);font-family:var(--fs);font-size:15px;-webkit-font-smoothing:antialiased;padding:34px;display:flex;flex-direction:column;gap:26px;}
+  .brand{display:flex;align-items:center;gap:13px;}
+  .brand .mk{width:44px;height:44px;border-radius:11px;background:var(--teal-600);display:inline-grid;place-items:center;}
+  .brand .mk i{width:28px;height:28px;background:#fff;-webkit-mask:var(--logo-mask) center/contain no-repeat;mask:var(--logo-mask) center/contain no-repeat;}
+  .brand h1{font-size:23px;font-weight:600;letter-spacing:-0.02em;line-height:1.2;}
+  .brand .sub{font-family:var(--fm);font-size:11px;color:var(--text-3);margin-top:3px;}
+  .ramps{display:flex;flex-direction:column;gap:8px;}
+  .ramp{display:flex;border-radius:7px;overflow:hidden;height:26px;border:1px solid var(--hair);}
+  .ramp i{flex:1;}
+  .ramplab{font-family:var(--fm);font-size:10.5px;color:var(--text-3);display:flex;justify-content:space-between;}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .stat{border:1px solid var(--border);border-radius:var(--radius-lg);padding:13px 15px;}
+  .stat b{font-size:19px;font-weight:600;letter-spacing:-0.02em;display:block;}
+  .stat span{font-family:var(--fm);font-size:10.5px;color:var(--text-3);}
+  .groups{display:flex;flex-wrap:wrap;gap:7px;}
+  .g{font-family:var(--fm);font-size:11px;font-weight:500;padding:4px 11px;border-radius:999px;border:1px solid var(--border);color:var(--text-2);}
+  .g b{color:var(--text);font-weight:600;}
+  .foot{display:flex;align-items:center;gap:8px;font-family:var(--fm);font-size:11px;color:var(--text-3);}
+  .foot .vm{display:inline-flex;align-items:center;gap:5px;background:var(--verify-50);border:1px solid var(--verify-100);color:var(--verify-700);border-radius:999px;padding:3px 10px;font-weight:600;}
+  .foot .vm svg{width:11px;height:11px;stroke:currentColor;stroke-width:2.6;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+</style>
+</head>
+<body>
+  <div class="brand">
+    <span class="mk"><i></i></span>
+    <div>
+      <h1>syoksheet Design System</h1>
+      <div class="sub">Geist · Geist Mono · PrimeNG v21 preset · one system for app, admin &amp; marketing</div>
+    </div>
+  </div>
+
+  <div class="ramps">
+    <div class="ramp"><i style="background:#e9f3f2"></i><i style="background:#c9e4e2"></i><i style="background:#93c7c5"></i><i style="background:#5fa9a6"></i><i style="background:#2c8784"></i><i style="background:#0d6360"></i><i style="background:#004040"></i><i style="background:#003131"></i><i style="background:#002828"></i><i style="background:#001f1f"></i></div>
+    <div class="ramplab"><span>teal — primary · #004040</span><span>action &amp; identity</span></div>
+    <div class="ramp"><i style="background:#ecf4ef"></i><i style="background:#d0e7da"></i><i style="background:#a6d3b9"></i><i style="background:#6fbb92"></i><i style="background:#3fa074"></i><i style="background:#1f8a64"></i><i style="background:#157a5b"></i><i style="background:#0f5e46"></i><i style="background:#0b4634"></i><i style="background:#08382a"></i></div>
+    <div class="ramplab"><span>forest — verified · #157a5b</span><span>verification only, never primary</span></div>
+    <div class="ramp"><i style="background:#fafafa"></i><i style="background:#f4f4f5"></i><i style="background:#e5e5e8"></i><i style="background:#d4d4d8"></i><i style="background:#a1a1aa"></i><i style="background:#71717a"></i><i style="background:#52525b"></i><i style="background:#3f3f46"></i><i style="background:#161618"></i><i style="background:#0a0a0b"></i></div>
+    <div class="ramplab"><span>neutral — pure, no tint</span><span>amber = pending · clay = destructive</span></div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b>32</b><span>component cards</span></div>
+    <div class="stat"><b>6</b><span>groups</span></div>
+    <div class="stat"><b>1</b><span>PrimeNG theme preset</span></div>
+  </div>
+
+  <div class="groups">
+    <span class="g"><b>6</b> Foundations +PrimeNG</span>
+    <span class="g"><b>2</b> Actions</span>
+    <span class="g"><b>6</b> Forms</span>
+    <span class="g"><b>7</b> Data display</span>
+    <span class="g"><b>7</b> Feedback</span>
+    <span class="g"><b>3</b> Navigation</span>
+  </div>
+
+  <div class="foot">
+    <span class="vm"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Verified</span>
+    <span>the forest mark is the product's trust signal — see DS Verification Mark</span>
+  </div>
+</body>
+</html>

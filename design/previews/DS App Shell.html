@@ -1,0 +1,123 @@
+<!-- @dsCard group="Foundations" name="App shell & breakpoints" subtitle="Breakpoints, topbar overflow, no horizontal scroll" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>App shell — syoksheet DS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root{
+    --n-0:#fff;--n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
+    --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
+    --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
+    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
+    --amber-50:#fbf3e3;--amber-100:#f4e4be;--amber-600:#b07815;--amber-700:#8a5e12;
+    --clay-50:#fbefea;--clay-100:#f4d8cd;--clay-500:#cb5638;--clay-600:#b2412a;--clay-700:#8f3120;
+    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
+    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
+    --radius-sm:6px;--radius:8px;--radius-lg:12px;--radius-xl:18px;
+    --shadow-xs:0 1px 2px rgba(10,10,11,.05);
+    --green-600:#157a5b;
+    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+    --logo-mask-compact:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect x='3' y='29.5' width='20' height='12' rx='6'/%3E%3Crect x='14' y='18' width='20' height='12' rx='6'/%3E%3Crect x='25' y='6.5' width='20' height='12' rx='6'/%3E%3C/svg%3E");
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#fff;color:var(--text);font-family:var(--fs);font-size:15px;-webkit-font-smoothing:antialiased;padding:28px;display:flex;flex-direction:column;gap:26px;}
+  .cap{font-family:var(--fm);font-size:11px;color:var(--text-3);margin-bottom:10px;display:block;}
+  .row{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;}
+  .demo{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;background:var(--surface);box-shadow:var(--shadow-xs);}
+  .w{font-family:var(--fm);font-size:10px;color:var(--text-3);display:block;margin-bottom:7px;}
+  .shell{display:flex;height:180px;}
+  .rail{background:var(--n-50);border-right:1px solid var(--hair);flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:9px;padding:11px 0;}
+  .rail.wide{width:120px;align-items:stretch;padding:11px 10px;}
+  .rail.narrow{width:88px;align-items:stretch;padding:11px 8px;}
+  .rail.narrow .ri{width:100%;}
+  .rail.tight{width:74px;align-items:stretch;padding:11px 7px;}
+  .rail.tight .ri{width:100%;}
+  .ri{height:20px;border-radius:5px;background:var(--n-200);}
+  .rail.narrow .ri{width:20px;}
+  .rail.wide .ri{width:100%;}
+  .ri.on{background:var(--teal-100);}
+  .main{flex:1;min-width:0;display:flex;flex-direction:column;}
+  .top{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--hair);min-width:0;}
+  .crumb{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:var(--text-3);}
+  .acts{margin-left:auto;display:flex;gap:6px;flex-shrink:0;}
+  .btn{height:26px;padding:0 10px;border:1px solid var(--border-2);border-radius:var(--radius-sm);font-size:11.5px;font-weight:500;color:var(--text-2);display:inline-flex;align-items:center;white-space:nowrap;background:#fff;}
+  .btn.ico{width:26px;padding:0;justify-content:center;}
+  .body{flex:1;background:var(--n-50);padding:12px;}
+  .ph{height:12px;border-radius:4px;background:var(--n-200);margin-bottom:8px;}
+  code{font-family:var(--fm);font-size:12px;background:var(--n-100);padding:1px 5px;border-radius:4px;}
+  .rules{display:flex;flex-direction:column;gap:7px;font-size:13px;color:var(--text-2);line-height:1.55;max-width:660px;}
+  table{border-collapse:collapse;font-size:12.5px;}
+  th,td{text-align:left;padding:7px 16px 7px 0;border-bottom:1px solid var(--hair);}
+  th{font-family:var(--fm);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text-3);}
+  td.bp{font-family:var(--fm);color:var(--text);white-space:nowrap;}
+</style>
+</head>
+<body>
+
+  <div>
+    <span class="cap">shell at three widths — the content column always flexes, the page never scrolls sideways</span>
+    <div class="row">
+      <div>
+        <span class="w">1120–1439px — sidebar 230px, full topbar actions</span>
+        <div class="demo" style="width:600px;"><div class="shell">
+          <div class="rail wide"><div class="ri on"></div><div class="ri"></div><div class="ri"></div><div class="ri"></div></div>
+          <div class="main">
+            <div class="top"><span class="crumb">Organisations / Acme Corp / Membership</span><div class="acts"><span class="btn ico">⌕</span><span class="btn">Billing</span><span class="btn">View public wall</span></div></div>
+            <div class="body"><div class="ph" style="width:60%;"></div><div class="ph"></div><div class="ph" style="width:80%;"></div></div>
+          </div>
+        </div></div>
+      </div>
+      <div>
+        <span class="w">840–1119px — sidebar 200px, secondary actions go icon-only</span>
+        <div class="demo" style="width:400px;"><div class="shell">
+          <div class="rail narrow"><div class="ri on"></div><div class="ri"></div><div class="ri"></div><div class="ri"></div></div>
+          <div class="main">
+            <div class="top"><span class="crumb">Organisations / Acme Corp / Membership</span><div class="acts"><span class="btn ico">⌕</span><span class="btn ico">▤</span><span class="btn">View public wall</span></div></div>
+            <div class="body"><div class="ph" style="width:60%;"></div><div class="ph"></div><div class="ph" style="width:80%;"></div></div>
+          </div>
+        </div></div>
+      </div>
+      <div>
+        <span class="w">&lt;840px — crumbs collapse, actions fold into an overflow menu</span>
+        <div class="demo" style="width:320px;"><div class="shell">
+          <div class="rail tight"><div class="ri on"></div><div class="ri"></div><div class="ri"></div><div class="ri"></div></div>
+          <div class="main">
+            <div class="top"><span class="crumb">Organisations / … / Membership</span><div class="acts"><span class="btn ico">⌕</span><span class="btn ico">⋯</span></div></div>
+            <div class="body"><div class="ph" style="width:60%;"></div><div class="ph"></div><div class="ph" style="width:80%;"></div></div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <span class="cap">breakpoints</span>
+    <table>
+      <tr><th>Viewport</th><th>Sidebar</th><th>Breadcrumb</th><th>Topbar actions</th></tr>
+      <tr><td class="bp">≥1440px</td><td>260px</td><td>full path</td><td>all labelled</td></tr>
+      <tr><td class="bp">1120–1439px</td><td>230px</td><td>full path</td><td>all labelled</td></tr>
+      <tr><td class="bp">840–1119px</td><td>200px</td><td>middle crumb ellipsizes</td><td>primary labelled, rest icon-only</td></tr>
+      <tr><td class="bp">&lt;840px</td><td>180px</td><td>middle crumbs → …</td><td>search + ⋯ overflow menu</td></tr>
+      <tr><td class="bp">&lt;640px</td><td>180px</td><td>current page only</td><td>⋯ overflow menu</td></tr>
+    </table>
+  </div>
+
+  <div>
+    <span class="cap">rules</span>
+    <div class="rules">
+      <div>· The shell never scrolls horizontally. Nothing in it may set a fixed <code>min-width</code> wider than the viewport — put <code>min-width:0</code> on the content column and on every flex child that holds text.</div>
+      <div>· The content column is the only element that flexes. The sidebar and the topbar action group are <code>flex-shrink:0</code>; they change by switching state at a breakpoint, not by squeezing.</div>
+      <div>· Text shrinks before controls: the breadcrumb truncates, then actions drop labels, then actions fold into ⋯. An action never gets clipped off-screen.</div>
+      <div>· Only one action stays labelled below 1120px — the page's primary. Everything else is icon + tooltip.</div>
+      <div>· The sidebar never collapses to a rail or a drawer. It steps between fixed widths (260 / 230 / 200 / 180px) at the breakpoints and is always <code>flex-shrink:0</code>.</div>
+      <div>· Horizontal scrolling is allowed only inside a bounded region — a wide data table's own wrapper — never on <code>body</code>.</div>
+    </div>
+  </div>
+
+</body>
+</html>

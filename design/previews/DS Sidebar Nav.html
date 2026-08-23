@@ -1,0 +1,144 @@
+<!-- @dsCard group="Navigation" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sidebar nav — syoksheet DS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --n-0:#fff;--n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
+    --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
+    --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
+    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
+    --amber-50:#fbf3e3;--amber-100:#f4e4be;--amber-600:#b07815;--amber-700:#8a5e12;
+    --clay-50:#fbefea;--clay-100:#f4d8cd;--clay-500:#cb5638;--clay-600:#b2412a;--clay-700:#8f3120;
+    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
+    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
+    --radius-sm:6px;--radius:8px;--radius-lg:12px;--radius-xl:18px;
+    --shadow-xs:0 1px 2px rgba(10,10,11,.05);
+    --green-600:#157a5b;
+    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+    --logo-mask-compact:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect x='3' y='29.5' width='20' height='12' rx='6'/%3E%3Crect x='14' y='18' width='20' height='12' rx='6'/%3E%3Crect x='25' y='6.5' width='20' height='12' rx='6'/%3E%3C/svg%3E");
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#fff;color:var(--text);font-family:var(--fs);font-size:15px;-webkit-font-smoothing:antialiased;padding:28px;display:flex;flex-direction:column;gap:22px;}
+  .cap{font-family:var(--fm);font-size:11px;color:var(--text-3);margin-bottom:10px;display:block;}
+  .sb{width:230px;flex-shrink:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 12px;flex-shrink:0;}
+  .sbrand{display:flex;align-items:center;gap:9px;padding:4px 10px 12px;border-bottom:1px solid var(--hair);margin-bottom:2px;}
+  .logo{display:inline-block;width:24px;height:24px;flex-shrink:0;color:var(--teal-600);background:currentColor;-webkit-mask:var(--logo-mask-compact) center/contain no-repeat;mask:var(--logo-mask-compact) center/contain no-repeat;}
+  .sbrand .name{font-size:15px;font-weight:600;letter-spacing:-.02em;text-transform:lowercase;}
+  .grp{font-family:var(--fm);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);padding:13px 10px 6px;}
+  .ni{display:flex;align-items:center;gap:10px;padding:7px 10px;font-size:13px;font-weight:500;color:var(--text-2);border-radius:var(--radius-sm);cursor:pointer;}
+  .ni:hover{background:var(--n-100);color:var(--text);}
+  .ni.on{background:var(--teal-50);color:var(--teal-700);}
+  .ni svg{width:16px;height:16px;stroke:currentColor;stroke-width:1.75;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
+  .ni.on svg{stroke-width:2;}
+  .ni .ct{margin-left:auto;font-family:var(--fm);font-size:11px;color:var(--text-3);background:var(--n-100);padding:1px 6px;border-radius:4px;}
+  .ni.on .ct{background:rgba(0,64,64,.12);color:var(--teal-700);}
+  .ni .ct.alert{background:var(--clay-50);color:var(--clay-600);}
+  .ni.sub{padding-left:34px;font-size:12.5px;}
+  .ni.sub2{padding-left:48px;font-size:12px;}
+  .orow{display:flex;align-items:center;gap:10px;width:100%;padding:7px 10px;background:transparent;border:none;border-radius:var(--radius-sm);cursor:pointer;font-family:inherit;font-size:13px;font-weight:500;color:var(--text-2);}
+  .orow:hover{background:var(--n-100);color:var(--text);}
+  .omini{position:relative;width:20px;height:20px;border-radius:5px;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;}
+  .omini .stamp{position:absolute;right:-3px;bottom:-3px;width:11px;height:11px;background:var(--green-600);border:1.5px solid var(--surface);border-radius:999px;display:inline-flex;align-items:center;justify-content:center;}
+  .omini .stamp svg{width:6px;height:6px;stroke:#fff;stroke-width:4;fill:none;}
+  .ochev{margin-left:auto;color:var(--text-3);display:inline-flex;}
+  .ochev svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .og.open .ochev{transform:rotate(90deg);}
+  .osub{display:none;flex-direction:column;gap:1px;padding:2px 0 4px;}
+  .og.open .osub{display:flex;}
+  .cols{display:flex;gap:26px;align-items:flex-start;}
+  /* Labels truncate; the sidebar never collapses and rows never wrap. */
+  .ni,.orow{min-width:0;}
+  .ni .lbl,.orow .lbl{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .sb.narrow{width:200px;}
+  .sb.min{width:180px;padding:14px 10px;}
+  .sb.min .ni,.sb.min .orow{padding:7px 8px;}
+  .sb.min .ni.sub{padding-left:28px;}
+  .wlab{font-family:var(--fm);font-size:10px;color:var(--text-3);display:block;margin-bottom:8px;}
+</style>
+</head>
+<body>
+
+  <div>
+    <span class="cap">brand lockup · groups · active item · org accordion · role-gated sections</span>
+    <div class="cols">
+    <nav class="sb">
+      <div class="sbrand"><i class="logo"></i><span class="name">syoksheet</span></div>
+      <div class="grp">Workspace</div>
+      <div class="ni on"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> My Brags <span class="ct">18</span></div>
+      <div class="ni"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg> Organisations</div>
+      <div class="ni"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg> Billing</div>
+      <div class="grp">Organisations</div>
+      <div class="og open">
+        <button class="orow"><span class="omini" style="background:linear-gradient(135deg,#18181b,#3f3f46);">A<span class="stamp"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></span> Acme Corp <span class="ct alert" style="margin-left:auto;">2</span><span class="ochev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span></button>
+        <div class="osub">
+          <div class="ni sub"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> Overview</div>
+          <div class="ni sub"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> Members</div>
+          <div class="ni sub"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Brags <span class="ct alert">2</span></div>
+          <div class="ni sub2"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg> Verification</div>
+          <div class="ni sub2"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Moderation</div>
+        </div>
+      </div>
+      <div class="og">
+        <button class="orow"><span class="omini" style="background:linear-gradient(135deg,#0f766e,#0d9488);">N<span class="stamp"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></span> Northwind Labs <span class="ochev" style="margin-left:auto;"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span></button>
+      </div>
+      <div class="og">
+        <button class="orow"><span class="omini" style="background:linear-gradient(135deg,#a1a1aa,#71717a);">H</span> Helio Labs <span class="ochev" style="margin-left:auto;"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span></button>
+      </div>
+    </nav>
+
+    </div>
+  </div>
+
+  <div>
+    <span class="cap">widths — the sidebar is fixed at each breakpoint and never collapses</span>
+    <div class="cols">
+      <div><span class="wlab">1120–1439px — 230px (default, shown above)</span></div>
+    </div>
+    <div class="cols" style="margin-top:2px;">
+      <div>
+        <span class="wlab">840–1119px — 200px</span>
+        <nav class="sb narrow">
+          <div class="sbrand"><i class="logo"></i><span class="name">syoksheet</span></div>
+          <div class="grp">Workspace</div>
+          <div class="ni on"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="lbl">My Brags</span><span class="ct">18</span></div>
+          <div class="ni"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg><span class="lbl">Organisations</span></div>
+          <div class="grp">Organisations</div>
+          <button class="orow"><span class="omini" style="background:linear-gradient(135deg,#18181b,#3f3f46);">A<span class="stamp"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></span><span class="lbl">Acme Corp</span><span class="ct alert">2</span><span class="ochev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span></button>
+          <button class="orow"><span class="omini" style="background:linear-gradient(135deg,#0f766e,#0d9488);">N<span class="stamp"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></span><span class="lbl">Northwind Laboratories</span><span class="ochev" style="margin-left:auto;"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span></button>
+        </nav>
+      </div>
+      <div>
+        <span class="wlab">&lt;840px — 180px, tighter row padding</span>
+        <nav class="sb min">
+          <div class="sbrand"><i class="logo"></i><span class="name">syoksheet</span></div>
+          <div class="grp">Workspace</div>
+          <div class="ni on"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="lbl">My Brags</span><span class="ct">18</span></div>
+          <div class="ni"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg><span class="lbl">Organisations</span></div>
+          <div class="grp">Organisations</div>
+          <button class="orow"><span class="omini" style="background:linear-gradient(135deg,#18181b,#3f3f46);">A<span class="stamp"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></span><span class="lbl">Acme Corp</span><span class="ct alert">2</span><span class="ochev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span></button>
+          <button class="orow"><span class="omini" style="background:linear-gradient(135deg,#0f766e,#0d9488);">N<span class="stamp"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></span><span class="lbl">Northwind Laboratories</span><span class="ochev" style="margin-left:auto;"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span></button>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <span class="cap">rules</span>
+    <div style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--text-2);line-height:1.55;max-width:660px;">
+      <div>· The sidebar is not collapsible. It holds a fixed width per breakpoint: <b>260px</b> ≥1440, <b>230px</b> 1120–1439, <b>200px</b> 840–1119, <b>180px</b> below 840.</div>
+      <div>· It is always <code style="font-family:var(--fm);font-size:12px;">flex-shrink:0</code>. It never squeezes between breakpoints — the content column absorbs all remaining space.</div>
+      <div>· Rows never wrap. Labels get <code style="font-family:var(--fm);font-size:12px;">min-width:0</code> and ellipsize; icons, counts, chevrons and org tiles never shrink.</div>
+      <div>· Group headings, counts and the org accordion stay visible at every width.</div>
+    </div>
+  </div>
+
+</body>
+</html>
+

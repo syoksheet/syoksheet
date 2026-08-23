@@ -1,0 +1,75 @@
+<!-- @dsCard group="Feedback" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Progress — syoksheet DS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --n-0:#fff;--n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
+    --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
+    --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
+    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
+    --amber-50:#fbf3e3;--amber-100:#f4e4be;--amber-500:#d39a2a;--amber-600:#b07815;--amber-700:#8a5e12;
+    --clay-50:#fbefea;--clay-100:#f4d8cd;--clay-500:#cb5638;--clay-600:#b2412a;--clay-700:#8f3120;
+    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
+    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
+    --radius-sm:5px;--radius:8px;--radius-lg:12px;--shadow-xs:0 1px 2px rgba(10,10,11,.05);
+    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#fff;color:var(--text);font-family:var(--fs);font-size:15px;-webkit-font-smoothing:antialiased;padding:28px;display:flex;flex-direction:column;gap:22px;}
+  .cap{font-family:var(--fm);font-size:11px;color:var(--text-3);}
+  .demo{display:flex;flex-direction:column;gap:12px;}
+
+  .pr{height:8px;width:100%;background:var(--n-150);border-radius:999px;overflow:hidden;}
+  .pr .bar{height:100%;border-radius:999px;background:var(--teal-600);}
+  .pr.thin{height:4px;}
+  .pr .bar.warn{background:var(--amber-500);}
+  .pr .bar.full{background:var(--clay-500);}
+  .meterrow{display:flex;flex-direction:column;gap:7px;}
+  .meterrow .top{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;}
+  .meterrow .top .lab{font-weight:500;}
+  .meterrow .top .val{font-family:var(--fm);font-size:12px;color:var(--text-3);}
+  .meterrow .top .val.warn{color:var(--amber-700);}
+  .uprow{display:flex;align-items:center;gap:11px;padding:11px 13px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);}
+  .uprow .ic{width:30px;height:30px;border-radius:6px;background:var(--teal-50);color:var(--teal-700);display:inline-flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:9px;font-weight:600;flex-shrink:0;}
+  .uprow .meta{flex:1;min-width:0;}
+  .uprow .meta .nm{font-size:13px;font-weight:500;}
+  .uprow .meta .pr{margin-top:6px;}
+  .uprow .meta .sub{font-family:var(--fm);font-size:10.5px;color:var(--teal-700);margin-top:5px;}
+  .spin{width:18px;height:18px;border:2.5px solid var(--n-200);border-top-color:var(--teal-600);border-radius:999px;animation:sp .7s linear infinite;}
+  @keyframes sp{to{transform:rotate(360deg);}}
+  .ring{transform:rotate(-90deg);}
+  .ring circle{fill:none;stroke-width:4;}
+  .ring .track{stroke:var(--n-150);}
+  .ring .ind{stroke:var(--teal-600);stroke-linecap:round;}
+</style>
+</head>
+<body>
+
+  <div class="demo">
+    <div class="cap">Meter rows · label + mono value; fill warms toward the cap</div>
+    <div class="meterrow"><div class="top"><span class="lab">Brags</span><span class="val">4 / 5 used</span></div><div class="pr"><div class="bar" style="width:80%;"></div></div></div>
+    <div class="meterrow"><div class="top"><span class="lab">Pending verifications</span><span class="val warn">3 / 3 used</span></div><div class="pr"><div class="bar full" style="width:100%;"></div></div></div>
+  </div>
+
+  <div class="demo">
+    <div class="cap">Determinate upload bar · indeterminate spinner &amp; ring</div>
+    <div class="uprow">
+      <span class="ic">PDF</span>
+      <div class="meta"><div class="nm">cutover-runbook.pdf</div><div class="pr thin"><div class="bar" style="width:64%;"></div></div><div class="sub">Uploading… 64%</div></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:22px;">
+      <span class="spin"></span>
+      <svg class="ring" width="38" height="38" viewBox="0 0 38 38"><circle class="track" cx="19" cy="19" r="16"/><circle class="ind" cx="19" cy="19" r="16" stroke-dasharray="100" stroke-dashoffset="36"/></svg>
+      <span style="font-family:var(--fm);font-size:11px;color:var(--text-3);">spinner · ring</span>
+    </div>
+  </div>
+
+</body>
+</html>

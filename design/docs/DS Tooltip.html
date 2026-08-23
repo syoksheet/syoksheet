@@ -1,0 +1,223 @@
+<!-- @dsCard group="Feedback" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tooltip — syoksheet Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --n-0:#fff;--n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
+    --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
+    --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
+    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
+    --amber-50:#fbf3e3;--amber-100:#f4e4be;--amber-500:#d39a2a;--amber-600:#b07815;--amber-700:#8a5e12;
+    --clay-50:#fbefea;--clay-100:#f4d8cd;--clay-500:#cb5638;--clay-600:#b2412a;--clay-700:#8f3120;
+    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
+    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
+    --radius-sm:5px;--radius:8px;--radius-lg:12px;--shadow-xs:0 1px 2px rgba(10,10,11,.05);
+    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:var(--bg);color:var(--text);font-family:var(--fs);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  code{font-family:var(--fm);font-size:0.92em;}
+  .wrap{display:grid;grid-template-columns:248px 1fr;min-height:100vh;}
+  .docnav{position:sticky;top:0;height:100vh;overflow-y:auto;border-right:1px solid var(--border);padding:24px 16px;background:var(--surface);}
+  .docnav .home{display:flex;align-items:center;gap:9px;padding:4px 8px 18px;}
+  .docnav .home .mk{width:26px;height:26px;border-radius:6px;background:linear-gradient(180deg,var(--n-900),var(--n-700));color:#fff;display:inline-flex;align-items:center;justify-content:center;}
+  .docnav .home .mk svg{width:13px;height:13px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .docnav .home b{font-size:14px;font-weight:600;letter-spacing:-0.01em;}
+  .docnav .home span{display:block;font-family:var(--fm);font-size:9.5px;color:var(--text-3);}
+  .docnav .grp{font-family:var(--fm);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-3);padding:16px 10px 7px;}
+  .docnav a.n{display:block;padding:6px 10px;font-size:13px;color:var(--text-2);border-radius:6px;}
+  .docnav a.n:hover{background:var(--n-100);color:var(--text);}
+  .docnav a.n.on{background:var(--teal-50);color:var(--teal-700);font-weight:600;}
+  .doc{min-width:0;}
+  .content{max-width:760px;margin:0 auto;padding:0 40px 120px;}
+  .ph{padding:52px 0 32px;border-bottom:1px solid var(--border);}
+  .ph .crumb{font-family:var(--fm);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-3);}
+  .ph h1{font-size:46px;font-weight:600;letter-spacing:-0.03em;margin-top:14px;}
+  .ph p{font-size:17px;color:var(--text-2);margin-top:14px;line-height:1.55;max-width:600px;}
+  .ph .status{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--fm);font-size:11px;font-weight:500;padding:4px 10px;border-radius:999px;border:1px solid var(--border);color:var(--text-2);}
+  .pill.ok{background:var(--verify-50);border-color:var(--verify-100);color:var(--verify-700);}
+  .pill.ok::before{content:"";width:6px;height:6px;border-radius:999px;background:var(--verify-600);}
+  section.s{padding:44px 0;border-bottom:1px solid var(--hair);}
+  .s > h2{font-size:13px;font-family:var(--fm);font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-3);display:flex;align-items:center;gap:11px;margin-bottom:8px;}
+  .s > h2::before{content:"";width:16px;height:2px;background:var(--teal-600);border-radius:2px;}
+  .s > .lead{font-size:15px;color:var(--text-2);line-height:1.6;margin-bottom:24px;max-width:600px;}
+  .ex{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin:16px 0;}
+  .ex .stage{padding:36px 24px;background:var(--n-50);display:flex;align-items:center;justify-content:center;gap:44px;flex-wrap:wrap;}
+  .ex .cap{padding:10px 16px;border-top:1px solid var(--border);font-family:var(--fm);font-size:11px;color:var(--text-3);background:var(--surface);}
+
+  /* tooltip (documented) */
+  .tt{display:inline-block;background:var(--n-900);color:#fff;font-size:12px;font-weight:500;line-height:1.45;padding:6px 10px;border-radius:var(--radius-sm);max-width:240px;box-shadow:0 4px 12px rgba(10,10,11,.18);}
+  .tt .kbd{display:inline-block;font-family:var(--fm);font-size:10.5px;background:var(--n-700);border-radius:4px;padding:0 5px;margin-left:6px;}
+  .demo{position:relative;display:inline-flex;flex-direction:column;align-items:center;gap:7px;}
+  .demo .arrow{width:8px;height:8px;background:var(--n-900);transform:rotate(45deg);margin:-11px auto 0;}
+  .demo.below{flex-direction:column-reverse;}
+  .demo.below .arrow{transform:rotate(45deg);margin:0 auto -11px;}
+  .icobtn{width:34px;height:34px;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);display:inline-flex;align-items:center;justify-content:center;color:var(--text-2);box-shadow:var(--shadow-xs);}
+  .icobtn svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .trunc{max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13.5px;border-bottom:1px dashed var(--n-300);}
+  .place{display:grid;grid-template-columns:repeat(4,auto);gap:26px;align-items:end;}
+  .place .cellcap{font-family:var(--fm);font-size:10.5px;color:var(--text-3);text-align:center;margin-top:9px;}
+
+  table.spec{width:100%;border:1px solid var(--border);border-radius:var(--radius-lg);border-collapse:separate;border-spacing:0;overflow:hidden;font-size:13.5px;margin:16px 0;}
+  table.spec th{text-align:left;font-family:var(--fm);font-size:10.5px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3);font-weight:600;padding:11px 14px;background:var(--n-50);border-bottom:1px solid var(--border);}
+  table.spec td{padding:11px 14px;border-bottom:1px solid var(--hair);vertical-align:top;}
+  table.spec tr:last-child td{border-bottom:none;}
+  table.spec td code{color:var(--teal-700);}
+  .dd{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;}
+  .dd-card{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;}
+  .dd-card .hd{padding:10px 14px;font-family:var(--fm);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--hair);}
+  .dd-card.do .hd{color:var(--verify-700);} .dd-card.dont .hd{color:var(--clay-700);}
+  .dd-card .hd .m{width:16px;height:16px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;color:#fff;}
+  .dd-card.do .hd .m{background:var(--verify-600);} .dd-card.dont .hd .m{background:var(--clay-600);}
+  .dd-card .hd .m svg{width:9px;height:9px;stroke:currentColor;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .dd-card p{font-size:12.5px;color:var(--text-2);line-height:1.5;padding:12px 14px;}
+  ul.rules{list-style:none;display:flex;flex-direction:column;gap:11px;margin:6px 0;}
+  ul.rules li{font-size:14px;color:var(--text-2);line-height:1.55;padding-left:24px;position:relative;}
+  ul.rules li::before{content:"";position:absolute;left:2px;top:8px;width:7px;height:7px;border-radius:2px;background:var(--teal-600);}
+  ul.rules li b{color:var(--text);font-weight:600;}
+  .note{display:flex;gap:11px;padding:13px 15px;border-radius:var(--radius);border:1px solid var(--teal-100);background:var(--teal-50);font-size:13px;color:var(--teal-700);line-height:1.5;margin:16px 0;}
+  .note svg{width:16px;height:16px;flex-shrink:0;margin-top:1px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .note b{font-weight:600;}
+  @media(max-width:900px){.wrap{grid-template-columns:1fr;}.docnav{display:none;}.dd{grid-template-columns:1fr;}.content{padding:0 22px 80px;}.ph h1{font-size:34px;}.place{grid-template-columns:repeat(2,auto);}}
+</style>
+</head>
+<body data-screen-label="DS · Tooltip">
+<div class="wrap">
+  <nav class="docnav">
+    <a class="home" href="syoksheet Design System.html">
+      <span class="mk"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="14" rx="2"/><path d="M9 7h6M9 11h4"/><path d="M3 9v10a2 2 0 0 0 2 2h10"/></svg></span>
+      <span><b>syoksheet</b><span>Design System</span></span>
+    </a>
+    <div class="grp">Foundations</div>
+    <a class="n" href="DS Colour.html">Colour</a>
+    <a class="n" href="DS Iconography.html">Iconography &amp; motion</a>
+    <a class="n" href="DS Spacing.html">Spacing &amp; layout</a>
+    <a class="n" href="DS Typography.html">Typography</a>
+    <div class="grp">Actions</div>
+    <a class="n" href="DS Button.html">Button</a>
+    <a class="n" href="DS Menu.html">Menu</a>
+    <div class="grp">Forms</div>
+    <a class="n" href="DS Selection.html">Checkbox &amp; radio</a>
+    <a class="n" href="DS Upload.html">File upload</a>
+    <a class="n" href="DS Form.html">Input &amp; form field</a>
+    <a class="n" href="DS Segmented.html">Segmented control</a>
+    <a class="n" href="DS Select.html">Select</a>
+    <a class="n" href="DS Toggle.html">Toggle &amp; switch</a>
+    <div class="grp">Data display</div>
+    <a class="n" href="DS Avatar.html">Avatar</a>
+    <a class="n" href="DS Badge.html">Badge</a>
+    <a class="n" href="DS Card.html">Card</a>
+    <a class="n" href="DS Data Table.html">Data table</a>
+    <a class="n" href="DS Table.html">Table</a>
+    <a class="n" href="DS Tag.html">Tag</a>
+    <a class="n" href="DS Verification Mark.html">Verification mark</a>
+    <div class="grp">Feedback</div>
+    <a class="n" href="DS Alert.html">Alert</a>
+    <a class="n" href="DS Empty State.html">Empty state</a>
+    <a class="n" href="DS Modal.html">Modal &amp; dialog</a>
+    <a class="n" href="DS Progress.html">Progress &amp; meter</a>
+    <a class="n" href="DS Skeleton.html">Skeleton</a>
+    <a class="n" href="DS Toast.html">Toast</a>
+    <a class="n on" href="DS Tooltip.html">Tooltip</a>
+    <div class="grp">Navigation</div>
+    <a class="n" href="DS Breadcrumb.html">Breadcrumb</a>
+    <a class="n" href="DS Sidebar Nav.html">Sidebar nav</a>
+    <a class="n" href="DS Tabs.html">Tabs</a>
+  </nav>
+
+  <main class="doc">
+    <div class="content">
+      <header class="ph">
+        <div class="crumb">Components / Tooltip</div>
+        <h1>Tooltip</h1>
+        <p>A short label that appears on hover or keyboard focus, naming or clarifying its trigger. Tooltips carry <b>supplementary</b> text only — nothing a user must read to proceed, and never anything interactive.</p>
+        <div class="status"><span class="pill" style="background:#fbf3e3;border-color:#f4e4be;color:#8a5e12;">Beta</span><span class="pill">hover · focus · 4 placements</span></div>
+      </header>
+
+      <section class="s">
+        <h2>Anatomy</h2>
+        <p class="lead">A dark neutral bubble (<code>--n-900</code>) with white 12px text, 6×10px padding, small radius, and an optional 8px arrow pointing at the trigger. One or two short lines — a name, a shortcut, or a full value.</p>
+        <div class="ex">
+          <div class="stage">
+            <span class="demo">
+              <span class="tt">Copy verification link<span class="kbd">⌘C</span></span>
+              <span class="arrow"></span>
+              <button class="icobtn" aria-label="Copy verification link"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+            </span>
+            <span class="demo">
+              <span class="tt">hana.yusof@acmecorp.com</span>
+              <span class="arrow"></span>
+              <span class="trunc">hana.yusof@acmecorp…</span>
+            </span>
+          </div>
+          <div class="cap">Icon-button label with shortcut · full value for truncated text.</div>
+        </div>
+      </section>
+
+      <section class="s">
+        <h2>Placement</h2>
+        <p class="lead">Top is the default. Flip to bottom when there's no room above; left/right only for triggers at a viewport edge. The arrow always points at the trigger's centre.</p>
+        <div class="ex">
+          <div class="stage">
+            <div class="place">
+              <div><span class="demo"><span class="tt">Top</span><span class="arrow"></span><button class="icobtn" aria-label="Top example"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button></span><div class="cellcap">top (default)</div></div>
+              <div><span class="demo below"><span class="tt">Bottom</span><span class="arrow"></span><button class="icobtn" aria-label="Bottom example"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button></span><div class="cellcap">bottom</div></div>
+              <div style="display:flex;flex-direction:column;align-items:center;"><span style="display:inline-flex;align-items:center;gap:9px;"><span class="tt">Left</span><button class="icobtn" aria-label="Left example"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button></span><div class="cellcap">left</div></div>
+              <div style="display:flex;flex-direction:column;align-items:center;"><span style="display:inline-flex;align-items:center;gap:9px;"><button class="icobtn" aria-label="Right example"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button><span class="tt">Right</span></span><div class="cellcap">right</div></div>
+            </div>
+          </div>
+          <div class="cap">Four placements; auto-flip when colliding with the viewport.</div>
+        </div>
+      </section>
+
+      <section class="s">
+        <h2>Behaviour</h2>
+        <table class="spec">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Show delay</td><td><code>350ms</code> on hover — instant (<code>0ms</code>) on keyboard focus and when moving between adjacent tooltipped triggers</td></tr>
+            <tr><td>Hide</td><td>On pointer leave, blur, or <code>Escape</code> — no hide delay</td></tr>
+            <tr><td>Motion</td><td>Fade + 2px rise over <code>140ms</code> (the system transition duration); static under <code>prefers-reduced-motion</code></td></tr>
+            <tr><td>Max width</td><td><code>240px</code>, wrapping to at most two lines</td></tr>
+            <tr><td>Offset</td><td><code>7px</code> from trigger edge, arrow included</td></tr>
+            <tr><td>PrimeNG</td><td><code>pTooltip</code> directive with preset tokens; placement via <code>tooltipPosition</code></td></tr>
+          </tbody>
+        </table>
+        <div class="note">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span><b>Tooltip vs. popover:</b> if it needs a heading, an action, a link, or should stay open — it's not a tooltip. Use a <a href="DS Menu.html" style="text-decoration:underline;">menu</a> or modal instead. Tooltips are text-only and self-dismissing.</span>
+        </div>
+      </section>
+
+      <section class="s">
+        <h2>Do &amp; don't</h2>
+        <div class="dd">
+          <div class="dd-card do"><div class="hd"><span class="m"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Do</div><p>Label every icon-only button with a tooltip. Show full values for truncated text. Keep it to a few words.</p></div>
+          <div class="dd-card dont"><div class="hd"><span class="m"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Don't</div><p>Don't put required information, links, or buttons in a tooltip — and never attach one to a disabled control's dead zone; wrap the trigger instead.</p></div>
+        </div>
+      </section>
+
+      <section class="s" style="border-bottom:none;">
+        <h2>Accessibility</h2>
+        <ul class="rules">
+          <li>The bubble uses <code>role="tooltip"</code> and is referenced from the trigger via <code>aria-describedby</code>.</li>
+          <li>Triggers must be focusable — tooltips appear on keyboard focus exactly as on hover, with no delay.</li>
+          <li><code>Escape</code> dismisses without moving focus; the tooltip never traps or receives focus itself.</li>
+          <li>Content is plain text available to screen readers via the description — never the only place information lives.</li>
+          <li>White-on-<code>--n-900</code> passes contrast at 12px; motion respects <code>prefers-reduced-motion</code>.</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+</div>
+</body>
+</html>

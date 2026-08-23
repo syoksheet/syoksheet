@@ -1,0 +1,263 @@
+<!-- @dsCard group="Data display" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Verification mark — syoksheet Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --n-0:#fff;--n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
+    --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
+    --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
+    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-200:#a6d3b9;--verify-500:#1f8a64;--verify-600:#157a5b;--verify-700:#0f5e46;
+    --amber-50:#fbf3e3;--amber-100:#f4e4be;--amber-500:#d39a2a;--amber-700:#8a5e12;
+    --clay-50:#fbefea;--clay-100:#f4d8cd;--clay-500:#cb5638;--clay-600:#b2412a;--clay-700:#8f3120;
+    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
+    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
+    --radius-sm:5px;--radius:8px;--radius-lg:12px;--radius-xl:18px;
+    --shadow-xs:0 1px 2px rgba(10,10,11,.05);
+    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:var(--bg);color:var(--text);font-family:var(--fs);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  code{font-family:var(--fm);font-size:0.92em;}
+  .wrap{display:grid;grid-template-columns:248px 1fr;min-height:100vh;}
+  .docnav{position:sticky;top:0;height:100vh;overflow-y:auto;border-right:1px solid var(--border);padding:24px 16px;background:var(--surface);}
+  .docnav .home{display:flex;align-items:center;gap:9px;padding:4px 8px 18px;}
+  .docnav .home .mk{width:26px;height:26px;border-radius:6px;background:linear-gradient(180deg,var(--n-900),var(--n-700));color:#fff;display:inline-flex;align-items:center;justify-content:center;}
+  .docnav .home .mk svg{width:13px;height:13px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .docnav .home b{font-size:14px;font-weight:600;letter-spacing:-0.01em;}
+  .docnav .home span{display:block;font-family:var(--fm);font-size:9.5px;color:var(--text-3);}
+  .docnav .grp{font-family:var(--fm);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-3);padding:16px 10px 7px;}
+  .docnav a.n{display:block;padding:6px 10px;font-size:13px;color:var(--text-2);border-radius:6px;}
+  .docnav a.n:hover{background:var(--n-100);color:var(--text);}
+  .docnav a.n.on{background:var(--teal-50);color:var(--teal-700);font-weight:600;}
+  .doc{min-width:0;}
+  .content{max-width:760px;margin:0 auto;padding:0 40px 120px;}
+  .ph{padding:52px 0 32px;border-bottom:1px solid var(--border);}
+  .ph .crumb{font-family:var(--fm);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-3);}
+  .ph h1{font-size:46px;font-weight:600;letter-spacing:-0.03em;margin-top:14px;}
+  .ph p{font-size:17px;color:var(--text-2);margin-top:14px;line-height:1.55;max-width:600px;}
+  .ph .status{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--fm);font-size:11px;font-weight:500;padding:4px 10px;border-radius:999px;border:1px solid var(--border);color:var(--text-2);}
+  .pill.ok{background:var(--verify-50);border-color:var(--verify-100);color:var(--verify-700);}
+  .pill.ok::before{content:"";width:6px;height:6px;border-radius:999px;background:var(--verify-600);}
+  section.s{padding:44px 0;border-bottom:1px solid var(--hair);}
+  .s > h2{font-size:13px;font-family:var(--fm);font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-3);display:flex;align-items:center;gap:11px;margin-bottom:8px;}
+  .s > h2::before{content:"";width:16px;height:2px;background:var(--teal-600);border-radius:2px;}
+  .s > .lead{font-size:15px;color:var(--text-2);line-height:1.6;margin-bottom:24px;max-width:600px;}
+  .ex{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin:16px 0;}
+  .ex .stage{padding:34px;display:flex;flex-wrap:wrap;gap:26px;align-items:center;background:var(--n-50);}
+  .ex .cap{padding:10px 16px;border-top:1px solid var(--border);font-family:var(--fm);font-size:11px;color:var(--text-3);background:var(--surface);}
+
+  /* verification mark (documented) */
+  .vmark{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:999px;background:var(--verify-600);color:#fff;flex-shrink:0;}
+  .vmark svg{width:11px;height:11px;stroke:currentColor;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .vmark.sm{width:15px;height:15px;} .vmark.sm svg{width:9px;height:9px;stroke-width:3.25;}
+  .vmark.lg{width:30px;height:30px;} .vmark.lg svg{width:15px;height:15px;stroke-width:2.75;}
+  .vmark.xl{width:44px;height:44px;} .vmark.xl svg{width:21px;height:21px;stroke-width:2.5;}
+  .vmark.soft{background:var(--verify-50);color:var(--verify-700);box-shadow:inset 0 0 0 1px var(--verify-100);}
+  .vmark.ring{background:transparent;color:var(--verify-600);box-shadow:inset 0 0 0 1.5px var(--verify-200);}
+
+  .badge{display:inline-flex;align-items:center;gap:6px;padding:3px 11px 3px 6px;font-family:var(--fm);font-size:11px;font-weight:600;border-radius:999px;background:var(--verify-50);color:var(--verify-700);border:1px solid var(--verify-100);}
+  .badge.pending{background:var(--amber-50);color:var(--amber-700);border-color:var(--amber-100);padding-left:9px;}
+  .badge.pending svg{width:11px;height:11px;stroke:currentColor;stroke-width:2.25;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .badge.unv{background:var(--n-100);color:var(--n-600);border-color:var(--n-200);padding-left:9px;}
+
+  .lab{display:flex;flex-direction:column;align-items:center;gap:9px;}
+  .lab .c{font-family:var(--fm);font-size:10.5px;color:var(--text-3);}
+
+  table.spec{width:100%;border:1px solid var(--border);border-radius:var(--radius-lg);border-collapse:separate;border-spacing:0;overflow:hidden;font-size:13.5px;margin:16px 0;}
+  table.spec th{text-align:left;font-family:var(--fm);font-size:10.5px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3);font-weight:600;padding:11px 14px;background:var(--n-50);border-bottom:1px solid var(--border);}
+  table.spec td{padding:11px 14px;border-bottom:1px solid var(--hair);vertical-align:top;}
+  table.spec tr:last-child td{border-bottom:none;}
+  table.spec td code{color:var(--teal-700);}
+  .dd{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;}
+  .dd-card{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;}
+  .dd-card .hd{padding:10px 14px;font-family:var(--fm);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--hair);}
+  .dd-card.do .hd{color:var(--verify-700);} .dd-card.dont .hd{color:var(--clay-700);}
+  .dd-card .hd .m{width:16px;height:16px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;color:#fff;}
+  .dd-card.do .hd .m{background:var(--verify-600);} .dd-card.dont .hd .m{background:var(--clay-600);}
+  .dd-card .hd .m svg{width:9px;height:9px;stroke:currentColor;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .dd-card .demo{padding:22px;display:flex;justify-content:center;align-items:center;background:var(--n-50);min-height:92px;gap:8px;}
+  .dd-card p{font-size:12.5px;color:var(--text-2);line-height:1.5;padding:12px 14px;border-top:1px solid var(--hair);}
+  ul.rules{list-style:none;display:flex;flex-direction:column;gap:11px;margin:6px 0;}
+  ul.rules li{font-size:14px;color:var(--text-2);line-height:1.55;padding-left:24px;position:relative;}
+  ul.rules li::before{content:"";position:absolute;left:2px;top:8px;width:7px;height:7px;border-radius:2px;background:var(--verify-600);}
+  ul.rules li b{color:var(--text);font-weight:600;}
+  .note{display:flex;gap:11px;padding:13px 15px;border-radius:var(--radius);border:1px solid var(--verify-100);background:var(--verify-50);font-size:13px;color:var(--verify-700);line-height:1.5;margin:16px 0;}
+  .note svg{width:16px;height:16px;flex-shrink:0;margin-top:1px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .note b{font-weight:600;}
+  @media(max-width:900px){.wrap{grid-template-columns:1fr;}.docnav{display:none;}.dd{grid-template-columns:1fr;}.content{padding:0 22px 80px;}.ph h1{font-size:34px;}}
+</style>
+</head>
+<body data-screen-label="DS · Verification mark">
+<div class="wrap">
+
+  <nav class="docnav">
+    <a class="home" href="syoksheet Design System.html">
+      <span class="mk"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="14" rx="2"/><path d="M9 7h6M9 11h4"/><path d="M3 9v10a2 2 0 0 0 2 2h10"/></svg></span>
+      <span><b>syoksheet</b><span>Design System</span></span>
+    </a>
+    <div class="grp">Foundations</div>
+    <a class="n" href="DS Colour.html">Colour</a>
+    <a class="n" href="DS Iconography.html">Iconography &amp; motion</a>
+    <a class="n" href="DS Spacing.html">Spacing &amp; layout</a>
+    <a class="n" href="DS Typography.html">Typography</a>
+    <div class="grp">Actions</div>
+    <a class="n" href="DS Button.html">Button</a>
+    <a class="n" href="DS Menu.html">Menu</a>
+    <div class="grp">Forms</div>
+    <a class="n" href="DS Selection.html">Checkbox &amp; radio</a>
+    <a class="n" href="DS Upload.html">File upload</a>
+    <a class="n" href="DS Form.html">Input &amp; form field</a>
+    <a class="n" href="DS Segmented.html">Segmented control</a>
+    <a class="n" href="DS Select.html">Select</a>
+    <a class="n" href="DS Toggle.html">Toggle &amp; switch</a>
+    <div class="grp">Data display</div>
+    <a class="n" href="DS Avatar.html">Avatar</a>
+    <a class="n" href="DS Badge.html">Badge</a>
+    <a class="n" href="DS Card.html">Card</a>
+    <a class="n" href="DS Data Table.html">Data table</a>
+    <a class="n" href="DS Table.html">Table</a>
+    <a class="n" href="DS Tag.html">Tag</a>
+    <a class="n on" href="DS Verification Mark.html">Verification mark</a>
+    <div class="grp">Feedback</div>
+    <a class="n" href="DS Alert.html">Alert</a>
+    <a class="n" href="DS Empty State.html">Empty state</a>
+    <a class="n" href="DS Modal.html">Modal &amp; dialog</a>
+    <a class="n" href="DS Progress.html">Progress &amp; meter</a>
+    <a class="n" href="DS Skeleton.html">Skeleton</a>
+    <a class="n" href="DS Toast.html">Toast</a>
+    <a class="n" href="DS Tooltip.html">Tooltip</a>
+    <div class="grp">Navigation</div>
+    <a class="n" href="DS Breadcrumb.html">Breadcrumb</a>
+    <a class="n" href="DS Sidebar Nav.html">Sidebar nav</a>
+    <a class="n" href="DS Tabs.html">Tabs</a>
+  </nav>
+
+  <main class="doc">
+    <div class="content">
+
+      <header class="ph">
+        <div class="crumb">Components / Verification mark</div>
+        <h1>Verification mark</h1>
+        <p>The verification mark is syoksheet's most important signal — it means a real person or a DNS-verified organisation stood behind a brag. It is flat, quiet, and reserved exclusively for proven things.</p>
+        <div class="status">
+          <span class="pill" style="background:#fbf3e3;border-color:#f4e4be;color:#8a5e12;">Beta</span>
+
+          <span class="pill">forest green · semantic</span>
+        </div>
+      </header>
+
+      <!-- PRINCIPLE -->
+      <section class="s">
+        <h2>Principle</h2>
+        <p class="lead">Trust is the product, so the mark earns it by being precise and consistent — not loud. It is a plain forest-green check, the way a tick on a legal document works. No stamp, no wax, no ring text, no gradient.</p>
+        <div class="note"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span><b>Forest green (<code>--verify-600</code>) is reserved for verification only.</b> It is never used for brand, action, or decoration. The brand colour is teal; these two greens never mix roles.</span></div>
+      </section>
+
+      <!-- VARIANTS -->
+      <section class="s">
+        <h2>Variants</h2>
+        <p class="lead">One shape, three weights. Solid leads, soft and outline support in dense or low-emphasis contexts.</p>
+        <div class="ex">
+          <div class="stage">
+            <div class="lab"><span class="vmark lg"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="c">solid</span></div>
+            <div class="lab"><span class="vmark soft lg"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="c">soft</span></div>
+            <div class="lab"><span class="vmark ring lg"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="c">outline</span></div>
+          </div>
+          <div class="cap">Solid (default) · soft (tinted fill, dense rows) · outline (quietest, secondary contexts).</div>
+        </div>
+        <table class="spec">
+          <thead><tr><th>Variant</th><th>Fill</th><th>Use for</th></tr></thead>
+          <tbody>
+            <tr><td><b>Solid</b></td><td>Forest <code>--verify-600</code>, white check</td><td>Primary signal — card marks, callout seal</td></tr>
+            <tr><td><b>Soft</b></td><td>Tint <code>--verify-50</code>, forest check</td><td>Dense lists, inside badges</td></tr>
+            <tr><td><b>Outline</b></td><td>Transparent, forest ring + check</td><td>Low-emphasis, on coloured surfaces</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- SIZES -->
+      <section class="s">
+        <h2>Sizes</h2>
+        <p class="lead">Four sizes from inline chip to the verification callout seal. The check stroke scales with the circle so it always reads cleanly.</p>
+        <div class="ex">
+          <div class="stage" style="align-items:flex-end;">
+            <div class="lab"><span class="vmark xl"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="c">44 · seal</span></div>
+            <div class="lab"><span class="vmark lg"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="c">30 · card</span></div>
+            <div class="lab"><span class="vmark"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="c">20 · inline</span></div>
+            <div class="lab"><span class="vmark sm"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="c">15 · badge</span></div>
+          </div>
+          <div class="cap">44 seal · 30 card header · 20 inline · 15 inside a badge.</div>
+        </div>
+      </section>
+
+      <!-- IN CONTEXT -->
+      <section class="s">
+        <h2>In context</h2>
+        <p class="lead">The mark almost always travels with a label. Colour alone never carries the meaning.</p>
+        <div class="ex">
+          <div class="stage" style="gap:14px;">
+            <span class="badge"><span class="vmark sm"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> Verified by Acme Corp</span>
+            <span class="badge"><span class="vmark sm"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> 3 peers</span>
+            <span class="badge pending"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Pending</span>
+            <span class="badge unv">Unverified</span>
+          </div>
+          <div class="cap">Verified = mark + label. Pending = hollow amber clock. Unverified = neutral grey, no mark.</div>
+        </div>
+      </section>
+
+      <!-- STATUS SYSTEM -->
+      <section class="s">
+        <h2>The status system</h2>
+        <p class="lead">Verification is one of three mutually exclusive states. Each has its own colour and glyph so they're never confused.</p>
+        <table class="spec">
+          <thead><tr><th>State</th><th>Colour</th><th>Glyph</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><b>Verified</b></td><td>Forest <code>--verify-600</code></td><td>Solid check</td><td>A person or DNS-verified org confirmed this.</td></tr>
+            <tr><td><b>Pending</b></td><td>Amber <code>--amber-600</code></td><td>Hollow clock</td><td>Awaiting a verifier's response.</td></tr>
+            <tr><td><b>Unverified</b></td><td>Neutral <code>--n-600</code></td><td>None</td><td>Documented but not vouched for.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- DO / DONT -->
+      <section class="s">
+        <h2>Do &amp; don't</h2>
+        <div class="dd">
+          <div class="dd-card do">
+            <div class="hd"><span class="m"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Do</div>
+            <div class="demo"><span class="badge"><span class="vmark sm"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> Verified by Acme Corp</span></div>
+            <p>Mark beside a label that names who verified.</p>
+          </div>
+          <div class="dd-card dont">
+            <div class="hd"><span class="m"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Don't</div>
+            <div class="demo"><button style="height:34px;padding:0 14px;border-radius:8px;border:none;background:var(--verify-600);color:#fff;font-family:var(--fs);font-weight:600;font-size:13px;">Save changes</button></div>
+            <p>Forest green on a non-verification action — it steals the trust signal.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- A11Y -->
+      <section class="s" style="border-bottom:none;">
+        <h2>Accessibility</h2>
+        <ul class="rules">
+          <li>The mark is decorative when a text label is present (<code>aria-hidden</code>); the label carries meaning.</li>
+          <li>When the mark stands alone (e.g. a card-corner check), give it an <code>aria-label="Verified"</code>.</li>
+          <li>Never communicate verified / pending / unverified by colour alone — glyph + label always accompany.</li>
+          <li>Forest-on-white and white-on-forest both meet WCAG AA.</li>
+        </ul>
+      </section>
+
+    </div>
+  </main>
+</div>
+</body>
+</html>

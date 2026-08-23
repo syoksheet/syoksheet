@@ -1,0 +1,72 @@
+<!-- @dsCard group="Forms" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Checkbox &amp; radio — syoksheet DS</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --n-0:#fff;--n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
+    --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
+    --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
+    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
+    --clay-50:#fbefea;--clay-100:#f4d8cd;--clay-600:#b2412a;--clay-700:#8f3120;
+    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
+    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
+    --radius-sm:5px;--radius:8px;--radius-lg:12px;--shadow-xs:0 1px 2px rgba(10,10,11,.05);
+    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#fff;color:var(--text);font-family:var(--fs);font-size:15px;-webkit-font-smoothing:antialiased;padding:28px;display:flex;flex-direction:column;gap:22px;}
+  .cap{font-family:var(--fm);font-size:11px;color:var(--text-3);}
+  .row{display:flex;flex-wrap:wrap;gap:26px;align-items:center;}
+  .col{display:flex;flex-direction:column;gap:12px;align-items:flex-start;}
+  .cb{display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-size:14px;}
+  .cb input{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1.5px solid var(--n-400);border-radius:5px;background:var(--surface);position:relative;cursor:pointer;flex-shrink:0;transition:all .12s ease;}
+  .cb input:hover{border-color:var(--n-500);}
+  .cb input:checked{background:var(--teal-600);border-color:var(--teal-600);}
+  .cb input:checked::after{content:"";position:absolute;top:2.5px;left:5.5px;width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg);}
+  .cb input:indeterminate{background:var(--teal-600);border-color:var(--teal-600);}
+  .cb input:indeterminate::after{content:"";position:absolute;top:7.5px;left:3.5px;width:9px;height:2px;background:#fff;border-radius:1px;}
+  .cb input:focus-visible{outline:2px solid var(--teal-500);outline-offset:2px;}
+  .rd{display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-size:14px;}
+  .rd input{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1.5px solid var(--n-400);border-radius:999px;background:var(--surface);cursor:pointer;flex-shrink:0;transition:border-width .12s ease,border-color .12s ease;}
+  .rd input:hover{border-color:var(--n-500);}
+  .rd input:checked{border-color:var(--teal-600);border-width:5.5px;}
+  .rd input:focus-visible{outline:2px solid var(--teal-500);outline-offset:2px;}
+  .opt{display:flex;align-items:flex-start;gap:12px;padding:13px 14px;border:1px solid var(--border-2);border-radius:var(--radius);cursor:pointer;max-width:440px;width:100%;transition:border-color .12s ease,background .12s ease;}
+  .opt:hover{border-color:var(--n-400);}
+  .opt input{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1.5px solid var(--n-400);border-radius:999px;background:var(--surface);margin-top:1px;flex-shrink:0;cursor:pointer;transition:border-width .12s ease,border-color .12s ease;}
+  .opt.sel{border-color:var(--teal-500);background:var(--teal-50);}
+  .opt.sel input{border-color:var(--teal-600);border-width:5.5px;}
+  .opt .rt{display:block;font-size:14px;font-weight:600;}
+  .opt .rd2{display:block;font-size:12.5px;color:var(--text-2);margin-top:3px;line-height:1.45;}
+</style>
+</head>
+<body>
+  <div class="col">
+    <div class="row">
+      <label class="cb"><input type="checkbox" /> Unchecked</label>
+      <label class="cb"><input type="checkbox" checked /> Checked</label>
+      <label class="cb"><input type="checkbox" id="ind" /> Indeterminate</label>
+      <label class="cb" style="opacity:.5;"><input type="checkbox" disabled /> Disabled</label>
+    </div>
+    <span class="cap">checkbox · unchecked · checked · indeterminate · disabled</span>
+  </div>
+  <div class="col">
+    <label class="rd"><input type="radio" name="v" /> Public</label>
+    <label class="rd"><input type="radio" name="v" checked /> On verification</label>
+    <label class="rd"><input type="radio" name="v" /> Private</label>
+    <span class="cap">radio · one active per named group</span>
+  </div>
+  <div class="col">
+    <label class="opt"><input type="radio" name="p" /><span><span class="rt">Owners only</span><span class="rd2">Strictest — only org owners sign off.</span></span></label>
+    <label class="opt sel"><input type="radio" name="p" checked /><span><span class="rt">Owners + Managers</span><span class="rd2">Recommended. Managers approve day-to-day.</span></span></label>
+    <label class="opt"><input type="radio" name="p" /><span><span class="rt">Owners, Managers + Moderators</span><span class="rd2">Fastest — widest pool of approvers.</span></span></label>
+    <span class="cap">radio cards · whole card clickable, selected tints teal-50</span>
+  </div>
+<script>var i=document.getElementById('ind');if(i)i.indeterminate=true;</script>
+</body>
+</html>

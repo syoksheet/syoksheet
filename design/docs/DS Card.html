@@ -1,0 +1,288 @@
+<!-- @dsCard group="Data display" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Card — syoksheet Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --n-0:#fff;--n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
+    --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
+    --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
+    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
+    --amber-50:#fbf3e3;--amber-100:#f4e4be;--amber-700:#8a5e12;
+    --clay-50:#fbefea;--clay-100:#f4d8cd;--clay-500:#cb5638;--clay-600:#b2412a;--clay-700:#8f3120;
+    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
+    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
+    --radius-sm:5px;--radius:8px;--radius-lg:12px;--radius-xl:18px;
+    --shadow-xs:0 1px 2px rgba(10,10,11,.05);
+    --shadow-sm:0 1px 3px rgba(10,10,11,.07),0 1px 2px rgba(10,10,11,.04);
+    --shadow-md:0 8px 22px -10px rgba(10,10,11,.16),0 2px 6px -3px rgba(10,10,11,.08);
+    --ring:rgba(0,64,64,.22);
+    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:var(--bg);color:var(--text);font-family:var(--fs);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  code{font-family:var(--fm);font-size:0.92em;}
+  .wrap{display:grid;grid-template-columns:248px 1fr;min-height:100vh;}
+  .docnav{position:sticky;top:0;height:100vh;overflow-y:auto;border-right:1px solid var(--border);padding:24px 16px;background:var(--surface);}
+  .docnav .home{display:flex;align-items:center;gap:9px;padding:4px 8px 18px;}
+  .docnav .home .mk{width:26px;height:26px;border-radius:6px;background:linear-gradient(180deg,var(--n-900),var(--n-700));color:#fff;display:inline-flex;align-items:center;justify-content:center;}
+  .docnav .home .mk svg{width:13px;height:13px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .docnav .home b{font-size:14px;font-weight:600;letter-spacing:-0.01em;}
+  .docnav .home span{display:block;font-family:var(--fm);font-size:9.5px;color:var(--text-3);}
+  .docnav .grp{font-family:var(--fm);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-3);padding:16px 10px 7px;}
+  .docnav a.n{display:block;padding:6px 10px;font-size:13px;color:var(--text-2);border-radius:6px;}
+  .docnav a.n:hover{background:var(--n-100);color:var(--text);}
+  .docnav a.n.on{background:var(--teal-50);color:var(--teal-700);font-weight:600;}
+  .doc{min-width:0;}
+  .content{max-width:760px;margin:0 auto;padding:0 40px 120px;}
+  .ph{padding:52px 0 32px;border-bottom:1px solid var(--border);}
+  .ph .crumb{font-family:var(--fm);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-3);}
+  .ph h1{font-size:46px;font-weight:600;letter-spacing:-0.03em;margin-top:14px;}
+  .ph p{font-size:17px;color:var(--text-2);margin-top:14px;line-height:1.55;max-width:600px;}
+  .ph .status{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--fm);font-size:11px;font-weight:500;padding:4px 10px;border-radius:999px;border:1px solid var(--border);color:var(--text-2);}
+  .pill.ok{background:var(--verify-50);border-color:var(--verify-100);color:var(--verify-700);}
+  .pill.ok::before{content:"";width:6px;height:6px;border-radius:999px;background:var(--verify-600);}
+  section.s{padding:44px 0;border-bottom:1px solid var(--hair);}
+  .s > h2{font-size:13px;font-family:var(--fm);font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-3);display:flex;align-items:center;gap:11px;margin-bottom:8px;}
+  .s > h2::before{content:"";width:16px;height:2px;background:var(--teal-600);border-radius:2px;}
+  .s > .lead{font-size:15px;color:var(--text-2);line-height:1.6;margin-bottom:24px;max-width:600px;}
+  .ex{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin:16px 0;}
+  .ex .stage{padding:30px;background:var(--n-50);}
+  .ex .cap{padding:10px 16px;border-top:1px solid var(--border);font-family:var(--fm);font-size:11px;color:var(--text-3);background:var(--surface);}
+
+  /* CARD (documented component) */
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;}
+  .card-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+  .card-head h3{font-size:15px;font-weight:600;letter-spacing:-0.005em;color:var(--text);}
+  .card-head p{font-size:12.5px;color:var(--text-3);margin-top:3px;line-height:1.5;}
+  .card-body{padding:18px 20px;}
+  .card-body .field{display:flex;flex-direction:column;gap:7px;}
+  .card-body .field + .field{margin-top:14px;}
+  .card-body label{font-size:13px;font-weight:600;}
+  .card-body .in{width:100%;height:38px;padding:0 12px;font-family:inherit;font-size:14px;color:var(--text);background:var(--surface);border:1px solid var(--border-2);border-radius:var(--radius);}
+  .card-foot{padding:13px 20px;background:var(--n-50);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:flex-end;gap:8px;}
+  .card-foot .saved{margin-right:auto;font-family:var(--fm);font-size:11.5px;color:var(--text-3);}
+  .card.danger{border-color:var(--clay-100);}
+  .card.danger .card-head h3{color:var(--clay-700);}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;height:34px;padding:0 13px;font-family:var(--fs);font-size:13px;font-weight:600;border-radius:var(--radius-sm);border:1px solid transparent;cursor:pointer;}
+  .btn .i{width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .btn-primary{background:var(--teal-600);color:#fff;}
+  .btn-secondary{background:var(--surface);color:var(--text);border-color:var(--border-2);box-shadow:var(--shadow-xs);}
+  .btn-ghost{background:transparent;color:var(--text-2);}
+  .btn-danger{background:var(--clay-600);color:#fff;}
+
+  .badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px 3px 6px;font-family:var(--fm);font-size:11px;font-weight:600;border-radius:999px;background:var(--verify-50);color:var(--verify-700);border:1px solid var(--verify-100);}
+  .badge .vm{width:13px;height:13px;background:var(--verify-600);color:#fff;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;}
+  .badge .vm svg{width:7px;height:7px;stroke:#fff;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .avatar{width:30px;height:30px;border-radius:999px;background:var(--teal-600);color:#fff;font-size:11px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .tag{display:inline-flex;padding:3px 10px;font-size:12px;font-weight:500;color:var(--teal-700);background:var(--teal-50);border:1px solid var(--teal-100);border-radius:999px;}
+
+  /* interactive brag card sample */
+  .brag{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px 24px;box-shadow:var(--shadow-xs);max-width:440px;transition:border-color .16s,box-shadow .16s,transform .16s;cursor:pointer;}
+  .brag:hover{border-color:var(--border-2);box-shadow:var(--shadow-md);transform:translateY(-2px);}
+  .brag .top{display:flex;align-items:center;gap:10px;}
+  .brag .who{font-size:13px;font-weight:600;}
+  .brag .who .role{color:var(--text-3);font-weight:400;}
+  .brag .top .badge{margin-left:auto;}
+  .brag .title{font-size:18px;font-weight:600;letter-spacing:-0.01em;margin-top:14px;line-height:1.3;}
+  .brag .tags{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap;}
+  .brag .foot{display:flex;align-items:center;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid var(--hair);font-size:12.5px;color:var(--text-2);}
+  .brag .foot .org{font-weight:600;color:var(--text);}
+  .brag .foot .quiet{margin-left:auto;font-family:var(--fm);font-size:11px;color:var(--text-3);}
+
+  .anat-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;}
+  .anat-item{display:flex;gap:11px;align-items:flex-start;}
+  .anat-item .n{flex-shrink:0;width:22px;height:22px;border-radius:999px;background:var(--teal-600);color:#fff;font-family:var(--fm);font-size:11px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;}
+  .anat-item b{display:block;color:var(--text);font-size:13.5px;}
+  .anat-item span.d{color:var(--text-2);font-size:12.5px;line-height:1.5;}
+
+  table.spec{width:100%;border:1px solid var(--border);border-radius:var(--radius-lg);border-collapse:separate;border-spacing:0;overflow:hidden;font-size:13.5px;margin:16px 0;}
+  table.spec th{text-align:left;font-family:var(--fm);font-size:10.5px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3);font-weight:600;padding:11px 14px;background:var(--n-50);border-bottom:1px solid var(--border);}
+  table.spec td{padding:11px 14px;border-bottom:1px solid var(--hair);vertical-align:top;}
+  table.spec tr:last-child td{border-bottom:none;}
+  table.spec td code{color:var(--teal-700);}
+  .dd{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;}
+  .dd-card{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;}
+  .dd-card .hd{padding:10px 14px;font-family:var(--fm);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--hair);}
+  .dd-card.do .hd{color:var(--verify-700);} .dd-card.dont .hd{color:var(--clay-700);}
+  .dd-card .hd .m{width:16px;height:16px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;color:#fff;}
+  .dd-card.do .hd .m{background:var(--verify-600);} .dd-card.dont .hd .m{background:var(--clay-600);}
+  .dd-card .hd .m svg{width:9px;height:9px;stroke:currentColor;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .dd-card .demo{padding:20px;background:var(--n-50);min-height:96px;}
+  .dd-card p{font-size:12.5px;color:var(--text-2);line-height:1.5;padding:12px 14px;border-top:1px solid var(--hair);}
+  .mini{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);font-size:12px;}
+  .mini .mh{padding:9px 12px;border-bottom:1px solid var(--hair);font-weight:600;}
+  .mini .mb{padding:11px 12px;color:var(--text-2);}
+  .mini .mf{padding:9px 12px;background:var(--n-50);border-top:1px solid var(--hair);display:flex;justify-content:flex-end;gap:6px;}
+  .mini.bad .mf{justify-content:flex-start;}
+  ul.rules{list-style:none;display:flex;flex-direction:column;gap:11px;margin:6px 0;}
+  ul.rules li{font-size:14px;color:var(--text-2);line-height:1.55;padding-left:24px;position:relative;}
+  ul.rules li::before{content:"";position:absolute;left:2px;top:8px;width:7px;height:7px;border-radius:2px;background:var(--teal-600);}
+  ul.rules li b{color:var(--text);font-weight:600;}
+  .note{display:flex;gap:11px;padding:13px 15px;border-radius:var(--radius);border:1px solid var(--teal-100);background:var(--teal-50);font-size:13px;color:var(--teal-700);line-height:1.5;margin:16px 0;}
+  .note svg{width:16px;height:16px;flex-shrink:0;margin-top:1px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .note b{font-weight:600;}
+  @media(max-width:900px){.wrap{grid-template-columns:1fr;}.docnav{display:none;}.dd,.anat-grid{grid-template-columns:1fr;}.content{padding:0 22px 80px;}.ph h1{font-size:34px;}}
+</style>
+</head>
+<body data-screen-label="DS · Card">
+<div class="wrap">
+
+  <nav class="docnav">
+    <a class="home" href="syoksheet Design System.html">
+      <span class="mk"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="14" rx="2"/><path d="M9 7h6M9 11h4"/><path d="M3 9v10a2 2 0 0 0 2 2h10"/></svg></span>
+      <span><b>syoksheet</b><span>Design System</span></span>
+    </a>
+    <div class="grp">Foundations</div>
+    <a class="n" href="DS Colour.html">Colour</a>
+    <a class="n" href="DS Iconography.html">Iconography &amp; motion</a>
+    <a class="n" href="DS Spacing.html">Spacing &amp; layout</a>
+    <a class="n" href="DS Typography.html">Typography</a>
+    <div class="grp">Actions</div>
+    <a class="n" href="DS Button.html">Button</a>
+    <a class="n" href="DS Menu.html">Menu</a>
+    <div class="grp">Forms</div>
+    <a class="n" href="DS Selection.html">Checkbox &amp; radio</a>
+    <a class="n" href="DS Upload.html">File upload</a>
+    <a class="n" href="DS Form.html">Input &amp; form field</a>
+    <a class="n" href="DS Segmented.html">Segmented control</a>
+    <a class="n" href="DS Select.html">Select</a>
+    <a class="n" href="DS Toggle.html">Toggle &amp; switch</a>
+    <div class="grp">Data display</div>
+    <a class="n" href="DS Avatar.html">Avatar</a>
+    <a class="n" href="DS Badge.html">Badge</a>
+    <a class="n on" href="DS Card.html">Card</a>
+    <a class="n" href="DS Data Table.html">Data table</a>
+    <a class="n" href="DS Table.html">Table</a>
+    <a class="n" href="DS Tag.html">Tag</a>
+    <a class="n" href="DS Verification Mark.html">Verification mark</a>
+    <div class="grp">Feedback</div>
+    <a class="n" href="DS Alert.html">Alert</a>
+    <a class="n" href="DS Empty State.html">Empty state</a>
+    <a class="n" href="DS Modal.html">Modal &amp; dialog</a>
+    <a class="n" href="DS Progress.html">Progress &amp; meter</a>
+    <a class="n" href="DS Skeleton.html">Skeleton</a>
+    <a class="n" href="DS Toast.html">Toast</a>
+    <a class="n" href="DS Tooltip.html">Tooltip</a>
+    <div class="grp">Navigation</div>
+    <a class="n" href="DS Breadcrumb.html">Breadcrumb</a>
+    <a class="n" href="DS Sidebar Nav.html">Sidebar nav</a>
+    <a class="n" href="DS Tabs.html">Tabs</a>
+  </nav>
+
+  <main class="doc">
+    <div class="content">
+
+      <header class="ph">
+        <div class="crumb">Components / Card</div>
+        <h1>Card</h1>
+        <p>A card groups one coherent set of content or one settings concern into a bordered surface. Cards are the backbone of every screen in syoksheet — the brag, the settings section, the org summary are all cards.</p>
+        <div class="status">
+          <span class="pill" style="background:#fbf3e3;border-color:#f4e4be;color:#8a5e12;">Beta</span>
+          
+          <span class="pill">3 types</span>
+        </div>
+      </header>
+
+      <!-- ANATOMY -->
+      <section class="s">
+        <h2>Anatomy</h2>
+        <p class="lead">A structured card has three regions. Header and footer are fixed; the body flexes. A content card (like a brag) keeps the same border + radius but composes its own internals.</p>
+        <div class="ex">
+          <div class="stage">
+            <div class="card" style="max-width:420px;margin:0 auto;">
+              <div class="card-head"><div><h3>Organisation profile</h3><p>Shown on the public org wall.</p></div></div>
+              <div class="card-body"><div class="field"><label>Display name</label><input class="in" type="text" value="Acme Corp" /></div></div>
+              <div class="card-foot"><span class="saved">Saved</span><button class="btn btn-ghost">Discard</button><button class="btn btn-primary">Save</button></div>
+            </div>
+          </div>
+          <div class="cap">Structured card = header (title + description) · body (content) · footer (status + right-aligned actions).</div>
+        </div>
+        <div class="anat-grid">
+          <div class="anat-item"><span class="n">1</span><div><b>Header</b><span class="d">Title (15/600) + optional one-line description. 16–20px padding, hairline divider below.</span></div></div>
+          <div class="anat-item"><span class="n">2</span><div><b>Body</b><span class="d">The content or form fields. 18–20px padding.</span></div></div>
+          <div class="anat-item"><span class="n">3</span><div><b>Footer</b><span class="d">Tinted <code>--n-50</code> bar. Status left, actions right, primary last.</span></div></div>
+          <div class="anat-item"><span class="n">4</span><div><b>Container</b><span class="d">White surface, 1px border, 12px radius, <code>overflow:hidden</code> so regions clip.</span></div></div>
+        </div>
+      </section>
+
+      <!-- TYPES -->
+      <section class="s">
+        <h2>Types</h2>
+        <p class="lead">Three card types. They share the container spec but differ in what fills them.</p>
+        <table class="spec">
+          <thead><tr><th>Type</th><th>Header</th><th>Footer</th><th>Used on</th></tr></thead>
+          <tbody>
+            <tr><td><b>Settings card</b></td><td>Required</td><td>Required (Save)</td><td>Org Settings, Profile, Security</td></tr>
+            <tr><td><b>Content card</b></td><td>Optional</td><td>Optional</td><td>Brag, org summary, activity</td></tr>
+            <tr><td><b>Interactive card</b></td><td>Composed</td><td>Composed</td><td>Brag list, org cards (whole card is a link)</td></tr>
+          </tbody>
+        </table>
+        <h3 style="font-size:15px;font-weight:600;margin:24px 0 12px;">Interactive content card — the brag</h3>
+        <div class="ex">
+          <div class="stage" style="display:flex;justify-content:center;">
+            <article class="brag">
+              <div class="top"><span class="avatar">DC</span><span class="who">David Chen <span class="role">· Staff Eng</span></span><span class="badge"><span class="vm"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> Verified</span></div>
+              <div class="title">Led backend migration to PostgreSQL 16</div>
+              <div class="tags"><span class="tag">PostgreSQL</span><span class="tag">System Design</span></div>
+              <div class="foot"><span class="org">Acme Corp</span><span class="quiet">2026-04-22 →</span></div>
+            </article>
+          </div>
+          <div class="cap">Hover lifts the card 2px with a medium shadow. The whole card is the click target.</div>
+        </div>
+      </section>
+
+      <!-- BEHAVIOR -->
+      <section class="s">
+        <h2>Behavior</h2>
+        <ul class="rules">
+          <li><b>Interactive cards lift on hover</b> — <code>translateY(-2px)</code> + <code>--shadow-md</code>, 160ms. Static cards never move.</li>
+          <li><b>Whole-card links:</b> the entire surface is clickable; nested buttons/links stop propagation.</li>
+          <li><b>Secondary detail expands inline</b> — dates, verifiers and the anchor reveal in place, not in a drawer.</li>
+          <li><b>One concern per card.</b> If a card needs two Save buttons, it's two cards.</li>
+        </ul>
+      </section>
+
+      <!-- DO / DONT -->
+      <section class="s">
+        <h2>Do &amp; don't</h2>
+        <div class="dd">
+          <div class="dd-card do">
+            <div class="hd"><span class="m"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Do</div>
+            <div class="demo"><div class="mini"><div class="mh">Logo</div><div class="mb">Square mark for the wall.</div><div class="mf"><span class="btn btn-primary" style="height:26px;font-size:11px;">Save</span></div></div></div>
+            <p>Header + footer present; Save right-aligned.</p>
+          </div>
+          <div class="dd-card dont">
+            <div class="hd"><span class="m"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Don't</div>
+            <div class="demo"><div class="mini bad"><div class="mb" style="padding-top:14px;">Square mark for the wall.</div><div class="mf"><span class="btn btn-primary" style="height:26px;font-size:11px;">Save</span></div></div></div>
+            <p>No header, and the action is left-aligned — inconsistent with every other card.</p>
+          </div>
+        </div>
+        <div class="note"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span><b>Every titled card has a header and a footer.</b> If there's nothing to save, the card is a content card and may omit the footer — but a settings card always shows both.</span></div>
+      </section>
+
+      <!-- A11Y -->
+      <section class="s" style="border-bottom:none;">
+        <h2>Accessibility</h2>
+        <ul class="rules">
+          <li>Card titles are real headings (<code>&lt;h2&gt;</code>/<code>&lt;h3&gt;</code>) so the page outline is navigable.</li>
+          <li>Whole-card links wrap a single <code>&lt;a&gt;</code> or use a clickable region with a focusable primary link inside — never a click handler with no keyboard path.</li>
+          <li>Hover lift is decorative; never hide information that only appears on hover from keyboard or touch users — provide an inline expand control too.</li>
+          <li>Maintain ≥4.5:1 text contrast on the white surface and the tinted footer alike.</li>
+        </ul>
+      </section>
+
+    </div>
+  </main>
+</div>
+</body>
+</html>

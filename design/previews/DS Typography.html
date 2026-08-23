@@ -1,0 +1,52 @@
+<!-- @dsCard group="Foundations" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Typography — syoksheet DS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --n-0:#fff;--n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
+    --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
+    --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
+    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
+    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
+    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
+    --radius-sm:5px;--radius:8px;--radius-lg:12px;
+    --shadow-xs:0 1px 2px rgba(10,10,11,.05);
+    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#fff;color:var(--text);font-family:var(--fs);font-size:15px;-webkit-font-smoothing:antialiased;padding:28px;display:flex;flex-direction:column;gap:22px;}
+  .trow{display:grid;grid-template-columns:130px 1fr;gap:20px;padding:12px 0;border-bottom:1px solid var(--hair);align-items:baseline;}
+  .trow:last-child{border-bottom:none;}
+  .tm{font-family:var(--fm);font-size:11px;color:var(--text-3);line-height:1.4;}
+  .d-display{font-size:48px;font-weight:600;letter-spacing:-0.03em;line-height:1;}
+  .d-h1{font-size:34px;font-weight:600;letter-spacing:-0.025em;line-height:1.1;}
+  .d-h2{font-size:24px;font-weight:600;letter-spacing:-0.02em;line-height:1.2;}
+  .d-h3{font-size:17px;font-weight:600;letter-spacing:-0.005em;}
+  .d-body{font-size:15px;font-weight:400;line-height:1.6;max-width:540px;color:var(--text);}
+  .d-sm{font-size:13px;font-weight:400;color:var(--text-2);}
+  .d-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);}
+  .d-mono{font-family:var(--fm);font-size:12px;font-weight:500;color:var(--text-3);}
+</style>
+</head>
+<body>
+
+  <div>
+    <div class="trow"><div class="tm">Display · 48/600</div><div class="d-display">Your career, verified.</div></div>
+    <div class="trow"><div class="tm">Heading 1 · 34/600</div><div class="d-h1">Led the migration to PostgreSQL 16</div></div>
+    <div class="trow"><div class="tm">Heading 2 · 24/600</div><div class="d-h2">Verified by Acme Corp</div></div>
+    <div class="trow"><div class="tm">Heading 3 · 17/600</div><div class="d-h3">Pending verification</div></div>
+    <div class="trow"><div class="tm">Body · 15/400</div><div class="d-body">Reduced p99 latency from 380ms to 92ms across 14 services, with zero downtime over a six-week cutover.</div></div>
+    <div class="trow"><div class="tm">Small · 13/400</div><div class="d-sm">Verified by Priya Krishnan, VP Engineering · 3 days ago</div></div>
+    <div class="trow"><div class="tm">Label · 11/600</div><div class="d-label">Skill tags · max 5</div></div>
+    <div class="trow"><div class="tm">Record · mono 12/500</div><div class="d-mono">brag_01HZX4K2Q9 · 2026-04-22 · sha256:9f3e…b21d</div></div>
+  </div>
+
+</body>
+</html>

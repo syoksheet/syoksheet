@@ -1,0 +1,88 @@
+<!-- @dsCard group="Feedback" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Toast — syoksheet DS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --n-0:#fff;--n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
+    --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
+    --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
+    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-500:#1f8a64;--verify-600:#157a5b;--verify-700:#0f5e46;
+    --amber-50:#fbf3e3;--amber-100:#f4e4be;--amber-500:#d39a2a;--amber-600:#b07815;--amber-700:#8a5e12;
+    --clay-50:#fbefea;--clay-100:#f4d8cd;--clay-500:#cb5638;--clay-600:#b2412a;--clay-700:#8f3120;
+    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
+    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
+    --radius-sm:5px;--radius:8px;--radius-lg:12px;--radius-xl:18px;
+    --shadow-lg:0 22px 48px -18px rgba(10,10,11,.22),0 6px 14px -8px rgba(10,10,11,.1);
+    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#fff;color:var(--text);font-family:var(--fs);font-size:15px;-webkit-font-smoothing:antialiased;padding:28px;display:flex;flex-direction:column;gap:22px;}
+  .cap{font-family:var(--fm);font-size:11px;color:var(--text-3);}
+  .demo{display:flex;flex-direction:column;gap:10px;align-items:flex-start;}
+
+  .toast{display:inline-flex;align-items:center;gap:11px;padding:12px 14px;background:var(--n-950);color:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);font-size:13.5px;max-width:380px;}
+  .toast .vm{width:18px;height:18px;border-radius:999px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;}
+  .toast .vm svg{width:11px;height:11px;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .toast .vm.ok{background:var(--verify-500);}
+  .toast .vm.err{background:var(--clay-500);}
+  .toast .vm.info{background:var(--teal-500);}
+  .toast .tx{flex:1;min-width:0;}
+  .toast .tx b{font-weight:600;}
+  .toast .undo{flex-shrink:0;background:transparent;border:none;color:#7fd3ab;font-family:var(--fs);font-size:13px;font-weight:600;cursor:pointer;padding:0 2px;}
+  .toast .x{flex-shrink:0;width:20px;height:20px;border:none;background:transparent;color:rgba(255,255,255,.55);cursor:pointer;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;}
+  .toast .x:hover{background:rgba(255,255,255,.12);color:#fff;}
+  .toast .x svg{width:12px;height:12px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;}
+
+  .vp{position:relative;width:100%;height:200px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+  .vp .grid{position:absolute;inset:0;background-image:linear-gradient(var(--n-100) 1px,transparent 1px),linear-gradient(90deg,var(--n-100) 1px,transparent 1px);background-size:28px 28px;}
+  .vp .toast{position:absolute;right:16px;bottom:16px;font-size:12px;padding:10px 12px;}
+  .vp .lbl{position:absolute;right:18px;bottom:64px;font-family:var(--fm);font-size:10.5px;color:var(--text-3);}
+</style>
+</head>
+<body>
+
+  <div class="demo">
+    <div class="cap">Anatomy · status mark · message · dismiss</div>
+    <div class="toast">
+      <span class="vm ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+      <span class="tx">Brag verified · published to your wall</span>
+      <button class="x" aria-label="Dismiss"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+  </div>
+
+  <div class="demo">
+    <div class="cap">Variants · success · success + Undo · error + Retry</div>
+    <div class="toast">
+      <span class="vm ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+      <span class="tx">Draft saved</span>
+    </div>
+    <div class="toast">
+      <span class="vm info"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+      <span class="tx"><b>Brag hidden</b> from the public wall</span>
+      <button class="undo">Undo</button>
+    </div>
+    <div class="toast">
+      <span class="vm err"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+      <span class="tx">Couldn't send invite — try again</span>
+      <button class="undo" style="color:#f0a48d;">Retry</button>
+    </div>
+  </div>
+
+  <div class="demo" style="align-items:stretch;">
+    <div class="cap">Placement · anchored bottom-right, 24px inset; new toasts stack upward</div>
+    <div class="vp">
+      <div class="grid"></div>
+      <span class="lbl">24px inset, bottom-right</span>
+      <div class="toast"><span class="vm ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="tx">Saved</span></div>
+    </div>
+  </div>
+
+</body>
+</html>

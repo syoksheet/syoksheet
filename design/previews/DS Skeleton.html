@@ -1,0 +1,61 @@
+<!-- @dsCard group="Feedback" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Skeleton — syoksheet DS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --n-0:#fff;--n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
+    --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
+    --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
+    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
+    --clay-50:#fbefea;--clay-100:#f4d8cd;--clay-600:#b2412a;--clay-700:#8f3120;
+    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
+    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
+    --radius-sm:5px;--radius:8px;--radius-lg:12px;--shadow-xs:0 1px 2px rgba(10,10,11,.05);
+    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#fff;color:var(--text);font-family:var(--fs);font-size:15px;-webkit-font-smoothing:antialiased;padding:28px;display:flex;flex-direction:column;gap:22px;}
+  .cap{font-family:var(--fm);font-size:11px;color:var(--text-3);}
+  .demo{display:flex;flex-direction:column;gap:10px;}
+
+  @keyframes shimmer{100%{background-position:-100% 0;}}
+  .sk{background:linear-gradient(90deg,var(--n-150) 0%,var(--n-100) 40%,var(--n-150) 80%);background-size:200% 100%;animation:shimmer 1.3s infinite linear;border-radius:5px;}
+  .sk.circ{border-radius:999px;}
+  .skcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;max-width:420px;}
+  .skhead{display:flex;align-items:center;gap:11px;}
+  .skrows{display:flex;flex-direction:column;gap:9px;margin-top:16px;}
+  .sktags{display:flex;gap:6px;margin-top:16px;}
+  .sktable{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;}
+  .sktr{display:grid;grid-template-columns:2fr 1fr 1fr 60px;gap:14px;padding:14px 16px;border-bottom:1px solid var(--hair);align-items:center;}
+  .sktr:last-child{border-bottom:none;}
+</style>
+</head>
+<body>
+
+  <div class="demo">
+    <div class="cap">Brag-card skeleton · avatar circle, name line, title lines, tag pills</div>
+    <div class="skcard">
+      <div class="skhead"><div class="sk circ" style="width:30px;height:30px;"></div><div class="sk" style="width:120px;height:11px;"></div></div>
+      <div class="skrows"><div class="sk" style="width:90%;height:14px;"></div><div class="sk" style="width:70%;height:14px;"></div></div>
+      <div class="sktags"><div class="sk" style="width:64px;height:20px;border-radius:999px;"></div><div class="sk" style="width:84px;height:20px;border-radius:999px;"></div></div>
+    </div>
+  </div>
+
+  <div class="demo">
+    <div class="cap">Table skeleton · keeps the column grid so the header stays put</div>
+    <div class="sktable">
+      <div class="sktr"><div class="sk" style="width:70%;height:12px;"></div><div class="sk" style="width:50%;height:12px;"></div><div class="sk" style="width:60%;height:12px;"></div><div class="sk" style="width:24px;height:12px;"></div></div>
+      <div class="sktr"><div class="sk" style="width:80%;height:12px;"></div><div class="sk" style="width:40%;height:12px;"></div><div class="sk" style="width:55%;height:12px;"></div><div class="sk" style="width:24px;height:12px;"></div></div>
+      <div class="sktr"><div class="sk" style="width:65%;height:12px;"></div><div class="sk" style="width:55%;height:12px;"></div><div class="sk" style="width:45%;height:12px;"></div><div class="sk" style="width:24px;height:12px;"></div></div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!-- @dsCard group="Foundations" name="Logo" subtitle="Mark, tile, lockup and usage rules" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Logo — syoksheet DS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --n-0:#fff;--n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
+    --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
+    --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-200:#93c7c5;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
+    --verify-600:#157a5b;
+    --bg:#fff;--surface:#fff;--border:var(--n-200);--hair:var(--n-150);
+    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
+    --radius-sm:5px;--radius:8px;--radius-lg:12px;
+    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+    --logo-mask:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect x='3' y='30.5' width='20' height='10' rx='5'/%3E%3Crect x='14' y='18.5' width='20' height='10' rx='5'/%3E%3Crect x='25' y='6.5' width='20' height='10' rx='5'/%3E%3C/svg%3E");
+    --logo-mask-compact:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect x='3' y='29.5' width='20' height='12' rx='6'/%3E%3Crect x='14' y='18' width='20' height='12' rx='6'/%3E%3Crect x='25' y='6.5' width='20' height='12' rx='6'/%3E%3C/svg%3E");
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#fff;color:var(--text);font-family:var(--fs);font-size:15px;-webkit-font-smoothing:antialiased;padding:28px;display:flex;flex-direction:column;gap:22px;}
+  .cap{font-family:var(--fm);font-size:11px;color:var(--text-3);}
+  .demo{display:flex;flex-direction:column;gap:12px;}
+  .row{display:flex;flex-wrap:wrap;gap:26px;align-items:center;}
+  .lab{display:flex;flex-direction:column;align-items:center;gap:9px;}
+  .lab .c{font-family:var(--fm);font-size:10.5px;color:var(--text-3);}
+
+  .logo{display:inline-block;width:24px;height:24px;flex-shrink:0;color:var(--teal-600);background:currentColor;-webkit-mask:var(--logo-mask-compact) center/contain no-repeat;mask:var(--logo-mask-compact) center/contain no-repeat;}
+  .logo-sm{width:20px;height:20px;}
+  .logo-md{width:32px;height:32px;-webkit-mask-image:var(--logo-mask);mask-image:var(--logo-mask);}
+  .logo-lg{width:48px;height:48px;-webkit-mask-image:var(--logo-mask);mask-image:var(--logo-mask);}
+  .logo-xl{width:96px;height:96px;-webkit-mask-image:var(--logo-mask);mask-image:var(--logo-mask);}
+  .logo-ink{color:var(--n-950);} .logo-inv{color:#fff;}
+  .logo-tile{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:22%;background:var(--teal-600);flex-shrink:0;}
+  .logo-tile .logo{color:#fff;width:65%;height:65%;}
+  .logo-tile.tile-sm{width:24px;height:24px;border-radius:6px;}
+  .logo-tile.tile-md{width:40px;height:40px;}
+  .logo-tile.tile-lg{width:64px;height:64px;}
+  .logo-tile.tile-xl{width:128px;height:128px;}
+  .logo-tile.tile-lg .logo,.logo-tile.tile-xl .logo{-webkit-mask-image:var(--logo-mask);mask-image:var(--logo-mask);}
+  .logo-lockup{display:inline-flex;align-items:center;gap:9px;}
+  .logo-lockup .name{font-size:17px;font-weight:600;letter-spacing:-.02em;color:var(--text);text-transform:lowercase;}
+  .logo-lockup .name-inv{color:#fff;}
+
+  .swatch{display:grid;place-items:center;width:132px;height:96px;border-radius:var(--radius);border:1px solid var(--border);}
+  .rule{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text-2);line-height:1.55;}
+  .rule b{font-family:var(--fm);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);padding-top:3px;min-width:34px;}
+</style>
+</head>
+<body>
+
+  <div class="demo">
+    <div class="cap">Mark · three stepped bars, one per logged win. Abstract — no letterform, no document. Never redrawn.</div>
+    <div class="row" style="align-items:flex-end;">
+      <div class="lab"><i class="logo logo-xl"></i><span class="c">96</span></div>
+      <div class="lab"><i class="logo logo-lg"></i><span class="c">48</span></div>
+      <div class="lab"><i class="logo logo-md"></i><span class="c">32</span></div>
+      <div class="lab"><i class="logo"></i><span class="c">24</span></div>
+      <div class="lab"><i class="logo logo-sm"></i><span class="c">20 · min</span></div>
+    </div>
+  </div>
+
+  <div class="demo">
+    <div class="cap">Colour · teal 600 default · near-black on light · white reversed. Forest green stays reserved for verification.</div>
+    <div class="row" style="gap:14px;">
+      <div class="swatch"><i class="logo logo-lg"></i></div>
+      <div class="swatch"><i class="logo logo-lg logo-ink"></i></div>
+      <div class="swatch" style="background:var(--teal-600);border-color:var(--teal-700);"><i class="logo logo-lg logo-inv"></i></div>
+      <div class="swatch" style="background:var(--n-950);border-color:var(--n-900);"><i class="logo logo-lg logo-inv"></i></div>
+    </div>
+  </div>
+
+  <div class="demo">
+    <div class="cap">Tile · reversed in teal, for app icons and favicons. Use below 20px where the bare mark stops holding.</div>
+    <div class="row" style="align-items:flex-end;gap:18px;">
+      <div class="lab"><span class="logo-tile tile-xl"><i class="logo"></i></span><span class="c">512</span></div>
+      <div class="lab"><span class="logo-tile tile-lg"><i class="logo"></i></span><span class="c">64</span></div>
+      <div class="lab"><span class="logo-tile tile-md"><i class="logo"></i></span><span class="c">40</span></div>
+      <div class="lab"><span class="logo-tile"><i class="logo"></i></span><span class="c">32</span></div>
+      <div class="lab"><span class="logo-tile tile-sm"><i class="logo"></i></span><span class="c">24</span></div>
+    </div>
+  </div>
+
+  <div class="demo">
+    <div class="cap">Lockup · there is no drawn wordmark. The product name is set in Geist 600, lowercase, tracked −.02em.</div>
+    <div class="row" style="gap:16px;">
+      <span class="logo-lockup"><span class="logo-tile tile-sm"><i class="logo"></i></span><span class="name">syoksheet</span></span>
+      <span class="logo-lockup"><i class="logo"></i><span class="name">syoksheet</span></span>
+      <span class="logo-lockup" style="background:var(--teal-600);padding:8px 14px;border-radius:var(--radius);"><i class="logo logo-inv"></i><span class="name name-inv">syoksheet</span></span>
+    </div>
+  </div>
+
+  <div class="demo">
+    <div class="cap">Rules</div>
+    <div style="display:grid;gap:9px;">
+      <div class="rule"><b>Do</b><span>Colour it with <span style="font-family:var(--fm);font-size:12px;">currentColor</span> — the mark is a CSS mask, so it inherits ink from its container.</span></div>
+      <div class="rule"><b>Do</b><span>Thicken to the compact master (12-unit bars) at 28px and below; the default 10-unit bars are for 32px and up.</span></div>
+      <div class="rule"><b>Don't</b><span>Rotate, outline, add a shadow, reproportion the step, or set the mark in forest green.</span></div>
+      <div class="rule"><b>Don't</b><span>Draw the name as a wordmark, set it in title case, or pair it with any face other than Geist.</span></div>
+    </div>
+  </div>
+
+</body>
+</html>

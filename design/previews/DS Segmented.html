@@ -1,0 +1,54 @@
+<!-- @dsCard group="Forms" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Segmented control — syoksheet DS</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --n-0:#fff;--n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
+    --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
+    --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
+    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
+    --amber-50:#fbf3e3;--amber-100:#f4e4be;--amber-700:#8a5e12;
+    --clay-50:#fbefea;--clay-100:#f4d8cd;--clay-600:#b2412a;--clay-700:#8f3120;
+    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
+    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
+    --radius-sm:5px;--radius:8px;--radius-lg:12px;--shadow-xs:0 1px 2px rgba(10,10,11,.05);
+    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#fff;color:var(--text);font-family:var(--fs);font-size:15px;-webkit-font-smoothing:antialiased;padding:28px;display:flex;flex-direction:column;gap:22px;}
+  .cap{font-family:var(--fm);font-size:11px;color:var(--text-3);}
+  .demo{display:flex;flex-direction:column;gap:10px;align-items:flex-start;}
+  .seg{display:inline-flex;background:var(--surface);border:1px solid var(--border-2);border-radius:var(--radius);padding:3px;box-shadow:var(--shadow-xs);}
+  .seg button{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;font-family:var(--fs);font-size:13px;font-weight:500;color:var(--text-2);background:transparent;border:none;border-radius:var(--radius-sm);cursor:pointer;white-space:nowrap;transition:all .12s ease;}
+  .seg button:hover{color:var(--text);}
+  .seg button.on{background:var(--n-100);color:var(--text);box-shadow:var(--shadow-xs);}
+  .seg button .ct{font-family:var(--fm);font-size:10.5px;font-weight:500;background:var(--n-100);color:var(--text-3);padding:1px 5px;border-radius:999px;}
+  .seg button.on .ct{background:var(--surface);color:var(--text-2);border:1px solid var(--border);}
+  .seg button .ct.warn{background:var(--amber-50);color:var(--amber-700);}
+  .seg button svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+</style>
+</head>
+<body>
+  <div class="demo">
+    <div class="seg">
+      <button class="on">All <span class="ct">12</span></button>
+      <button>Pending <span class="ct warn">2</span></button>
+      <button>Approved <span class="ct">9</span></button>
+      <button>Rejected <span class="ct">1</span></button>
+    </div>
+    <span class="cap">filter with counts · amber chip flags pending</span>
+  </div>
+  <div class="demo">
+    <div class="seg">
+      <button class="on"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> Grid</button>
+      <button><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> List</button>
+    </div>
+    <span class="cap">icon view toggle · selected segment lifts to a white pill</span>
+  </div>
+</body>
+</html>

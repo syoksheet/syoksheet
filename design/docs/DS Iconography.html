@@ -1,0 +1,262 @@
+<!-- @dsCard group="Foundations" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Iconography &amp; motion — syoksheet Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --n-0:#fff;--n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
+    --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
+    --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
+    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
+    --clay-50:#fbefea;--clay-100:#f4d8cd;--clay-600:#b2412a;--clay-700:#8f3120;
+    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
+    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
+    --radius-sm:5px;--radius:8px;--radius-lg:12px;
+    --shadow-xs:0 1px 2px rgba(10,10,11,.05);
+    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:var(--bg);color:var(--text);font-family:var(--fs);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  code{font-family:var(--fm);font-size:0.92em;}
+  .wrap{display:grid;grid-template-columns:248px 1fr;min-height:100vh;}
+  .docnav{position:sticky;top:0;height:100vh;overflow-y:auto;border-right:1px solid var(--border);padding:24px 16px;background:var(--surface);}
+  .docnav .home{display:flex;align-items:center;gap:9px;padding:4px 8px 18px;}
+  .docnav .home .mk{width:26px;height:26px;border-radius:6px;background:linear-gradient(180deg,var(--n-900),var(--n-700));color:#fff;display:inline-flex;align-items:center;justify-content:center;}
+  .docnav .home .mk svg{width:13px;height:13px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .docnav .home b{font-size:14px;font-weight:600;letter-spacing:-0.01em;}
+  .docnav .home span{display:block;font-family:var(--fm);font-size:9.5px;color:var(--text-3);}
+  .docnav .grp{font-family:var(--fm);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-3);padding:16px 10px 7px;}
+  .docnav a.n{display:block;padding:6px 10px;font-size:13px;color:var(--text-2);border-radius:6px;}
+  .docnav a.n:hover{background:var(--n-100);color:var(--text);}
+  .docnav a.n.on{background:var(--teal-50);color:var(--teal-700);font-weight:600;}
+  .doc{min-width:0;}
+  .content{max-width:760px;margin:0 auto;padding:0 40px 120px;}
+  .ph{padding:52px 0 32px;border-bottom:1px solid var(--border);}
+  .ph .crumb{font-family:var(--fm);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-3);}
+  .ph h1{font-size:46px;font-weight:600;letter-spacing:-0.03em;margin-top:14px;}
+  .ph p{font-size:17px;color:var(--text-2);margin-top:14px;line-height:1.55;max-width:600px;}
+  .ph .status{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--fm);font-size:11px;font-weight:500;padding:4px 10px;border-radius:999px;border:1px solid var(--border);color:var(--text-2);}
+  .pill.ok{background:var(--verify-50);border-color:var(--verify-100);color:var(--verify-700);}
+  .pill.ok::before{content:"";width:6px;height:6px;border-radius:999px;background:var(--verify-600);}
+  section.s{padding:44px 0;border-bottom:1px solid var(--hair);}
+  .s > h2{font-size:13px;font-family:var(--fm);font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-3);display:flex;align-items:center;gap:11px;margin-bottom:8px;}
+  .s > h2::before{content:"";width:16px;height:2px;background:var(--teal-600);border-radius:2px;}
+  .s > .lead{font-size:15px;color:var(--text-2);line-height:1.6;margin-bottom:24px;max-width:600px;}
+  .ex{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin:16px 0;}
+  .ex .stage{padding:26px 24px;background:var(--n-50);}
+  .ex .cap{padding:10px 16px;border-top:1px solid var(--border);font-family:var(--fm);font-size:11px;color:var(--text-3);background:var(--surface);}
+
+  .isizes{display:flex;gap:26px;align-items:flex-end;flex-wrap:wrap;}
+  .isizes .ic{display:flex;flex-direction:column;align-items:center;gap:9px;color:var(--text);}
+  .isizes .ic svg{stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;}
+  .isizes .ic .c{font-family:var(--fm);font-size:10px;color:var(--text-3);}
+  .iset{display:grid;grid-template-columns:repeat(8,1fr);gap:14px;margin:16px 0;}
+  .iset .gi{display:flex;flex-direction:column;align-items:center;gap:7px;padding:14px 6px;border:1px solid var(--border);border-radius:var(--radius);color:var(--text-2);}
+  .iset .gi svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;}
+  .iset .gi .nm{font-family:var(--fm);font-size:8.5px;color:var(--text-3);text-align:center;}
+
+  table.spec{width:100%;border:1px solid var(--border);border-radius:var(--radius-lg);border-collapse:separate;border-spacing:0;overflow:hidden;font-size:13.5px;margin:16px 0;}
+  table.spec th{text-align:left;font-family:var(--fm);font-size:10.5px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3);font-weight:600;padding:11px 14px;background:var(--n-50);border-bottom:1px solid var(--border);}
+  table.spec td{padding:11px 14px;border-bottom:1px solid var(--hair);vertical-align:top;}
+  table.spec tr:last-child td{border-bottom:none;}
+  table.spec td code{color:var(--teal-700);}
+  .mrow{display:grid;grid-template-columns:90px 1fr;gap:16px;align-items:center;padding:12px 0;border-bottom:1px solid var(--hair);}
+  .mrow:last-child{border-bottom:none;}
+  .mrow .ms{font-family:var(--fm);font-size:12px;color:var(--teal-700);}
+  .mrow .md{font-size:13.5px;color:var(--text-2);}
+  .demo-motion{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+  .mchip{padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);font-size:13px;cursor:pointer;transition:transform .16s cubic-bezier(.32,.72,0,1),box-shadow .16s ease,background .12s ease;}
+  .mchip:hover{transform:translateY(-2px);box-shadow:0 8px 22px -10px rgba(10,10,11,.16);}
+  .dd{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;}
+  .dd-card{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;}
+  .dd-card .hd{padding:10px 14px;font-family:var(--fm);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--hair);}
+  .dd-card.do .hd{color:var(--verify-700);} .dd-card.dont .hd{color:var(--clay-700);}
+  .dd-card .hd .m{width:16px;height:16px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;color:#fff;}
+  .dd-card.do .hd .m{background:var(--verify-600);} .dd-card.dont .hd .m{background:var(--clay-600);}
+  .dd-card .hd .m svg{width:9px;height:9px;stroke:currentColor;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .dd-card .demo{padding:18px;background:var(--n-50);display:flex;justify-content:center;gap:14px;align-items:center;color:var(--text-2);}
+  .dd-card .demo svg{width:22px;height:22px;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .dd-card p{font-size:12.5px;color:var(--text-2);line-height:1.5;padding:12px 14px;border-top:1px solid var(--hair);}
+  ul.rules{list-style:none;display:flex;flex-direction:column;gap:11px;margin:6px 0;}
+  ul.rules li{font-size:14px;color:var(--text-2);line-height:1.55;padding-left:24px;position:relative;}
+  ul.rules li::before{content:"";position:absolute;left:2px;top:8px;width:7px;height:7px;border-radius:2px;background:var(--teal-600);}
+  ul.rules li b{color:var(--text);font-weight:600;}
+  .note{display:flex;gap:11px;padding:13px 15px;border-radius:var(--radius);border:1px solid var(--teal-100);background:var(--teal-50);font-size:13px;color:var(--teal-700);line-height:1.5;margin:16px 0;}
+  .note svg{width:16px;height:16px;flex-shrink:0;margin-top:1px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .note b{font-weight:600;}
+  @media(max-width:900px){.wrap{grid-template-columns:1fr;}.docnav{display:none;}.content{padding:0 22px 80px;}.ph h1{font-size:34px;}.iset{grid-template-columns:repeat(4,1fr);}.dd{grid-template-columns:1fr;}}
+</style>
+</head>
+<body data-screen-label="DS · Iconography">
+<div class="wrap">
+
+  <nav class="docnav">
+    <a class="home" href="syoksheet Design System.html">
+      <span class="mk"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="14" rx="2"/><path d="M9 7h6M9 11h4"/><path d="M3 9v10a2 2 0 0 0 2 2h10"/></svg></span>
+      <span><b>syoksheet</b><span>Design System</span></span>
+    </a>
+    <div class="grp">Foundations</div>
+    <a class="n" href="DS Colour.html">Colour</a>
+    <a class="n on" href="DS Iconography.html">Iconography &amp; motion</a>
+    <a class="n" href="DS Spacing.html">Spacing &amp; layout</a>
+    <a class="n" href="DS Typography.html">Typography</a>
+    <div class="grp">Actions</div>
+    <a class="n" href="DS Button.html">Button</a>
+    <a class="n" href="DS Menu.html">Menu</a>
+    <div class="grp">Forms</div>
+    <a class="n" href="DS Selection.html">Checkbox &amp; radio</a>
+    <a class="n" href="DS Upload.html">File upload</a>
+    <a class="n" href="DS Form.html">Input &amp; form field</a>
+    <a class="n" href="DS Segmented.html">Segmented control</a>
+    <a class="n" href="DS Select.html">Select</a>
+    <a class="n" href="DS Toggle.html">Toggle &amp; switch</a>
+    <div class="grp">Data display</div>
+    <a class="n" href="DS Avatar.html">Avatar</a>
+    <a class="n" href="DS Badge.html">Badge</a>
+    <a class="n" href="DS Card.html">Card</a>
+    <a class="n" href="DS Data Table.html">Data table</a>
+    <a class="n" href="DS Table.html">Table</a>
+    <a class="n" href="DS Tag.html">Tag</a>
+    <a class="n" href="DS Verification Mark.html">Verification mark</a>
+    <div class="grp">Feedback</div>
+    <a class="n" href="DS Alert.html">Alert</a>
+    <a class="n" href="DS Empty State.html">Empty state</a>
+    <a class="n" href="DS Modal.html">Modal &amp; dialog</a>
+    <a class="n" href="DS Progress.html">Progress &amp; meter</a>
+    <a class="n" href="DS Skeleton.html">Skeleton</a>
+    <a class="n" href="DS Toast.html">Toast</a>
+    <a class="n" href="DS Tooltip.html">Tooltip</a>
+    <div class="grp">Navigation</div>
+    <a class="n" href="DS Breadcrumb.html">Breadcrumb</a>
+    <a class="n" href="DS Sidebar Nav.html">Sidebar nav</a>
+    <a class="n" href="DS Tabs.html">Tabs</a>
+  </nav>
+
+  <main class="doc">
+    <div class="content">
+
+      <header class="ph">
+        <div class="crumb">Foundations / Iconography &amp; motion</div>
+        <h1>Iconography &amp; motion</h1>
+        <p>Line icons and quiet motion. One stroke weight, one icon family, currentColor throughout; movement is fast, purposeful, and uses a single easing curve. Nothing bounces or decorates.</p>
+        <div class="status">
+          <span class="pill" style="background:#fbf3e3;border-color:#f4e4be;color:#8a5e12;">Beta</span>
+
+          <span class="pill">line · 1.75</span>
+        </div>
+      </header>
+
+      <!-- ICON STYLE -->
+      <section class="s">
+        <h2>Icon style</h2>
+        <p class="lead">A single outline family (Feather-style): 24px viewBox, 1.75 stroke, round caps and joins, no fill. Icons inherit <code>currentColor</code> so they always match their context.</p>
+        <div class="ex">
+          <div class="stage">
+            <div class="iset">
+              <div class="gi"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="nm">brag</span></div>
+              <div class="gi"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span class="nm">verified</span></div>
+              <div class="gi"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="nm">pending</span></div>
+              <div class="gi"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="nm">person</span></div>
+              <div class="gi"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg><span class="nm">org</span></div>
+              <div class="gi"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="nm">search</span></div>
+              <div class="gi"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span class="nm">lock</span></div>
+              <div class="gi"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span class="nm">add</span></div>
+            </div>
+          </div>
+          <div class="cap">One family · 1.75 stroke · round caps · currentColor.</div>
+        </div>
+      </section>
+
+      <!-- SIZES -->
+      <section class="s">
+        <h2>Icon sizes</h2>
+        <p class="lead">Four sizes mapped to context. Don't scale icons to arbitrary dimensions; pick the slot.</p>
+        <div class="ex">
+          <div class="stage">
+            <div class="isizes">
+              <div class="ic"><svg width="11" height="11" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="c">11 · inline</span></div>
+              <div class="ic"><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="c">14 · buttons</span></div>
+              <div class="ic"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="c">16 · nav</span></div>
+              <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="c">20 · feature</span></div>
+            </div>
+          </div>
+          <div class="cap">11 inline · 14 in buttons · 16 in nav · 20 for feature blocks.</div>
+        </div>
+        <table class="spec">
+          <thead><tr><th>Size</th><th>Use</th><th>Stroke</th></tr></thead>
+          <tbody>
+            <tr><td><code>11px</code></td><td>Inline with small text, badge chips</td><td>2–2.5</td></tr>
+            <tr><td><code>14px</code></td><td>Buttons, inline actions</td><td>2</td></tr>
+            <tr><td><code>16px</code></td><td>Sidebar nav, list rows</td><td>1.75</td></tr>
+            <tr><td><code>20px</code></td><td>Feature blocks, empty-state icons</td><td>1.75</td></tr>
+          </tbody>
+        </table>
+        <div class="note">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span><b>No filled or duotone icons, ever — and no emoji as UI icons.</b> The single outline family keeps the product calm and consistent.</span>
+        </div>
+      </section>
+
+      <!-- MOTION -->
+      <section class="s">
+        <h2>Motion</h2>
+        <p class="lead">Motion is quick and quiet. Three durations cover everything, with one easing curve for movement and plain <code>ease</code> for fades. Hover a chip to feel the card lift.</p>
+        <div class="ex">
+          <div class="stage">
+            <div class="demo-motion">
+              <span class="mchip">Hover me</span>
+              <span class="mchip">And me</span>
+              <span class="mchip">Card lift · 160ms</span>
+            </div>
+          </div>
+          <div class="cap">cubic-bezier(0.32, 0.72, 0, 1) — confident, no overshoot.</div>
+        </div>
+        <div style="margin-top:8px;">
+          <div class="mrow"><span class="ms">120ms</span><span class="md">Hover, colour, and background transitions</span></div>
+          <div class="mrow"><span class="ms">160ms</span><span class="md">Card lift, fades, toggles</span></div>
+          <div class="mrow"><span class="ms">200–260ms</span><span class="md">Expand / collapse, overlay &amp; drawer enter</span></div>
+          <div class="mrow"><span class="ms">easing</span><span class="md"><code>cubic-bezier(.32,.72,0,1)</code> for movement · <code>ease</code> for opacity</span></div>
+        </div>
+      </section>
+
+      <!-- DO / DONT -->
+      <section class="s">
+        <h2>Do &amp; don't</h2>
+        <div class="dd">
+          <div class="dd-card do">
+            <div class="hd"><span class="m"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Do</div>
+            <div class="demo"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75"><polyline points="20 6 9 17 4 12"/></svg><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+            <p>One outline family, 1.75 stroke, currentColor. Consistent everywhere.</p>
+          </div>
+          <div class="dd-card dont">
+            <div class="hd"><span class="m"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Don't</div>
+            <div class="demo"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="12" r="9"/></svg><span style="font-size:20px;">🎉</span></div>
+            <p>No filled glyphs, mismatched weights, or emoji standing in for icons.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACCESSIBILITY -->
+      <section class="s" style="border-bottom:none;">
+        <h2>Accessibility &amp; reduced motion</h2>
+        <ul class="rules">
+          <li>Decorative icons are <code>aria-hidden</code>; an icon-only control needs an <code>aria-label</code>.</li>
+          <li>Icons never carry meaning alone — they accompany a label or a clear context.</li>
+          <li>Honour <code>prefers-reduced-motion</code>: transforms and slides drop to simple fades or none.</li>
+          <li>No infinite or looping decorative animation; motion always resolves to a still state.</li>
+        </ul>
+      </section>
+
+    </div>
+  </main>
+</div>
+</body>
+</html>

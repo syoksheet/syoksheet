@@ -1,0 +1,94 @@
+<!-- @dsCard group="Feedback" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Alert — syoksheet DS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --n-0:#fff;--n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
+    --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
+    --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
+    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
+    --amber-50:#fbf3e3;--amber-100:#f4e4be;--amber-600:#b07815;--amber-700:#8a5e12;
+    --clay-50:#fbefea;--clay-100:#f4d8cd;--clay-500:#cb5638;--clay-600:#b2412a;--clay-700:#8f3120;
+    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
+    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
+    --radius-sm:5px;--radius:8px;--radius-lg:12px;--radius-xl:18px;
+    --shadow-xs:0 1px 2px rgba(10,10,11,.05);
+    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#fff;color:var(--text);font-family:var(--fs);font-size:15px;-webkit-font-smoothing:antialiased;padding:28px;display:flex;flex-direction:column;gap:22px;}
+  code{font-family:var(--fm);font-size:0.92em;}
+  .cap{font-family:var(--fm);font-size:11px;color:var(--text-3);}
+  .demo{display:flex;flex-direction:column;gap:12px;}
+
+  .alert{display:flex;gap:12px;padding:14px 16px;border-radius:var(--radius);border:1px solid transparent;font-size:13.5px;line-height:1.5;background:var(--surface);}
+  .alert .ic{width:17px;height:17px;flex-shrink:0;margin-top:1px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .alert .body{flex:1;min-width:0;}
+  .alert .title{font-weight:600;color:var(--text);}
+  .alert .msg{color:var(--text-2);margin-top:2px;}
+  .alert .x{flex-shrink:0;width:22px;height:22px;border:none;background:transparent;color:var(--text-3);cursor:pointer;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;}
+  .alert .x:hover{background:rgba(0,0,0,.05);color:var(--text);}
+  .alert .x svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;}
+  .alert.info{background:var(--teal-50);border-color:var(--teal-100);}
+  .alert.info .ic{color:var(--teal-600);}
+  .alert.success{background:var(--verify-50);border-color:var(--verify-100);}
+  .alert.success .ic{color:var(--verify-600);}
+  .alert.warning{background:var(--amber-50);border-color:var(--amber-100);}
+  .alert.warning .ic{color:var(--amber-600);}
+  .alert.error{background:var(--clay-50);border-color:var(--clay-100);}
+  .alert.error .ic{color:var(--clay-600);}
+  .alert .act{display:flex;gap:8px;margin-top:10px;}
+  .abtn{display:inline-flex;align-items:center;height:28px;padding:0 11px;font-family:var(--fs);font-size:12.5px;font-weight:600;border-radius:var(--radius-sm);border:1px solid var(--border-2);background:var(--surface);color:var(--text);cursor:pointer;}
+  .abtn.link{border:none;background:transparent;padding:0 2px;color:var(--text-2);text-decoration:underline;}
+</style>
+</head>
+<body>
+
+  <div class="demo">
+    <div class="cap">Tones · info · success · warning · error</div>
+    <div class="alert info">
+      <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div class="body"><div class="title">Heads up</div><div class="msg">Your free plan covers up to 5 brags.</div></div>
+    </div>
+    <div class="alert success">
+      <svg class="ic" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      <div class="body"><div class="title">Verification complete</div><div class="msg">Priya Krishnan signed off on behalf of Acme Corp.</div></div>
+    </div>
+    <div class="alert warning">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <div class="body"><div class="title">Request expires in 4 days</div><div class="msg">Resend it or add another verifier to keep this brag in good standing.</div></div>
+    </div>
+    <div class="alert error">
+      <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+      <div class="body"><div class="title">Verification rejected</div><div class="msg">The org disputed this brag. Review the note before resubmitting.</div></div>
+    </div>
+  </div>
+
+  <div class="demo">
+    <div class="cap">Full anatomy · icon · title · message · actions · dismiss</div>
+    <div class="alert info">
+      <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div class="body">
+        <div class="title">Verify your domain to unlock org confirmations</div>
+        <div class="msg">Add a TXT record to <code>acmecorp.com</code> so members can confirm brags.</div>
+        <div class="act"><button class="abtn">View DNS settings</button><button class="abtn link">Later</button></div>
+      </div>
+      <button class="x" aria-label="Dismiss"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+  </div>
+
+  <div class="demo">
+    <div class="cap">Density · title-only (compact) · title + message + action (full)</div>
+    <div class="alert success"><svg class="ic" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><div class="body"><div class="title">Saved to your wall.</div></div></div>
+    <div class="alert warning"><svg class="ic" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><div class="body"><div class="title">Two-factor authentication is off</div><div class="msg">Add it to protect your verifications.</div><div class="act"><button class="abtn">Enable 2FA</button></div></div></div>
+  </div>
+
+</body>
+</html>

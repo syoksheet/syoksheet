@@ -1,0 +1,76 @@
+<!-- @dsCard group="Forms" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>File upload — syoksheet DS</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --n-0:#fff;--n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
+    --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
+    --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-200:#93c7c5;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
+    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
+    --clay-50:#fbefea;--clay-100:#f4d8cd;--clay-500:#cb5638;--clay-600:#b2412a;--clay-700:#8f3120;
+    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
+    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
+    --radius-sm:5px;--radius:8px;--radius-lg:12px;--shadow-xs:0 1px 2px rgba(10,10,11,.05);
+    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#fff;color:var(--text);font-family:var(--fs);font-size:15px;-webkit-font-smoothing:antialiased;padding:28px;display:flex;flex-direction:column;gap:22px;}
+  .cap{font-family:var(--fm);font-size:11px;color:var(--text-3);}
+  .col{display:flex;flex-direction:column;gap:14px;max-width:460px;}
+  .dz{border:1.5px dashed var(--border-2);border-radius:var(--radius);padding:26px 18px;text-align:center;color:var(--text-2);background:var(--n-50);cursor:pointer;}
+  .dz.drag{border-color:var(--teal-500);background:var(--teal-50);color:var(--teal-700);}
+  .dz .ico{width:30px;height:30px;margin:0 auto 8px;color:var(--text-3);}
+  .dz.drag .ico{color:var(--teal-600);}
+  .dz .ico svg{width:30px;height:30px;stroke:currentColor;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .dz .t{font-size:13.5px;font-weight:600;color:var(--text);}
+  .dz.drag .t{color:var(--teal-700);}
+  .dz .t .lnk{color:var(--teal-600);}
+  .dz .sub{font-size:12px;color:var(--text-3);margin-top:4px;}
+  .frow{display:flex;align-items:center;gap:11px;padding:9px 11px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);}
+  .frow .fi{width:32px;height:32px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--fm);font-size:9px;font-weight:600;text-transform:uppercase;}
+  .frow .fi.pdf{background:var(--clay-50);color:var(--clay-700);}
+  .frow .fi.cert{background:var(--verify-50);color:var(--verify-700);}
+  .frow .fm{flex:1;min-width:0;}
+  .frow .fm .nm{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .frow .fm .sub{font-family:var(--fm);font-size:10.5px;color:var(--text-3);margin-top:2px;}
+  .frow .fm .pr{height:3px;background:var(--n-150);border-radius:999px;overflow:hidden;margin-top:6px;}
+  .frow .fm .pr .b{height:100%;background:var(--teal-600);border-radius:999px;}
+  .frow .x{width:26px;height:26px;border:none;background:transparent;color:var(--text-3);border-radius:5px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .frow .x:hover{background:var(--clay-50);color:var(--clay-600);}
+  .frow .x svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+</style>
+</head>
+<body>
+  <div class="col">
+    <label class="dz">
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+      <div class="t">Drop files here, or <span class="lnk">browse</span></div>
+      <div class="sub">PDF, PNG, JPG, certificates · up to 25 MB each</div>
+    </label>
+    <div class="frow">
+      <span class="fi pdf">PDF</span>
+      <div class="fm"><div class="nm">cutover-runbook.pdf</div><div class="sub">1.4 MB · 24 pages · scanned</div></div>
+      <button class="x"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg></button>
+    </div>
+    <div class="frow">
+      <span class="fi cert">CER</span>
+      <div class="fm"><div class="nm">aws-certified-sa.pdf</div><div class="sub" style="color:var(--teal-700);">Uploading… 64%</div><div class="pr"><div class="b" style="width:64%;"></div></div></div>
+      <button class="x"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <span class="cap">idle dropzone · completed row · uploading row with progress</span>
+  </div>
+  <div class="col">
+    <label class="dz drag">
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+      <div class="t">Drop to upload</div>
+      <div class="sub">PDF, PNG, JPG, certificates · up to 25 MB each</div>
+    </label>
+    <span class="cap">drag-over · teal dashed border + teal-50 fill</span>
+  </div>
+</body>
+</html>
