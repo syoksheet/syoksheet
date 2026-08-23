@@ -43,8 +43,8 @@
             "Read(**/*.key)",
             "Edit(.env)",
             "Edit(.env.*)",
-            "Write(.env)",
-            "Write(.env.*)",
+            "Edit(**/*.pem)",
+            "Edit(**/*.key)",
             "Edit(vendor/**)",
             "Edit(node_modules/**)"
         ],
