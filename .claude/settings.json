@@ -1,0 +1,53 @@
+{
+    "language": "en",
+    "permissions": {
+        "allow": [
+            "Bash(ddev php artisan test*)",
+            "Bash(ddev php artisan route:list*)",
+            "Bash(ddev php artisan config:show*)",
+            "Bash(ddev php artisan make:*)",
+            "Bash(ddev php artisan tinker*)",
+            "Bash(ddev php vendor/bin/pint*)",
+            "Bash(ddev php vendor/bin/phpstan*)",
+            "Bash(ddev composer install)",
+            "Bash(ddev composer dump-autoload*)",
+            "Bash(ddev npm run lint*)",
+            "Bash(ddev npm run check)",
+            "Bash(ddev npm run format:check)",
+            "Bash(ddev npm run build)",
+            "Bash(ddev npm ci)",
+            "Bash(ddev describe*)",
+            "Bash(ddev list*)",
+            "Bash(git status)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Bash(git show*)"
+        ],
+        "deny": [
+            "Bash(git add*)",
+            "Bash(git commit*)",
+            "Bash(git push*)",
+            "Bash(git reset*)",
+            "Bash(git rebase*)",
+            "Bash(git merge*)",
+            "Bash(git tag*)",
+            "Bash(git checkout*)",
+            "Bash(git restore*)",
+            "Bash(git stash*)",
+            "Bash(rm -rf*)",
+            "Bash(printenv*)",
+            "Bash(env)",
+            "Read(.env)",
+            "Read(.env.*)",
+            "Read(**/*.pem)",
+            "Read(**/*.key)",
+            "Edit(.env)",
+            "Edit(.env.*)",
+            "Write(.env)",
+            "Write(.env.*)",
+            "Edit(vendor/**)",
+            "Edit(node_modules/**)"
+        ],
+        "disableBypassPermissionsMode": "disable"
+    }
+}

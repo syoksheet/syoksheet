@@ -1,0 +1,24 @@
+# Second PostgreSQL instance for the audit database (`log` connection).
+# Mirrors production's separate managed instance — the app talks to it as host `postgres-audit`.
+services:
+  postgres-audit:
+    image: postgres:16
+    container_name: ddev-${DDEV_SITENAME}-postgres-audit
+    labels:
+      com.ddev.site-name: ${DDEV_SITENAME}
+      com.ddev.approot: $DDEV_APPROOT
+    environment:
+      POSTGRES_DB: syoksheet_audit
+      POSTGRES_USER: db
+      POSTGRES_PASSWORD: db
+    volumes:
+      - postgres-audit:/var/lib/postgresql/data
+    restart: "no"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U db -d syoksheet_audit"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  postgres-audit:
