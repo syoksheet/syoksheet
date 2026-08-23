@@ -196,12 +196,25 @@ This repo is **the syoksheet application**: one Laravel app serving `api.*`, `ap
 ## Frontend (Inertia + Svelte)
 
 - Svelte 5 + TypeScript under `resources/ts/` — strict `tsconfig`, ESLint, `svelte-check`. **TypeScript only: no `.js` source files** (sole exception: `svelte.config.js`, required by name by the Svelte tooling). Never React, never Livewire.
-- Components build on headless primitives (Bits UI; TanStack Table for tables), styled **only** with the design system's tokens and spec CSS — never a styled component library, never local restyles of shared components.
+- Components build on headless primitives (Bits UI), styled **only** with the design system's tokens and spec CSS — never a styled component library, never local restyles of shared components. **Tables are built in-house** — no TanStack Table, no TanStack packages at all; table state (sort, filter, paginate, select) lives in our own Svelte 5 runes-based composable against the `DS Table` / `DS Data Table` specs.
 - The design system lives in `design/`: `docs/` = full component specs (behaviour, a11y), `previews/` = the cards mirrored to the Claude Design "syoksheet Design System" project — keep repo and project in sync via DesignSync when either changes. Screen designs live in the Claude Design studio project "syoksheet".
 - The verification mark's forest green is never the primary teal. Shared components are presentational — no API calls or product logic inside them.
 - All UI strings go through translation files (English at launch) — no hardcoded user-facing text.
 - `www.*` pages: SEO/OG meta on every public page; GTM with Consent Mode v2 per syoksheet-docs → marketing/analytics-stack.md; the rendered privacy policy / ToS pages live here (log versions in syoksheet-docs/legal/policy-versions.md before shipping changes).
 - Before building any screen: read the feature doc (syoksheet-docs), this repo's feature spec, and the screen design.
+
+## Documentation Lookup
+
+Two doc sources, split by coverage — never guess a versioned API from memory when either one covers it.
+
+- **Laravel ecosystem → Boost `search-docs`.** Laravel itself, Inertia (server side), Pest, Pint, Larastan, Telescope, Horizon, the `spatie/*` packages, and anything else Boost indexes. Local, free, version-matched to what's installed. Always try this first.
+- **Everything else → Context7.** Svelte 5 and runes, Bits UI, Vite, TypeScript, ESLint, Prettier, `sass-embedded`, DodoPayments, and any library Boost does not index. Explicitly reach for Context7 rather than answering from memory — this stack moves faster than the training cutoff.
+- If neither source covers it, say so and check the library's own repo. Do not invent an API surface.
+
+Context7 runs on the free tier: **1,000 tool calls per month**, and one call is one tool invocation, not one prompt. Two habits keep it in budget:
+
+- Pass a known Context7 library ID (e.g. `/sveltejs/svelte`) straight to `query-docs` so the `resolve-library-id` round trip is skipped — that halves most lookups.
+- Look things up when a specific API is actually in question, not reflexively at the start of every task.
 
 ## Planning & Documentation
 
@@ -269,4 +282,5 @@ All project services (PHP, PostgreSQL, Redis, and anything added later) run insi
 
 > The Boost block above shows generic examples like `php artisan` and `vendor/bin/pint` — prefix all of them with `ddev php`.
 
+- **Never run bare `npm install`** — it re-resolves the tree. Use `ddev exec npm ci` to install, and `ddev exec npm install <pkg>` only to deliberately add one (`.npmrc` sets `save-exact=true`, `ignore-scripts=true`). Dependencies are pinned to exact versions in `package.json`; CI fails on any `^`/`~` range. Composer keeps `^` ranges and relies on `composer.lock`.
 - Never create or modify `.env` files directly.

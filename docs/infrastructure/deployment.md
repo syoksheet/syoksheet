@@ -43,6 +43,17 @@ Trigger: push/PR to `main` or `develop`, and `v*` tag pushes.
 8. **Bruno endpoint smoke tests:** `php artisan migrate --force && php artisan db:seed --class=BrunoSeeder`, `php artisan serve &`, then `npx @usebruno/cli run bruno --env ci --reporter-junit results.xml` — seeded credentials injected via CI env vars; JUnit output annotates failures
 9. On push to `main` (not PR): call the staging Forge deploy hook. On `v*` tag push: update the production Forge site's ref to the tag (Forge API) and call the production deploy hook
 
+## 🔒 Supply-Chain Workflow
+
+`.github/workflows/security.yml` runs independently of the CI pipeline above — on PR and push to `main`/`develop`, every Monday 06:00 UTC, and on manual dispatch. Two jobs:
+
+- **npm** — `npm ci` (fails if `package.json` and the lockfile disagree), an assertion that every direct dependency is exact-pinned, `npm audit signatures` (registry signature + build provenance for all 231 packages), and `npm audit --audit-level=high`.
+- **Composer** — `composer validate --strict` (also flags a stale lockfile) and `composer audit --locked`, which reads `composer.lock` without installing, so no package code and no Composer plugin executes on the runner.
+
+Third-party actions are pinned to commit SHAs with the version in a trailing comment, never to tags — a tag can be repointed at malicious code, which is the same class of attack the workflow exists to catch. Bump the SHA and the comment together.
+
+The weekly schedule matters: advisories get published against code that has not changed, so a PR-only trigger would never see them.
+
 **Secrets:** `FORGE_DEPLOY_HOOK_PRODUCTION`, `FORGE_DEPLOY_HOOK_STAGING`, `FORGE_API_TOKEN` (to point the production site at the release tag; Bruno CI credentials are non-secret seeder values, set as plain CI env vars)
 
 ## ⏪ Rollback

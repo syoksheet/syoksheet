@@ -31,7 +31,7 @@ User↔Admin isolation is bidirectional and middleware-enforced: the wrong princ
 ## 🖥️ Frontend Layer
 
 - Inertia + **Svelte 5** + TypeScript, built by Vite (Laravel-native). The frontend is a self-contained TS project under `resources/ts/` — own `tsconfig` (strict), ESLint, `svelte-check`.
-- Components: headless primitives (Bits UI, TanStack Table) styled by the design system tokens — specs and mirror in `design/` at the repo root.
+- Components: headless primitives (Bits UI) styled by the design system tokens — specs and mirror in `design/` at the repo root. The data table is built in-house (no TanStack Table).
 - PHP enums/DTOs generate TS types (`spatie/typescript-transformer`) — no hand-duplicated types.
 
 ## 🗄️ Databases

@@ -1,0 +1,95 @@
+name: Security
+
+# Supply-chain guard rails. See syoksheet-docs -> product/decisions.md
+# ("Dependencies are pinned to exact versions; installs are lockfile-only").
+#
+# Third-party actions are pinned to commit SHAs, never tags — a tag can be
+# repointed at malicious code in the action's own repo, which is precisely the
+# attack this workflow exists to catch elsewhere.
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+  schedule:
+    # Mondays 06:00 UTC — catches advisories published against code that has not changed.
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  npm:
+    name: npm supply chain
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+          cache: npm
+
+      # Fails if package.json and package-lock.json disagree, so a hand-edited
+      # manifest cannot slip through. .npmrc supplies ignore-scripts=true, so no
+      # dependency lifecycle script executes on this runner.
+      - name: Install from lockfile
+        run: npm ci
+
+      - name: Assert dependencies are pinned to exact versions
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          pj = json.load(open('package.json'))
+          bad = [
+              f'{block}.{name} = {spec}'
+              for block in ('dependencies', 'devDependencies', 'optionalDependencies')
+              for name, spec in pj.get(block, {}).items()
+              if not spec[0].isdigit()
+          ]
+          if bad:
+              print('Dependencies must be pinned to an exact version:')
+              print('\n'.join(f'  {b}' for b in bad))
+              print('\nUse `npm install <pkg>` (save-exact=true is set in .npmrc).')
+              sys.exit(1)
+          print(f'All {sum(len(pj.get(b, {})) for b in ("dependencies", "devDependencies", "optionalDependencies"))} direct dependencies are exact-pinned.')
+          PY
+
+      # Verifies every tarball against the registry's signing key and reports
+      # build provenance. A tampered or re-published tarball fails here.
+      - name: Verify registry signatures and provenance
+        run: npm audit signatures
+
+      - name: Audit for known advisories
+        run: npm audit --audit-level=high
+
+  composer:
+    name: Composer supply chain
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '8.4'
+          coverage: none
+          tools: composer:v2
+
+      # --strict also warns when composer.lock is stale against composer.json.
+      - name: Validate manifest and lockfile
+        run: composer validate --strict
+
+      # --locked audits composer.lock directly: no install, so no package code
+      # and no Composer plugin runs on this runner.
+      - name: Audit for known advisories
+        run: composer audit --locked
