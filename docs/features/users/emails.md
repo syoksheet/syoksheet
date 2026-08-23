@@ -1,0 +1,28 @@
+# Email Management — Endpoints
+
+Managing the user's primary, backup, and work emails. The rules (types, when a backup becomes required) are product behaviour — see syoksheet-docs → features/user-accounts.md; this file is the API contract.
+
+## 🔌 Endpoints
+
+| Route | Behaviour |
+|-------|-----------|
+| `GET /api/v1/me/emails` | List the user's emails with type and verification state |
+| `POST /api/v1/me/emails` | Add an email `{ email, type }` → sends verification link. 422 if the address exists anywhere on the platform |
+| `DELETE /api/v1/me/emails/{email}` | Remove — allowed for work emails not attached to an org membership; primary/backup can only be replaced |
+| `POST /api/v1/me/emails/{email}/make-primary` | Start the primary-change flow (verified backup required) |
+| `POST /api/v1/me/emails/{email}/resend-verification` | Resend the verification link (rate limited 3/hour) |
+| `GET /api/v1/me/emails/{email}/verify/{hash}` | Signed verification link → marks verified, redirects to the frontend |
+| `GET /api/v1/me/connected-accounts` | List linked social accounts |
+| `DELETE /api/v1/me/connected-accounts/{account}` | Unlink Google (rejected if it would leave the account without a login method) → `user.oauth_disconnected` |
+
+## 📏 Enforcement Rules
+
+- Every email unique across the platform (`user_emails.email` unique).
+- Exactly one `primary`; at most one `backup`; backup must differ from primary.
+- **Primary must be personal:** when the primary's domain matches a DNS-verified org — detected at org verification or when joining an org with the primary — the user must add and verify a personal email and make it primary; the old address converts to type `work` in place (keeps its `user_email_id`, so org memberships are unaffected). Org-space access is restricted until resolved. A primary change onto a verified-org domain is rejected (`code: work_domain_primary`).
+- Primary change: requires a verified backup; the new address must be verified before the swap; the old primary is removed on completion (or converted to `work` in the flow above). Fires `user.email_changed` with old and new values in `properties`.
+- Work email removal blocked while it is the `user_email_id` on any `org_members` row.
+
+## 🗄️ Tables
+
+See [database/users.md](../../database/users.md).

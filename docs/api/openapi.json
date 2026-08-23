@@ -1,0 +1,260 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "SyokSheet API",
+    "version": "1.0.0",
+    "description": "The SyokSheet API. This spec grows per feature during the build — the markdown specs under docs/features/ are the authoritative API design. Update this file in the same commit as any route change."
+  },
+  "servers": [
+    {
+      "url": "https://api.syoksheet.ddev.site",
+      "description": "Local (DDEV)"
+    },
+    {
+      "url": "https://staging.api.syoksheet.com",
+      "description": "Staging"
+    },
+    {
+      "url": "https://api.syoksheet.com",
+      "description": "Production"
+    }
+  ],
+  "tags": [
+    {
+      "name": "auth",
+      "description": "Registration, login, email verification, password reset, OAuth"
+    },
+    {
+      "name": "users",
+      "description": "Authenticated user: profile, emails, tokens, 2FA, notifications, consent, privacy"
+    },
+    {
+      "name": "organizations",
+      "description": "Orgs, teams, membership, transfers, DNS verification"
+    },
+    {
+      "name": "brags",
+      "description": "Brags, verification, collaborators"
+    },
+    {
+      "name": "jobs",
+      "description": "Job postings, Push API, matching, interest"
+    },
+    {
+      "name": "billing",
+      "description": "Subscriptions, checkout, webhooks"
+    },
+    {
+      "name": "taxonomy",
+      "description": "Occupations, skills, industries"
+    },
+    {
+      "name": "public",
+      "description": "Unauthenticated walls and directory"
+    },
+    {
+      "name": "admin",
+      "description": "Internal admin panel routes"
+    }
+  ],
+  "paths": {},
+  "components": {
+    "securitySchemes": {
+      "userBearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "User API token (user:api ability) — Pro integrations and the Jobs Push API (org Business tokens)."
+      },
+      "adminBearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Admin API token (admin:api ability) — scripts."
+      }
+    },
+    "schemas": {
+      "UnauthenticatedError": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Unauthenticated."
+          }
+        },
+        "required": [
+          "message"
+        ]
+      },
+      "ForbiddenError": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "This action is unauthorized."
+          }
+        },
+        "required": [
+          "message"
+        ]
+      },
+      "NotFoundError": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Not found."
+          }
+        },
+        "required": [
+          "message"
+        ]
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "The given data was invalid."
+          },
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "required": [
+          "message",
+          "errors"
+        ]
+      },
+      "BusinessRuleError": {
+        "type": "object",
+        "description": "422 for business-rule violations. Stable codes are cataloged in docs/validation.md — frontends key off code, never message.",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "You have reached the Free tier brag limit."
+          },
+          "code": {
+            "type": "string",
+            "example": "brag_limit_reached"
+          }
+        },
+        "required": [
+          "message",
+          "code"
+        ]
+      },
+      "PaginationLinks": {
+        "type": "object",
+        "properties": {
+          "first": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uri"
+          },
+          "last": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uri"
+          },
+          "prev": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uri"
+          },
+          "next": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uri"
+          }
+        }
+      },
+      "PaginationMeta": {
+        "type": "object",
+        "properties": {
+          "current_page": {
+            "type": "integer"
+          },
+          "from": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "last_page": {
+            "type": "integer"
+          },
+          "path": {
+            "type": "string"
+          },
+          "per_page": {
+            "type": "integer"
+          },
+          "to": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "total": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "responses": {
+      "Unauthenticated": {
+        "description": "Not authenticated",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/UnauthenticatedError"
+            }
+          }
+        }
+      },
+      "Forbidden": {
+        "description": "Authenticated but not authorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ForbiddenError"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Resource not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/NotFoundError"
+            }
+          }
+        }
+      },
+      "ValidationError": {
+        "description": "Validation failed",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      }
+    }
+  }
+}
