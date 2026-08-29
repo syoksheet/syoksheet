@@ -5,7 +5,7 @@ description: The syoksheet build loop: phase location, spec reading, audit event
 
 # Build step
 
-The complete build process for syoksheet. Self-contained: do not invoke superpowers skills. The discipline worth borrowing from them is written into this file. The build follows `.claude/work/plans/implementation-order.md` (18 phases); never skip a gate, and never reorder the sequence except where that file says a phase is independent.
+The complete build process for syoksheet. Self-contained: do not invoke superpowers skills. The discipline worth borrowing from them is written into this file. The build follows `.claude/work/plans/implementation-order.md` (20 phases, 0 through 19); never skip a gate, and never reorder the sequence except where that file says a phase is independent.
 
 ## Non-negotiables
 
@@ -19,6 +19,34 @@ Three rules that hold in every phase, whatever the pressure.
 
 And one standing constraint: **never run git write operations.** No add, commit, push, tag, branch, worktree, stash or reset, in this repo or any sibling. The user does all git himself. Read-only git (`status`, `diff`, `log`, `rev-parse`) is fine.
 
+## Learning mode
+
+**The user writes the code. You guide, point at sources, and review.** Read `.claude/work/specs/learning-mode.md` before any implementation work; it is the authority and this section is only the enforcement summary.
+
+The default is not "Claude implements". Writing the code yourself when the user was meant to is the single easiest way to break this build, and it is silent: the phase still ships, and no fluency forms.
+
+You write repository code only in these cases:
+
+- Boilerplate matching a pattern the user has already written three times.
+- A genuine block, after a real attempt, where the remaining learning is zero.
+- Pure configuration with nothing to teach.
+- Anything the user explicitly hands over for that task.
+
+Anything you do write that the user cannot explain back gets deleted and rewritten by the user.
+
+When the user is stuck, answer at the level asked and no further:
+
+| Level | Request | Response |
+|---|---|---|
+| 1 | "Where do I look this up?" | Name the source and the search terms. No answer |
+| 2 | "I read it and I am still stuck" | Explain the concept in prose. No code |
+| 3 | "Here is my attempt, it is wrong" | Review, point at the flaw and the reasoning. No fix |
+| 4 | "I am blocked and the learning is exhausted" | Write it, then the explain-back rule applies |
+
+Level 1 is the common case. If no level is named, ask which one rather than assuming 4.
+
+Look-ups follow the routing in `learning-mode.md`: Boost `search-docs` for the Laravel ecosystem, Context7 for Svelte 5 and the frontend stack, and `.claude/skills/laravel-best-practices/rules/` for project conventions before either.
+
 ## The loop
 
 1. **Locate the phase.** Read `.claude/work/plans/implementation-order.md`; determine the current phase from what actually exists in the codebase, not from what the last session claimed. If ambiguous, ask, never guess which phase is next.
@@ -26,7 +54,7 @@ And one standing constraint: **never run git write operations.** No add, commit,
 3. **Resolve holes.** If a spec genuinely does not decide something, or a screen has no design, work it out with the user before planning and write the outcome to `.claude/work/specs/<topic>.md`. One question at a time, decisions recorded as they are made. A complete spec skips this stage entirely. This is for holes, not for re-opening what the docs already settled. A new or changed product decision also needs a dated row in `syoksheet-docs/product/decisions.md` (the `new-decision` skill does this).
 4. **Events first.** If the phase creates, updates or deletes user or org data, verify its audit events exist in `docs/features/audit/events.md` **before** implementing. Missing events get added to the catalog first, with the user's confirmation, each with the correct `visibility` (`internal` or `management`).
 5. **Plan and get approval.** Write `.claude/work/plans/phase-NN-<name>.md` in the format below. Present it and **wait for explicit approval.** No implementation before approval, not "just the migration", not "just the scaffolding".
-6. **Implement.** Work task by task in plan order, test-driven per the table below. Run the affected tests after each task, not just at the end. Tier limits are config-driven from first appearance, never hardcoded (canonical numbers: `syoksheet-docs → product/pricing.md`). All user-facing strings go through translation files from the first screen.
+6. **Implement.** Work task by task in plan order, test-driven per the table below, **each task written by whoever the plan's `Who writes` line names.** Before a task the user owns, state what to read first: the spec sections, the rules files, the doc pages. Then wait. Run the affected tests after each task, not just at the end. Tier limits are config-driven from first appearance, never hardcoded (canonical numbers: `syoksheet-docs → product/pricing.md`). All user-facing strings go through translation files from the first screen.
 7. **Sync artifacts.** The checklist below, in the same change as the code.
 8. **Gates.** Pint, Larastan, the affected suite, and for frontend work `npm run check` and `npm run lint`: all green, with output shown.
 9. **Review.** Dispatch the `spec-reviewer` agent on the working tree diff. Verify each finding before acting on it: confirm it against the spec, then fix it or explain to the user why it does not apply. Do not implement a finding you believe is wrong: say so with reasoning.
@@ -78,6 +106,10 @@ Project-wide rules this phase must respect, values copied verbatim from the spec
 ### Task N: <name>
 **Files:** create / modify / test: exact paths.
 **Behaviour:** what it must do, from the spec.
+**Who writes:** user | claude, with the reason (first instance of a pattern,
+repetition of an established one, business-rule test, bulk data work).
+**Read first:** the spec sections, rules files and doc pages needed before starting.
+Required for every task the user writes.
 - [ ] Failing test: <test name>: expected failure: <what and why>
 - [ ] Implement
 - [ ] Green: `ddev php artisan test --compact --filter=<Name>`
@@ -194,12 +226,17 @@ Catch yourself thinking any of these and stop. The thought is the signal, not th
 | "Just the migration before approval" | Implementation is implementation. Wait for approval. |
 | "I'll hardcode the limit for now" | Tier limits are config-driven from first appearance. |
 | "I'll commit this so it isn't lost" | Never. The user commits. |
+| "Faster if I just write this one" | The plan already said who writes it. Speed is not the goal; fluency is. |
+| "They're stuck, I'll show them the code" | Ask which escalation level. Level 1 is the common case, not level 4. |
+| "I'll look that up for them" | Learning the lookup is the point. Name the source and the search terms. |
+| "They said it makes sense, so they understand it" | Recognition is not recall. Apply the explain-back rule. |
 
 ## Current repo state
 
-Facts that affect the gates, true as of Phase 1:
+Facts that affect the gates, true as of Phase 0:
 
-- **Larastan is installed but unconfigured**: there is no `phpstan.neon`. Creating it is a Phase 1 deliverable; until then the static-analysis gate cannot run, and saying it passed would be false.
+- **Larastan is configured**: `phpstan.neon.dist` exists at level 9, `phpVersion: 80400`. The static-analysis gate is live.
 - **`.ai/rules` does not exist yet** despite CLAUDE.md referencing it. Skip that step until the directory appears; `record-rule` creates it.
-- **`.claude/work/specs/` does not exist yet**: create it when the first spec is written.
-- The repo is otherwise a near-bare Laravel skeleton: `routes/web.php` and `console.php` only, one `User` model, default migrations, no `log` connection, empty `bruno/`.
+- **`bruno/` does not exist yet**: it is a Phase 1 deliverable, along with `BrunoSeeder`.
+- **The local environment is Phase 0 work and is not done**: DDEV still runs PostgreSQL 16 with Mailpit, no MinIO, no `redis.conf`, no mkcert. Horizon and the Sentry SDK are not installed. Do not assume the environment matches `docs/infrastructure/local-development.md` until Phase 0 closes.
+- The repo is otherwise a near-bare Laravel skeleton: `routes/web.php` and `console.php` only, one `User` model, three default migrations, no `log` connection.
