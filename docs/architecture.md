@@ -38,8 +38,8 @@ User↔Admin isolation is bidirectional and middleware-enforced: the wrong princ
 
 | Connection | Instance | Holds |
 |------------|----------|-------|
-| `pgsql` (default) | Forge managed PostgreSQL cluster | All application data: 49 tables |
-| `log` | Separate Forge managed PostgreSQL cluster | `audit_logs`, `security_incidents`, `security_incident_affected_records`: append-only, forever retention |
+| `pgsql` (default) | A Forge managed PostgreSQL cluster in production and staging alike. Local: the `db` container | All application data: 61 tables, listed in [database/README.md](database/README.md) |
+| `log` | A second, separate managed cluster with its own failure domain, in production and staging alike. Local: the `postgres-audit` container | `audit_logs`, `security_incidents`, `security_incident_affected_records`: append-only, forever retention |
 
 Schema conventions and per-domain docs: [database/README.md](database/README.md). Writes to the `log` connection go through `AuditLogJob` only.
 

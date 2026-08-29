@@ -33,7 +33,7 @@ Signed URLs make this strict rather than cosmetic. The signature covers the full
 
 ## 🗄️ Databases
 
-Primary (`DB_*`) and audit (`LOG_DB_*`), two separate Forge managed PostgreSQL clusters, reached over the Forge private network with public access disabled.
+Primary (`DB_*`) and audit (`LOG_DB_*`): two separate Forge managed PostgreSQL clusters per environment, reached over the Forge private network with public access disabled. Production and staging differ only in cluster size and credentials.
 
 | Variable | Example | Notes |
 |----------|---------|-------|
