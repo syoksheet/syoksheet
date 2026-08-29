@@ -3,7 +3,7 @@ name: Security
 # Supply-chain guard rails. See syoksheet-docs -> product/decisions.md
 # ("Dependencies are pinned to exact versions; installs are lockfile-only").
 #
-# Third-party actions are pinned to commit SHAs, never tags — a tag can be
+# Third-party actions are pinned to commit SHAs, never tags: a tag can be
 # repointed at malicious code in the action's own repo, which is precisely the
 # attack this workflow exists to catch elsewhere.
 
@@ -13,7 +13,7 @@ on:
   push:
     branches: [main, develop]
   schedule:
-    # Mondays 06:00 UTC — catches advisories published against code that has not changed.
+    # Mondays 06:00 UTC, catching advisories published against code that has not changed.
     - cron: '0 6 * * 1'
   workflow_dispatch:
 
