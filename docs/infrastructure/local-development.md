@@ -66,6 +66,15 @@ Configure `.ddev/redis/redis.conf` to match production exactly:
 
 Eviction policy is per-instance, not per-database, so the 0/1/2/3 split does not by itself protect the queue. Never use `Cache::forever()`; always set a TTL.
 
+> [!WARNING]
+> The add-on writes this file with a `#ddev-generated` marker on line 2 and overwrites the file on any add-on operation while that marker is present. It has been removed deliberately. Do not restore it, and check it is still absent after running `ddev add-on get ddev/ddev-redis` again.
+
+Verify at runtime rather than by reading the file:
+
+```bash
+docker exec ddev-syoksheet-redis redis-cli CONFIG GET maxmemory-policy
+```
+
 ## 🐛 Buggregator
 
 One container replacing several tools. Reached at `https://buggregator.syoksheet.ddev.site`.
@@ -99,7 +108,7 @@ MinIO proves the code path; it does not replicate R2's quirks (no ACLs, `AWS_DEF
 | Install JS deps | `ddev exec npm ci` |
 | Tinker | `ddev php artisan tinker` |
 | PostgreSQL | `ddev psql` |
-| Redis | `ddev php artisan tinker --execute 'Redis::ping();'` |
+| Redis | `docker exec ddev-syoksheet-redis redis-cli PING` |
 | Logs | `ddev php artisan pail` |
 | Queue, day to day | `ddev php artisan queue:listen` |
 | Queue, verifying behaviour | `ddev php artisan horizon` |
@@ -107,7 +116,7 @@ MinIO proves the code path; it does not replicate R2's quirks (no ACLs, `AWS_DEF
 | Anything else | `ddev exec ...` |
 
 > [!NOTE]
-> `pint --dirty` fails locally because `.git` is not mounted into the container. Pass the changed paths explicitly. `redis-cli` is likewise not installed in the web container.
+> `pint --dirty` fails locally because `.git` is not mounted into the container. Pass the changed paths explicitly. `redis-cli` is not installed in the web container, so Redis is inspected with `docker exec` against the `redis` container instead. In tinker the bare `Redis` name resolves to the phpredis extension's global class, not the facade: use the fully qualified `Illuminate\Support\Facades\Redis` or the container will report an undefined method.
 
 Horizon is a **production dependency** (`require`, not `require-dev`) so that local and production share one queue configuration. The `audit` queue's retry-forever behaviour is a Horizon supervisor setting, and hand-typed `queue:work` flags would exercise something different from what ships.
 
