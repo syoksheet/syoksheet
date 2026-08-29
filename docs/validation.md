@@ -1,6 +1,6 @@
 # Validation Conventions
 
-Platform-wide validation rules referenced by every feature spec — uploads, identifiers, and standard field norms. Enforced in Form Requests; limits here are the canonical values.
+Platform-wide validation rules referenced by every feature spec: uploads, identifiers, and standard field norms. Enforced in Form Requests; limits here are the canonical values.
 
 ## 📎 Uploads
 
@@ -19,7 +19,7 @@ Usernames, custom slugs (Pro wall URLs), and org slugs share one rule set:
 
 - 3–30 characters, lowercase `a-z`, `0-9`, hyphen; no leading/trailing or consecutive hyphens
 - Unique within their column, checked case-insensitively
-- **Reserved names** (one shared list): `admin`, `api`, `app`, `www`, `support`, `billing`, `team`, `help`, `about`, `jobs`, `org`, `user`, `settings`, `login`, `register`, `syoksheet`, and route-colliding terms — maintained as a config array
+- **Reserved names** (one shared list): `admin`, `api`, `app`, `www`, `support`, `billing`, `team`, `help`, `about`, `jobs`, `org`, `user`, `settings`, `login`, `register`, `syoksheet`, and route-colliding terms (maintained as a config array)
 
 ## 📏 Standard Field Norms
 
@@ -30,7 +30,7 @@ Usernames, custom slugs (Pro wall URLs), and org slugs share one rule set:
 | URLs | max 500 (brag links: 2000), valid http(s) |
 | Freeform text (bio, descriptions, comments) | max 5000 |
 | Tags | max 100 chars each |
-| Passwords | Laravel `Password::default()` — min 8 |
+| Passwords | Laravel `Password::default()`: min 8 |
 
 ## 🚫 Business-Rule Error Codes
 

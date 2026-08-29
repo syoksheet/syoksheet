@@ -8,10 +8,10 @@ Read-only impersonation lets Support and Engineering observe a user's experience
 
 | Property | Value |
 |----------|-------|
-| `tokenable_type` | `User::class` — acts as the user, not the admin |
+| `tokenable_type` | `User::class`: acts as the user, not the admin |
 | Ability | `support:impersonation` |
 | Expiry | 2 hours |
-| Token name | `impersonation|admin:{admin-id}` — auditable in `personal_access_tokens` |
+| Token name | `impersonation|admin:{admin-id}`: auditable in `personal_access_tokens` |
 
 The token works on regular `/api/v1/` endpoints.
 
@@ -19,8 +19,8 @@ The token works on regular `/api/v1/` endpoints.
 
 The `PreventImpersonationWrites` middleware rejects all non-GET requests on `/api/v1/` carrying the `support:impersonation` ability.
 
-Impersonation tokens are excluded from the user's own token list and cannot be revoked via the user token endpoints — see [../users/tokens.md](../users/tokens.md).
+Impersonation tokens are excluded from the user's own token list and cannot be revoked via the user token endpoints. See [../users/tokens.md](../users/tokens.md).
 
 ## 📋 Audit Trail
 
-Every impersonation issues `user.impersonated` (admin ID in `properties`) and `admin.user_data_viewed` — recorded even when nothing is changed.
+Every impersonation issues `user.impersonated` (admin ID in `properties`) and `admin.user_data_viewed`: recorded even when nothing is changed.

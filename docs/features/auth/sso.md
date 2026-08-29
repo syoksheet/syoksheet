@@ -1,6 +1,6 @@
 # SSO
 
-Self-built OIDC SSO for Business organisations — the **org-context gate**, not a platform login method. Users authenticate to syoksheet personally; the org's IdP gates org space. Enforcement is automatic when enabled (no soft toggle). OIDC only — SAML is not planned. Product behaviour in syoksheet-docs → features/authentication.md. Token exchange and validation go through a certified OIDC client library, never hand-rolled.
+Self-built OIDC SSO for Business organisations. It is the **org-context gate**, not a platform login method. Users authenticate to syoksheet personally; the org's IdP gates org space. Enforcement is automatic when enabled (no soft toggle). OIDC only. SAML is not planned. Product behaviour in syoksheet-docs → features/authentication.md. Token exchange and validation go through a certified OIDC client library, never hand-rolled.
 
 ## 🔐 The Gate
 
@@ -12,16 +12,16 @@ Org-scoped routes (org settings, teams, members, verification queue, jobs manage
 
 The user's platform session (personal login) is never affected. Members who fail SSO keep membership and personal access; they may still use `POST .../departures` to leave.
 
-**Owner escape hatch:** the org owner reaches the SSO-settings endpoints with personal auth + password confirmation, bypassing the gate — a dead IdP must never brick the org's own controls.
+**Owner escape hatch:** the org owner reaches the SSO-settings endpoints with personal auth + password confirmation, bypassing the gate. A dead IdP must never brick the org's own controls.
 
 ## 🔄 Flow
 
-1. `GET /api/v1/organizations/{org}/sso/redirect` — builds the authorization request from `sso_configs` (authorization code + PKCE + `state` + `nonce`; endpoints from the discovery document).
+1. `GET /api/v1/organizations/{org}/sso/redirect`: builds the authorization request from `sso_configs` (authorization code + PKCE + `state` + `nonce`; endpoints from the discovery document).
 2. User authenticates at the IdP → callback `GET /api/v1/organizations/{org}/sso/callback`.
 3. Library exchanges the code, validates the ID token (signature, issuer, audience, nonce, expiry).
-4. **Subject binding:** if `org_members.sso_subject` is set for this membership, it must equal the token's `sub`. If unset (first SSO), match the email claim (via `claim_mapping` when nonstandard) against the member's verified emails, then store `sub` as `sso_subject`. Matching is by subject forever after — IdP email changes can't impersonate another member.
+4. **Subject binding:** if `org_members.sso_subject` is set for this membership, it must equal the token's `sub`. If unset (first SSO), match the email claim (via `claim_mapping` when nonstandard) against the member's verified emails, then store `sub` as `sso_subject`. Matching is by subject forever after. IdP email changes can't impersonate another member.
 5. On success: org SSO session flag set (12 h). SSO never creates accounts or memberships.
-6. Audited as `org.sso_authenticated` (subject: Organization, IP/UA captured) — see [../audit/events.md](../audit/events.md).
+6. Audited as `org.sso_authenticated` (subject: Organization, IP/UA captured). See [../audit/events.md](../audit/events.md).
 
 ## ⚙️ Configuration Endpoints
 
@@ -30,12 +30,12 @@ Owner or `org.manage`; the owner bypasses the SSO gate here (escape hatch above)
 | Route | Behaviour |
 |-------|-----------|
 | `GET /api/v1/organizations/{org}/sso` | Current config (secret redacted) + enablement state |
-| `PUT /api/v1/organizations/{org}/sso` | Set `oidc_client_id`, `oidc_client_secret`, `oidc_discovery_url`, `claim_mapping?` — validates by fetching the discovery document |
-| `POST /api/v1/organizations/{org}/sso/enable` | Enables enforcement — response includes the warning that all members now need IdP accounts |
-| `POST /api/v1/organizations/{org}/sso/disable` | Owner + password confirmation — disables enforcement, keeps configuration |
+| `PUT /api/v1/organizations/{org}/sso` | Set `oidc_client_id`, `oidc_client_secret`, `oidc_discovery_url`, `claim_mapping?`: validates by fetching the discovery document |
+| `POST /api/v1/organizations/{org}/sso/enable` | Enables enforcement: response includes the warning that all members now need IdP accounts |
+| `POST /api/v1/organizations/{org}/sso/disable` | Owner + password confirmation: disables enforcement, keeps configuration |
 
 Works with any spec-compliant OIDC IdP: Google Workspace, Microsoft Entra ID, Okta, JumpCloud, OneLogin, Auth0.
 
 ## 🗄️ Tables
 
-`sso_configs` and `org_members.sso_subject` — see [database/organizations.md](../../database/organizations.md).
+`sso_configs` and `org_members.sso_subject`. See [database/organizations.md](../../database/organizations.md).

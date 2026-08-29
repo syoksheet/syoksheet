@@ -6,8 +6,8 @@ How taxonomy data is imported from ESCO and O*NET, deduplicated, and kept curren
 
 ### 1. Source data
 
-- **ESCO** — CSV datasets from the ESCO portal, updated ~quarterly.
-- **O*NET** — database export (CSV) from the US Department of Labor, updated multiple times per year.
+- **ESCO**. CSV datasets from the ESCO portal, updated ~quarterly.
+- **O*NET**: database export (CSV) from the US Department of Labor, updated multiple times per year.
 
 ### 2. Import command
 
@@ -16,7 +16,7 @@ ddev php artisan taxonomy:import esco --version=1.2.0
 ddev php artisan taxonomy:import onet --version=29.0
 ```
 
-Each run creates or updates the `data_providers` record, then upserts occupation/skill/alias records. Canonical records are never deleted — only marked inactive when absent from the source.
+Each run creates or updates the `data_providers` record, then upserts occupation/skill/alias records. Canonical records are never deleted, only marked inactive when absent from the source.
 
 ### 3. Crosswalk deduplication (automatic)
 
@@ -27,7 +27,7 @@ The official ESCO↔O*NET crosswalk is checked first:
 
 ### 4. AI-assisted review
 
-Unmatched records are scored for semantic similarity against existing canonical records via `AiService` (queued, batch — see [ai.md](../../ai.md)); candidates above the threshold enter the admin review queue.
+Unmatched records are scored for semantic similarity against existing canonical records via `AiService` (queued, batch, see [ai.md](../../ai.md)); candidates above the threshold enter the admin review queue.
 
 | Action | Result |
 |--------|--------|
@@ -37,11 +37,11 @@ Unmatched records are scored for semantic similarity against existing canonical 
 
 ### 5. Post-import
 
-Aliases imported from both providers, `data_providers.last_synced_at` updated, Meilisearch re-indexed, import summary logged (visible in SigNoz).
+Aliases imported from both providers, `data_providers.last_synced_at` updated, Meilisearch re-indexed, import summary logged (visible in Sentry).
 
 ## 🔄 Re-sync
 
-`taxonomy:sync` runs monthly — see [scheduled-jobs.md](../../scheduled-jobs.md). Cadence guidance: ESCO quarterly (on release), O*NET bi-annually or on major versions. Re-sync is additive — new records added, changed names updated, deprecated entries marked inactive. Merged canonical records are never re-split.
+`taxonomy:sync` runs monthly. See [scheduled-jobs.md](../../scheduled-jobs.md). Cadence guidance: ESCO quarterly (on release), O*NET bi-annually or on major versions. Re-sync is additive: new records added, changed names updated, deprecated entries marked inactive. Merged canonical records are never re-split.
 
 ## 🛠️ Admin Panel Actions
 
@@ -55,7 +55,7 @@ Engineering + Super Admin (`taxonomy.manage`):
 
 ## 📏 Rules
 
-- Canonical records are never hard-deleted — only deactivated.
-- Merges require admin confirmation — never automatic.
-- Industries are never imported — manually curated only.
+- Canonical records are never hard-deleted, only deactivated.
+- Merges require admin confirmation, never automatic.
+- Industries are never imported: manually curated only.
 - `occupation_skills` is deferred to v2.

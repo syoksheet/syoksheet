@@ -1,4 +1,4 @@
-# PDF Export — Implementation
+# PDF Export: Implementation
 
 Pro users export a PDF snapshot of their public wall. Product behaviour in syoksheet-docs → features/user-accounts.md.
 
@@ -11,11 +11,11 @@ Pro users export a PDF snapshot of their public wall. Product behaviour in syoks
 
 ## ⚙️ Pipeline
 
-1. Queued job renders the user's public wall — profile header, public brags with verification badges, skills summary — to PDF.
+1. A queued job renders the user's public wall to PDF: profile header, public brags with verification badges, and skills summary.
 2. Upload to R2; signed URL with **24-hour** expiry; in-app notification with the link.
 3. R2 lifecycle: export objects deleted at 7 days (same rule as data-export ZIPs).
 
 ## 📏 Rules
 
-- Content matches exactly what the public wall shows — hidden, private, and `on_verification` brags are excluded.
+- Content matches exactly what the public wall shows: hidden, private, and `on_verification` brags are excluded.
 - Pro-gated; downgrade removes the endpoints, existing links live out their expiry.

@@ -1,48 +1,48 @@
-# Audit Log — Events Catalog
+# Audit Log: Events Catalog
 
 All events written to the audit log, organised by domain (`log_name`). Every user-initiated event includes `ip_address` and `user_agent`; System events carry neither. New features must add their events here before implementation.
 
-## `auth` — Authentication & Account Security
+## `auth`: Authentication & Account Security
 
 All `internal` visibility.
 
 | Event | Causer | Subject | Notes |
 |-------|--------|---------|-------|
 | `user.registered` | System | User | IP captured at registration |
-| `user.login` | User | User | |
-| `user.logout` | User | User | |
-| `user.login_failed` | System | — | `email_attempted` in `properties` |
-| `user.password_changed` | User | User | |
-| `user.password_reset_requested` | System | User | |
+| `user.login` | User | User | No extra properties |
+| `user.logout` | User | User | No extra properties |
+| `user.login_failed` | System | None | `email_attempted` in `properties` |
+| `user.password_changed` | User | User | No extra properties |
+| `user.password_reset_requested` | System | User | No extra properties |
 | `user.email_changed` | User | User | `old_email`, `new_email` in `properties` |
 | `user.oauth_connected` | User | User | `provider` in `properties` |
-| `user.oauth_disconnected` | User | User | |
+| `user.oauth_disconnected` | User | User | No extra properties |
 | `user.impersonated` | Admin | User | `admin_id` in `properties` |
-| `admin.login` | Admin | Admin | |
-| `admin.logout` | Admin | Admin | |
-| `admin.login_failed` | System | — | |
+| `admin.login` | Admin | Admin | No extra properties |
+| `admin.logout` | Admin | Admin | No extra properties |
+| `admin.login_failed` | System | None | `email_attempted` in `properties` |
 
-## `brags` — Brag Lifecycle
+## `brags`: Brag Lifecycle
 
 `internal` unless noted; verification events gain `management` when an org is involved.
 
 | Event | Causer | Subject | Notes |
 |-------|--------|---------|-------|
-| `brag.created` | User | Brag | |
+| `brag.created` | User | Brag | No extra properties |
 | `brag.updated` | User | Brag | Changed fields only |
 | `brag.deleted` | User | Brag | Full before state |
 | `brag.visibility_changed` | User | Brag | `old_visibility`, `new_visibility` |
 | `brag.verification_requested` | User | Brag | `organization_id` set for org type |
 | `brag.verification_approved` | User | Brag | `organization_id` set for org type; also `management` |
 | `brag.verification_rejected` | User | Brag | `organization_id` set for org type; also `management` |
-| `brag.unlocked` | User | Brag | Removes all verifications — always logged |
-| `brag.collaborator_invited` | User | Brag | |
-| `brag.collaborator_accepted` | User | Brag | |
-| `brag.collaborator_declined` | User | Brag | |
+| `brag.unlocked` | User | Brag | Removes all verifications, always logged |
+| `brag.collaborator_invited` | User | Brag | No extra properties |
+| `brag.collaborator_accepted` | User | Brag | No extra properties |
+| `brag.collaborator_declined` | User | Brag | No extra properties |
 | `brag.collaborator_removed` | User | Brag | Initiator (owner or collaborator) in `properties` |
 | `brag.admin_removed` | Admin | Brag | Full before state; reason in `properties` |
 
-## `organizations` — Org Settings & Membership
+## `organizations`: Org Settings & Membership
 
 | Event | Causer | Subject | Visibility |
 |-------|--------|---------|-----------|
@@ -53,27 +53,27 @@ All `internal` visibility.
 | `org.dns_revoked` | System | Organization | internal, management |
 | `org.member_invited` | User | OrgInvitation | management |
 | `org.member_joined` | User | OrgMember | management |
-| `org.member_removed` | User | OrgMember | management — `removed_by` in `display` |
+| `org.member_removed` | User | OrgMember | management: `removed_by` in `display` |
 | `org.ownership_transferred` | User | Organization | internal, management |
 | `org.sso_authenticated` | User | Organization | internal |
 | `org.webhook_created` | User | OrgWebhook | management |
 | `org.webhook_updated` | User | OrgWebhook | management |
 | `org.webhook_deleted` | User | OrgWebhook | management |
 
-## `teams` — Team & Permission Management
+## `teams`: Team & Permission Management
 
 All `management` visibility.
 
 | Event | Causer | Subject | Notes |
 |-------|--------|---------|-------|
-| `team.created` | User | OrgTeam | |
-| `team.updated` | User | OrgTeam | |
-| `team.deleted` | User | OrgTeam | |
-| `team.member_added` | User | OrgTeam | |
-| `team.member_removed` | User | OrgTeam | |
-| `team.permissions_changed` | User | OrgTeam | Most sensitive — old and new permission sets in `properties` |
+| `team.created` | User | OrgTeam | No extra properties |
+| `team.updated` | User | OrgTeam | No extra properties |
+| `team.deleted` | User | OrgTeam | No extra properties |
+| `team.member_added` | User | OrgTeam | No extra properties |
+| `team.member_removed` | User | OrgTeam | No extra properties |
+| `team.permissions_changed` | User | OrgTeam | Most sensitive: old and new permission sets in `properties` |
 
-## `jobs` — Job Postings & Matching
+## `jobs`: Job Postings & Matching
 
 Posting events are `internal` + `management` (the org's own history); `job.interest_expressed` is `management`.
 
@@ -82,12 +82,12 @@ Posting events are `internal` + `management` (the org's own history); `job.inter
 | `job.created` | User/System | JobPosting | System causer for Push API creates; `source` in `properties` |
 | `job.updated` | User/System | JobPosting | Changed fields only |
 | `job.published` | User | JobPosting | Review confirmation for API-sourced postings |
-| `job.closed` | User | JobPosting | |
+| `job.closed` | User | JobPosting | No extra properties |
 | `job.deleted` | User | JobPosting | Full before state |
-| `job.interest_expressed` | User | JobPosting | |
-| `admin.job_removed` | Admin | JobPosting | internal only — reason + full before state |
+| `job.interest_expressed` | User | JobPosting | No extra properties |
+| `admin.job_removed` | Admin | JobPosting | internal only: reason + full before state |
 
-## `billing` — Subscriptions & Payments
+## `billing`: Subscriptions & Payments
 
 `internal` + `management` so orgs can see their own subscription history.
 
@@ -100,23 +100,23 @@ Posting events are `internal` + `management` (the org's own history); `job.inter
 | `billing.payment_succeeded` | System | User or Organization |
 | `billing.payment_failed` | System | User or Organization |
 
-## `gdpr` — Consent & Data Subject Rights
+## `gdpr`: Consent & Data Subject Rights
 
-All `internal` — never visible to orgs.
+All `internal`, never visible to orgs.
 
 | Event | Causer | Subject | Notes |
 |-------|--------|---------|-------|
 | `consent.given` | User | User | `consent_type`, `policy_version` in `properties` |
 | `consent.withdrawn` | User | User | `consent_type` in `properties` |
-| `data_export.requested` | User | User | |
-| `data_export.completed` | System | User | |
-| `account_deletion.requested` | User | User | |
-| `account_deletion.cancelled` | User | User | |
-| `account_deletion.tier1_applied` | System | User | |
-| `account_deletion.tier2_applied` | System | User | |
-| `account_deletion.completed` | System | User | |
+| `data_export.requested` | User | User | No extra properties |
+| `data_export.completed` | System | User | No extra properties |
+| `account_deletion.requested` | User | User | No extra properties |
+| `account_deletion.cancelled` | User | User | No extra properties |
+| `account_deletion.tier1_applied` | System | User | No extra properties |
+| `account_deletion.tier2_applied` | System | User | No extra properties |
+| `account_deletion.completed` | System | User | No extra properties |
 
-## `security` — Incident Register
+## `security`: Incident Register
 
 All `internal`.
 
@@ -127,17 +127,17 @@ All `internal`.
 | `security_incident.resolved` | Admin | SecurityIncident |
 | `security_incident.notifications_sent` | System | SecurityIncident |
 
-## `admin` — Admin Panel Actions
+## `admin`: Admin Panel Actions
 
 All `internal`.
 
 | Event | Causer | Subject | Notes |
 |-------|--------|---------|-------|
-| `admin.user_suspended` | Admin | User | |
-| `admin.user_restored` | Admin | User | |
-| `admin.org_suspended` | Admin | Organization | |
-| `admin.org_restored` | Admin | Organization | |
+| `admin.user_suspended` | Admin | User | No extra properties |
+| `admin.user_restored` | Admin | User | No extra properties |
+| `admin.org_suspended` | Admin | Organization | No extra properties |
+| `admin.org_restored` | Admin | Organization | No extra properties |
 | `admin.brag_removed` | Admin | Brag | Reason in `properties` |
-| `admin.user_data_viewed` | Admin | User | Always logged — even with no changes |
-| `admin.admin_created` | Admin | Admin | |
-| `admin.admin_permissions_changed` | Admin | Admin | |
+| `admin.user_data_viewed` | Admin | User | Always logged: even with no changes |
+| `admin.admin_created` | Admin | Admin | No extra properties |
+| `admin.admin_permissions_changed` | Admin | Admin | No extra properties |

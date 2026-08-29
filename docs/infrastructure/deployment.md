@@ -10,12 +10,21 @@ git sparse-checkout set --no-cone '/*' \
   '!/.ddev/' '!/docs/' '!/design/' '!/bruno/' '!/tests/' \
   '!/.claude/' '!/.github/' '!/.mcp.json' '!/boost.json' '!/CLAUDE.md' \
   '!/.editorconfig' '!/.prettierrc' '!/.prettierignore' '!/eslint.config.ts' \
-  '!/phpunit.xml' '!/README.md' '!/LICENSE.md'
+  '!/phpunit.xml' '!/README.md' '!/LICENSE.md' \
+  '!/resources/ts/' '!/resources/scss/' '!/vite.config.ts' '!/svelte.config.js' \
+  '!/tsconfig.json' '!/package.json' '!/package-lock.json' '!/.npmrc'
 git pull origin $FORGE_SITE_BRANCH
 composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
-npm ci
-npm run build
-php artisan migrate --force
+
+# Built assets come from CI, keyed by commit SHA. Abort if missing: continuing
+# would serve new server code against the previous deploy's JavaScript.
+SHA=$(git rev-parse HEAD)
+rm -rf public/build
+aws s3 cp "s3://syoksheet-artifacts/$SHA.tar.gz" /tmp/build.tar.gz --endpoint-url "$R2_ENDPOINT" || exit 1
+tar -xzf /tmp/build.tar.gz -C public/ || exit 1
+rm /tmp/build.tar.gz
+
+php artisan migrate:all --force
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
@@ -25,9 +34,24 @@ php artisan optimize
 
 The Forge site carries all four subdomains as aliases (`api.`, `app.`, `admin.`, `www.`) with one SSL cert; Laravel routes per subdomain.
 
-`php artisan migrate --force` runs both connections — primary and `log` (audit).
+`php artisan migrate:all --force` runs both connections: primary and `log` (audit), each with its own migration path and history.
 
-The `git sparse-checkout` line (idempotent, applies on every environment — production, staging, dev) keeps everything dev-, CI-, or human-only out of the server working tree; pulls stay clean because git itself owns the exclusion. None of these are web-reachable anyway (docroot is `public/`) — this is about not shipping them at all. What must remain: the Laravel runtime tree, `resources/` + `vite.config.ts` + `svelte.config.js` + `tsconfig.json` + `.npmrc` (build inputs), both lockfiles, and `.gitignore`/`.gitattributes` (git reads them from the working tree). Lint configs can go because `npm run build` doesn't lint; `phpunit.xml`/`tests/` because tests run in CI; `.github/` because Actions runs from GitHub's copy. `composer install --no-dev` needs none of the excluded paths.
+The `git sparse-checkout` line (idempotent, applies on every environment) keeps everything dev-, CI-, or human-only out of the server working tree; pulls stay clean because git itself owns the exclusion. None of these are web-reachable anyway (docroot is `public/`). This is about not shipping them at all.
+
+Because assets are built in CI, the **build inputs are excluded too**.
+
+| Path | On the server? | Why |
+|------|----------------|-----|
+| `resources/ts/`, `resources/scss/` | Excluded | Build inputs; the server never builds |
+| `vite.config.ts`, `svelte.config.js`, `tsconfig.json` | Excluded | Same |
+| `package.json`, `package-lock.json`, `.npmrc` | Excluded | No Node on the server |
+| `resources/views/`, `lang/` | **Kept** | Blade renders `www.` and the Inertia root view; translations are read at runtime |
+| `composer.json`, `composer.lock` | Kept | Needed by `composer install` |
+| Lint configs | Excluded | Nothing lints on the server |
+| `phpunit.xml`, `tests/` | Excluded | Tests run in CI |
+| `.github/` | Excluded | Actions runs from GitHub's own copy |
+
+**No Node is installed on either server.**
 
 ## 🤖 CI Pipeline (GitHub Actions)
 
@@ -40,17 +64,17 @@ Trigger: push/PR to `main` or `develop`, and `v*` tag pushes.
 5. Frontend checks: `svelte-check`, ESLint
 6. Pest (`php artisan test`)
 7. Vite production build (`npm run build`)
-8. **Bruno endpoint smoke tests:** `php artisan migrate --force && php artisan db:seed --class=BrunoSeeder`, `php artisan serve &`, then `npx @usebruno/cli run bruno --env ci --reporter-junit results.xml` — seeded credentials injected via CI env vars; JUnit output annotates failures
+8. **Bruno endpoint smoke tests:** `php artisan migrate --force && php artisan db:seed --class=BrunoSeeder`, `php artisan serve &`, then `npx @usebruno/cli run bruno --env ci --reporter-junit results.xml`: seeded credentials injected via CI env vars; JUnit output annotates failures
 9. On push to `main` (not PR): call the staging Forge deploy hook. On `v*` tag push: update the production Forge site's ref to the tag (Forge API) and call the production deploy hook
 
 ## 🔒 Supply-Chain Workflow
 
-`.github/workflows/security.yml` runs independently of the CI pipeline above — on PR and push to `main`/`develop`, every Monday 06:00 UTC, and on manual dispatch. Two jobs:
+`.github/workflows/security.yml` runs independently of the CI pipeline above, on PR and push to `main`/`develop`, every Monday 06:00 UTC, and on manual dispatch. Two jobs:
 
-- **npm** — `npm ci` (fails if `package.json` and the lockfile disagree), an assertion that every direct dependency is exact-pinned, `npm audit signatures` (registry signature + build provenance for all 231 packages), and `npm audit --audit-level=high`.
-- **Composer** — `composer validate --strict` (also flags a stale lockfile) and `composer audit --locked`, which reads `composer.lock` without installing, so no package code and no Composer plugin executes on the runner.
+- **npm**: `npm ci` (fails if `package.json` and the lockfile disagree), an assertion that every direct dependency is exact-pinned, `npm audit signatures` (registry signature + build provenance for all 231 packages), and `npm audit --audit-level=high`.
+- **Composer**: `composer validate --strict` (also flags a stale lockfile) and `composer audit --locked`, which reads `composer.lock` without installing, so no package code and no Composer plugin executes on the runner.
 
-Third-party actions are pinned to commit SHAs with the version in a trailing comment, never to tags — a tag can be repointed at malicious code, which is the same class of attack the workflow exists to catch. Bump the SHA and the comment together.
+Third-party actions are pinned to commit SHAs with the version in a trailing comment, never to tags. A tag can be repointed at malicious code, which is the same class of attack the workflow exists to catch. Bump the SHA and the comment together.
 
 The weekly schedule matters: advisories get published against code that has not changed, so a PR-only trigger would never see them.
 
@@ -59,4 +83,5 @@ The weekly schedule matters: advisories get published against code that has not 
 ## ⏪ Rollback
 
 - Re-point the production site at the previous `v*` tag and redeploy (or Forge → Site → Deployments → rollback to previous).
-- Migration revert if needed: SSH in, `php artisan migrate:rollback` (mind the `log` connection).
+- Migration revert uses **point-in-time recovery, never `migrate:rollback`**. A `down()` that drops a column destroys everything written since.
+- Migrations follow expand/contract, so the previously deployed release always works against the current schema. See the Migration safety gate in `.claude/skills/build-step/SKILL.md` and the restore runbook in syoksheet-docs → infrastructure/operations.md.

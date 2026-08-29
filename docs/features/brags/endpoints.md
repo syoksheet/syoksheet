@@ -1,4 +1,4 @@
-# Brags — Endpoints & Implementation
+# Brags: Endpoints & Implementation
 
 Brag CRUD with tier limits and field locking. Product behaviour (fields, place field, business rules) in syoksheet-docs → features/brags.md.
 
@@ -6,19 +6,19 @@ Brag CRUD with tier limits and field locking. Product behaviour (fields, place f
 
 | Route | Behaviour |
 |-------|-----------|
-| `GET /api/v1/me/brags` | Own brags — timeline order (`date_start` desc), filterable by skill, tag, org, date; paginated |
-| `POST /api/v1/me/brags` | Create — title, description, date_start, place_text, occupation_id, visibility required. Tier limit enforced (422 `brag_limit_reached`; canonical limits: syoksheet-docs → product/pricing.md) |
-| `PATCH /api/v1/me/brags/visibility-selection` | After downgrade: choose which brags stay visible within the free limit — sets/clears `hidden_at` |
+| `GET /api/v1/me/brags` | Own brags: timeline order (`date_start` desc), filterable by skill, tag, org, date; paginated |
+| `POST /api/v1/me/brags` | Create: title, description, date_start, place_text, occupation_id, visibility required. Tier limit enforced (422 `brag_limit_reached`; canonical limits: syoksheet-docs → product/pricing.md) |
+| `PATCH /api/v1/me/brags/visibility-selection` | After downgrade: choose which brags stay visible within the free limit: sets/clears `hidden_at` |
 | `GET /api/v1/me/brags/{brag}` | Detail with tags, links, attachments, skills, collaborators, verifications |
-| `PATCH /api/v1/me/brags/{brag}` | Update — locked fields rejected while `is_locked` (see below) |
+| `PATCH /api/v1/me/brags/{brag}` | Update: locked fields rejected while `is_locked` (see below) |
 | `DELETE /api/v1/me/brags/{brag}` | Soft delete; cascades children |
 | `POST /api/v1/me/brags/{brag}/unlock` | Removes ALL verifications, unlocks fields; `on_verification` visibility reverts to `private`. Always audited (`brag.unlocked`) |
 | `POST /api/v1/me/brags/{brag}/attachments` / `DELETE .../attachments/{attachment}` | Upload to R2 / remove (tier limits on Free) |
-| `GET /api/v1/me/brags/{brag}/history` | The brag's contextual activity — audit log filtered by subject |
+| `GET /api/v1/me/brags/{brag}/history` | The brag's contextual activity: audit log filtered by subject |
 
 ## 🔒 Field Locking
 
-Once any verification exists, `is_locked = true` and these fields reject updates: `title`, `description`, `date_start`, `date_end`, `place_text`, `organization_id`, `occupation_id` — the factual claims verifiers vouched for.
+Once any verification exists, `is_locked = true` and these fields reject updates: `title`, `description`, `date_start`, `date_end`, `place_text`, `organization_id`, `occupation_id`, the factual claims verifiers vouched for.
 
 Always editable: `position_text`, `visibility`, `is_confidential`, `industry_id`, tags, links, attachments, collaborators.
 
@@ -30,12 +30,12 @@ Always editable: `position_text`, `visibility`, `is_confidential`, `industry_id`
 ## 📏 Enforcement
 
 - Tier limit check counts non-deleted brags; a Business seat (active membership in a Business org) lifts it.
-- Downgrade hiding: over-limit brags get `hidden_at` set (most recent kept visible by default; reselect via the endpoint above); hidden brags are excluded from walls and analytics, fully restored on upgrade — see [../billing/lifecycle.md](../billing/lifecycle.md).
+- Downgrade hiding: over-limit brags get `hidden_at` set (most recent kept visible by default; reselect via the endpoint above); hidden brags are excluded from walls and analytics, fully restored on upgrade. See [../billing/lifecycle.md](../billing/lifecycle.md).
 - Visibility `on_verification` → treated as private until the first verification lands, then public.
 
 ## 📋 Audit Events
 
-`brag.created`, `brag.updated` (changed fields), `brag.deleted` (full before state), `brag.visibility_changed`, `brag.unlocked`, `brag.admin_removed` — see [../audit/events.md](../audit/events.md).
+`brag.created`, `brag.updated` (changed fields), `brag.deleted` (full before state), `brag.visibility_changed`, `brag.unlocked`, `brag.admin_removed`. See [../audit/events.md](../audit/events.md).
 
 ## 🗄️ Tables
 

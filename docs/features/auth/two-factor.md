@@ -16,7 +16,7 @@ TOTP-based 2FA using `pragmarx/google2fa-laravel`, with SVG QR codes from `linkx
 
 ## 🔧 Implementation
 
-- `HasTwoFactor` trait on `User` — `twoFactorQrCodeUrl()`, `twoFactorQrCodeSvg()`, `recoveryCodes()`
+- `HasTwoFactor` trait on `User`: `twoFactorQrCodeUrl()`, `twoFactorQrCodeSvg()`, `recoveryCodes()`
 - Secret and recovery codes stored encrypted in `users.two_factor_secret` / `users.two_factor_recovery_codes`
 - Recovery code format: `xxxxxxxxxx-xxxxxxxxxx-xxxxxxxxxx`
 - Enabling/disabling sends a security confirmation email (noreply@)

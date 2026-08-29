@@ -1,13 +1,13 @@
-# Consent — Endpoints & Implementation
+# Consent: Endpoints & Implementation
 
-The consent recording API. What each consent type means and when it is collected is product-level — see syoksheet-docs → features/privacy.md.
+The consent recording API. What each consent type means and when it is collected is product-level. See syoksheet-docs → features/privacy.md.
 
 ## 🔌 Endpoints
 
 | Route | Behaviour |
 |-------|-----------|
-| `GET /api/v1/me/consent` | Current state per consent type — the latest `consent_records` row per `(user_id, consent_type)` |
-| `POST /api/v1/me/consent` | Record actions: `{ consents: [{ type, action: given\|withdrawn }] }` — one append-only row each, capturing IP, user agent, and the current `policy_version` |
+| `GET /api/v1/me/consent` | Current state per consent type, the latest `consent_records` row per `(user_id, consent_type)` |
+| `POST /api/v1/me/consent` | Record actions: `{ consents: [{ type, action: given\|withdrawn }] }`, one append-only row each, capturing IP, user agent, and the current `policy_version` |
 
 ## ⚙️ Implementation
 
@@ -20,7 +20,7 @@ The consent recording API. What each consent type means and when it is collected
 
 ## 📋 Audit Events
 
-`consent.given`, `consent.withdrawn` — see [../audit/events.md](../audit/events.md).
+`consent.given`, `consent.withdrawn`. See [../audit/events.md](../audit/events.md).
 
 ## 🗄️ Tables
 

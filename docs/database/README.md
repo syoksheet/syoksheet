@@ -1,17 +1,17 @@
 # Database
 
-Two PostgreSQL 16 instances. The primary database holds all application data; the audit database is a separate, append-only instance for compliance records.
+Two PostgreSQL 18 instances. The primary database holds all application data; the audit database is a separate, append-only instance for compliance records.
 
 ## ⚙️ Conventions
 
 | Convention | Rule |
 |------------|------|
 | Case | `snake_case` for all table and column names |
-| Public IDs | `uuid` — users, brags, organizations, verifications, notifications |
-| Internal IDs | `bigint` — junction tables, lookup tables, taxonomy, audit log |
+| Public IDs | `uuid`: users, brags, organizations, verifications, notifications |
+| Internal IDs | `bigint`: junction tables, lookup tables, taxonomy, audit log |
 | Timestamps | `timestamptz` on all `created_at`, `updated_at`, `deleted_at` columns |
 | Soft deletes | users, brags, organizations, verifications |
-| Enums | Stored as `varchar`, validated by PHP enums in the app — never DB enum types |
+| Enums | Stored as `varchar`, validated by PHP enums in the app, never DB enum types |
 | Audit DB | Separate connection (`log`). No FK constraints, no `updated_at`, no soft deletes. Append-only forever. |
 
 ## 📂 Files
@@ -32,7 +32,7 @@ Two PostgreSQL 16 instances. The primary database holds all application data; th
 
 ## 🗂️ Table Summary
 
-**Primary database — 61 tables**
+**Primary database: 61 tables**
 
 ```
 Users & Auth (4): users, user_emails, social_accounts, password_reset_tokens
@@ -54,7 +54,7 @@ Privacy (3): consent_records, user_data_export_requests, account_deletion_reques
 Admin (6): admins, roles, permissions, model_has_roles, model_has_permissions, role_has_permissions
 ```
 
-**Audit database — 3 tables**
+**Audit database: 3 tables**
 
 ```
 audit_logs, security_incidents, security_incident_affected_records

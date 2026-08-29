@@ -1,4 +1,4 @@
-# DNS Verification — Implementation
+# DNS Verification: Implementation
 
 The DNS TXT check pipeline that activates an org. Product behaviour in syoksheet-docs → features/dns-verification.md.
 

@@ -1,4 +1,4 @@
-# Collaborators — Endpoints & Implementation
+# Collaborators: Endpoints & Implementation
 
 Collaborator invites, consent, and removal. Product behaviour in syoksheet-docs → features/collaborators.md.
 
@@ -6,17 +6,17 @@ Collaborator invites, consent, and removal. Product behaviour in syoksheet-docs 
 
 | Route | Behaviour |
 |-------|-----------|
-| `POST /api/v1/me/brags/{brag}/collaborators` | Invite — existing user (`{ user_id }` or `{ email }` matching an account) or non-user (`{ name, email, message? }`). Rejected if the invitee holds an active verification request for the brag |
-| `DELETE /api/v1/me/brags/{brag}/collaborators/{collaborator}` | Owner removes — collaborator notified |
+| `POST /api/v1/me/brags/{brag}/collaborators` | Invite: existing user (`{ user_id }` or `{ email }` matching an account) or non-user (`{ name, email, message? }`). Rejected if the invitee holds an active verification request for the brag |
+| `DELETE /api/v1/me/brags/{brag}/collaborators/{collaborator}` | Owner removes: collaborator notified |
 
 ## 🔌 Collaborator Endpoints
 
 | Route | Behaviour |
 |-------|-----------|
-| `GET /api/collaborate/{token}` | Non-user invite view — full brag, accept/decline, no account needed |
+| `GET /api/collaborate/{token}` | Non-user invite view: full brag, accept/decline, no account needed |
 | `POST /api/collaborate/{token}` / `.../decline` | Non-user respond |
 | `PATCH /api/v1/me/collaborations/{collaborator}` | Existing user accept/decline (in-app + email invite) |
-| `DELETE /api/v1/me/collaborations/{collaborator}` | Collaborator removes themself — owner notified |
+| `DELETE /api/v1/me/collaborations/{collaborator}` | Collaborator removes themself: owner notified |
 | `GET /api/v1/me/collaborations` | Brags the user collaborates on (their "Collaborated on" section) |
 
 ## ⚙️ Rules & Side Effects
@@ -29,7 +29,7 @@ Collaborator invites, consent, and removal. Product behaviour in syoksheet-docs 
 
 ## 📋 Audit Events
 
-`brag.collaborator_invited`, `brag.collaborator_accepted`, `brag.collaborator_declined`, `brag.collaborator_removed` (initiator in `properties`) — see [../audit/events.md](../audit/events.md).
+`brag.collaborator_invited`, `brag.collaborator_accepted`, `brag.collaborator_declined`, `brag.collaborator_removed` (initiator in `properties`). See [../audit/events.md](../audit/events.md).
 
 ## 🗄️ Tables
 
