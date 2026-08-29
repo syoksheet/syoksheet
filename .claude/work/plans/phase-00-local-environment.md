@@ -136,8 +136,8 @@ Why it matters enough to be a phase task: cookie scoping across subdomains behav
 `require`, not `require-dev`, deliberately: the `audit` queue's retry-forever behaviour is a Horizon supervisor setting, and every deploy runs `composer install --no-dev`. Hand-typed `queue:work` flags would exercise something different from what ships.
 
 - [x] Installed under `require`
-- [ ] Config published
-- [ ] `ddev php artisan horizon` starts without error
+- [x] Config published
+- [x] `ddev php artisan horizon` starts without error
 
 ### Task 7: Sentry SDK
 
