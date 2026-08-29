@@ -2,7 +2,7 @@
 # Mirrors production's separate managed instance — the app talks to it as host `postgres-audit`.
 services:
   postgres-audit:
-    image: postgres:16
+    image: postgres:18
     container_name: ddev-${DDEV_SITENAME}-postgres-audit
     labels:
       com.ddev.site-name: ${DDEV_SITENAME}
@@ -12,7 +12,7 @@ services:
       POSTGRES_USER: db
       POSTGRES_PASSWORD: db
     volumes:
-      - postgres-audit:/var/lib/postgresql/data
+      - postgres-audit:/var/lib/postgresql
     restart: "no"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U db -d syoksheet_audit"]

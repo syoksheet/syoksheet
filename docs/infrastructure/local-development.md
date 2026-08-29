@@ -21,17 +21,20 @@ HTTPS is used locally so cookie behaviour across the four subdomains matches pro
 brew install mkcert nss && mkcert -install && ddev restart
 ```
 
+DDEV always provisions its Postgres instance with a database named `db`, and that name cannot be configured. The application expects `syoksheet`, the same name used in staging and production, so a `post-start` hook in `.ddev/config.yaml` creates it on every start. Nothing is done by hand: a manually created database would not survive `ddev delete`, and a fresh clone would come up broken. The hook guards on `pg_database` because Postgres has no `CREATE DATABASE IF NOT EXISTS`, and needs no `GRANT`, since the `db` role is a superuser and owns what it creates.
+
 ## 📦 Services
 
 | Service | Provides | Notes |
 |---------|----------|-------|
 | web | PHP 8.4, nginx, Node 24 | Serves all four subdomains |
-| db | PostgreSQL 18 | Databases `syoksheet` and `syoksheet_audit` |
+| db | PostgreSQL 18 | Database `syoksheet`, created by the `post-start` hook. DDEV's own `db` database is left unused |
 | postgres-audit | PostgreSQL 18 | Separate instance for the `log` connection, mirroring production's eventual split |
 | redis | Redis 7 | Sessions, cache, queue |
 | buggregator | Mail, dumps, logs, HTTP inspection | Replaces Mailpit. Speaks the Sentry protocol |
 | minio | S3-compatible object storage | Stands in for Cloudflare R2 |
 | xhgui | Profiling | Started on demand with `ddev xhgui` |
+| mailpit | DDEV built-in mail catcher | Unused. Mail goes to Buggregator, but DDEV always provides this and it cannot be removed |
 
 Base URL: `https://app.syoksheet.ddev.site`. The additional hostnames give all four surfaces locally, so `Route::domain()` groups behave exactly as in production.
 
