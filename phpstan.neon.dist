@@ -24,7 +24,7 @@ parameters:
     tmpDir: .phpstan.cache
 
     # Pest binds $this in a test closure to the TestCase at runtime, but its PHPStan
-    # extension only registers object crates — it cannot express that binding. Scoped
+    # extension only registers object crates: it cannot express that binding. Scoped
     # to tests so real method.notFound errors elsewhere still surface, and PHPStan
     # reports this entry as unmatched if Pest ever ships the binding.
     ignoreErrors:
@@ -60,7 +60,7 @@ parameters:
     #     - database/migrations
     #     - database/migrations/audit
 
-    # Phase 3, with the first translated screen — catches __() keys that have no
+    # Phase 3, with the first translated screen, catching __() keys that have no
     # entry, which is how "no hardcoded user-facing text" gets enforced.
     # checkMissingTranslations: true
     # translationDirectories:

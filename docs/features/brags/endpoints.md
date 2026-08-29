@@ -13,7 +13,7 @@ Brag CRUD with tier limits and field locking. Product behaviour (fields, place f
 | `PATCH /api/v1/me/brags/{brag}` | Update: locked fields rejected while `is_locked` (see below) |
 | `DELETE /api/v1/me/brags/{brag}` | Soft delete; cascades children |
 | `POST /api/v1/me/brags/{brag}/unlock` | Removes ALL verifications, unlocks fields; `on_verification` visibility reverts to `private`. Always audited (`brag.unlocked`) |
-| `POST /api/v1/me/brags/{brag}/attachments` / `DELETE .../attachments/{attachment}` | Upload to R2 / remove (tier limits on Free) |
+| `POST /api/v1/me/brags/{brag}/attachments` / `DELETE .../attachments/{attachment}` | Upload to `syoksheet-private-{env}` / remove (tier limits on Free) |
 | `GET /api/v1/me/brags/{brag}/history` | The brag's contextual activity: audit log filtered by subject |
 
 ## 🔒 Field Locking

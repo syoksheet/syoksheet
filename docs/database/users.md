@@ -12,7 +12,7 @@ There is **no `email` column**: all emails live in `user_emails`.
 | name | varchar(255) | Required |
 | username | varchar(100) | Unique, nullable (set during profile setup) |
 | custom_slug | varchar(30) | Unique, nullable. Pro custom wall URL; cleared on downgrade fallback |
-| avatar_url | varchar(500) | Nullable, R2 |
+| avatar_url | varchar(500) | Nullable, `syoksheet-public-{env}` |
 | bio | text | Nullable |
 | current_role | varchar(255) | Nullable, freeform display headline |
 | current_company | varchar(255) | Nullable, freeform display |

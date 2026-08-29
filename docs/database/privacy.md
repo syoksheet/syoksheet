@@ -30,7 +30,7 @@ One active request per user at a time, with a 30-day cooldown between completed 
 | id | bigint PK | Internal key, never exposed |
 | user_id | uuid FK → users | CASCADE |
 | status | varchar(20) | `pending`, `processing`, `ready`, `expired`, `failed` |
-| download_url | varchar(500) | Nullable: signed R2 URL, set when ready |
+| download_url | varchar(500) | Nullable: signed `syoksheet-private-{env}` URL, set when ready |
 | expires_at | timestamptz | Nullable: 48 hours after ready |
 | requested_at | timestamptz | Required |
 | completed_at | timestamptz | Nullable |

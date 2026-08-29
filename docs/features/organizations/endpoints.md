@@ -59,7 +59,7 @@ When the org has SSO enabled, all org-scoped routes additionally pass the `Ensur
 | Route | Permission | Behaviour |
 |-------|-----------|-----------|
 | `PUT /api/v1/organizations/{org}/branding` | `branding.manage` | `{ accent_color?: "#hex" }` |
-| `POST /api/v1/organizations/{org}/branding/cover` / `DELETE` | `branding.manage` | Cover image upload → R2 (limits per [validation.md](../../validation.md)) |
+| `POST /api/v1/organizations/{org}/branding/cover` / `DELETE` | `branding.manage` | Cover image upload → `syoksheet-public-{env}` (limits per [validation.md](../../validation.md)) |
 
 Rendered on the public wall header and org-typed verifier pages. On downgrade the config is retained but not rendered. See [../billing/lifecycle.md](../billing/lifecycle.md).
 

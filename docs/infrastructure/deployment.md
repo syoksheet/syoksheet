@@ -32,7 +32,7 @@ php artisan queue:restart
 php artisan optimize
 ```
 
-The Forge site carries all four subdomains as aliases (`api.`, `app.`, `admin.`, `www.`) with one SSL cert; Laravel routes per subdomain.
+The Forge site carries all four surfaces as aliases (the apex, `api.`, `app.`, `admin.`) with one SSL cert; Laravel routes per host.
 
 `php artisan migrate:all --force` runs both connections: primary and `log` (audit), each with its own migration path and history.
 
@@ -45,7 +45,7 @@ Because assets are built in CI, the **build inputs are excluded too**.
 | `resources/ts/`, `resources/scss/` | Excluded | Build inputs; the server never builds |
 | `vite.config.ts`, `svelte.config.js`, `tsconfig.json` | Excluded | Same |
 | `package.json`, `package-lock.json`, `.npmrc` | Excluded | No Node on the server |
-| `resources/views/`, `lang/` | **Kept** | Blade renders `www.` and the Inertia root view; translations are read at runtime |
+| `resources/views/`, `lang/` | **Kept** | Blade renders the apex marketing pages and the Inertia root view; translations are read at runtime |
 | `composer.json`, `composer.lock` | Kept | Needed by `composer install` |
 | Lint configs | Excluded | Nothing lints on the server |
 | `phpunit.xml`, `tests/` | Excluded | Tests run in CI |

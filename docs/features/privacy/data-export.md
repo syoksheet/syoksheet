@@ -13,8 +13,8 @@ GDPR Article 15/20 export pipeline. Product behaviour in syoksheet-docs → feat
 
 1. Request row created (`status: pending`).
 2. `GenerateDataExportJob` queued (default queue). Status → `processing`.
-3. Job collects all personal data, builds the ZIP, uploads to R2.
-4. `download_url` = signed R2 URL, `expires_at` = +48 h, status → `ready`, email sent (noreply@).
+3. Job collects all personal data, builds the ZIP, uploads it under the `exports/` prefix of `syoksheet-private-{env}`.
+4. `download_url` = signed `syoksheet-private-{env}` URL, `expires_at` = +48 h, status → `ready`, email sent (noreply@).
 5. Past `expires_at` → status `expired`; the user must re-request (cooldown applies).
 6. Job retries 3×; on permanent failure status → `failed` and the user is notified.
 

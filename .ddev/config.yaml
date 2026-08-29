@@ -6,13 +6,13 @@ name: syoksheet
 type: laravel
 docroot: public
 
-# One Laravel app serves four surfaces through Route::domain(). Declaring all four
-# makes those groups, and cookie scoping, resolve locally as they do in production.
+# One Laravel app serves four surfaces through Route::domain(). Three are declared
+# here; the fourth is marketing, which lives on the project's bare hostname
+# (syoksheet.ddev.site) exactly as it lives on the apex in production.
 additional_hostnames:
   - api.syoksheet
   - app.syoksheet
   - admin.syoksheet
-  - www.syoksheet
 additional_fqdns: []
 use_dns_when_possible: true
 
@@ -34,6 +34,10 @@ database:
   version: "18"
 
 web_environment: []
+
+# A failed hook must fail the start. Left unset it defaults to false, and DDEV
+# reports success while the database or the buckets silently do not exist.
+fail_on_hook_fail: true
 
 # Run on every start: doing either by hand would not survive `ddev delete`.
 hooks:

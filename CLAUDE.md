@@ -187,7 +187,7 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 
 @../syoksheet-docs/claude-context.md
 
-This repo is **the syoksheet application**: one Laravel app serving `api.*`, `app.*`, `admin.*`, and `www.*` via `Route::domain()` groups. The app and admin UIs are Inertia + Svelte 5 + TS; `www.*` is server-rendered Blade; `api.*` is the external sold surface only (Pro tokens, Jobs Push API, webhooks, public endpoints).
+This repo is **the syoksheet application**: one Laravel app serving `api.*`, `app.*`, `admin.*`, and the apex (`syoksheet.com`, marketing) via `Route::domain()` groups. The app and admin UIs are Inertia + Svelte 5 + TS; the apex is server-rendered Blade; `api.*` is the external sold surface only (Pro tokens, Jobs Push API, webhooks, public endpoints).
 
 ## PHP
 
@@ -200,7 +200,7 @@ This repo is **the syoksheet application**: one Laravel app serving `api.*`, `ap
 - The design system lives in `design/`: `docs/` = full component specs (behaviour, a11y), `previews/` = the cards mirrored to the Claude Design "syoksheet Design System" project: keep repo and project in sync via DesignSync when either changes. Screen designs live in the Claude Design studio project "syoksheet".
 - The verification mark's forest green is never the primary teal. Shared components are presentational, no API calls or product logic inside them.
 - All UI strings go through translation files (English at launch), no hardcoded user-facing text.
-- `www.*` pages: SEO/OG meta on every public page; GTM with Consent Mode v2 per syoksheet-docs → marketing/analytics-stack.md; the rendered privacy policy / ToS pages live here (log versions in syoksheet-docs/legal/policy-versions.md before shipping changes).
+- Apex (marketing) pages: SEO/OG meta on every public page; GTM with Consent Mode v2 per syoksheet-docs → marketing/analytics-stack.md; the rendered privacy policy / ToS pages live here (log versions in syoksheet-docs/legal/policy-versions.md before shipping changes).
 - Before building any screen: read the feature doc (syoksheet-docs), this repo's feature spec, and the screen design.
 
 ## Documentation Lookup

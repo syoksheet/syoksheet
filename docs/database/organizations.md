@@ -11,7 +11,7 @@ Tables for organisations, membership, teams and permissions, join requests, depa
 | slug | varchar(255) | Unique |
 | domain | varchar(255) | Unique |
 | contact_email | varchar(255) | Required |
-| logo_url | varchar(500) | Nullable, R2 |
+| logo_url | varchar(500) | Nullable, `syoksheet-public-{env}` |
 | description | text | Nullable |
 | industry_id | bigint FK → industries | Required. See [taxonomy.md](taxonomy.md) |
 | company_size | varchar(50) | Nullable |

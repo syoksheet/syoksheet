@@ -40,14 +40,14 @@ Tables for brags, their enrichment data, and verification requests and results.
 
 ## 📎 brag_attachments
 
-Files stored in R2.
+Files stored in `syoksheet-private-{env}`.
 
 | Column | Type | Notes |
 |--------|------|-------|
 | id | bigint PK | Internal key, never exposed |
 | brag_id | uuid FK → brags | CASCADE |
 | file_name | varchar(255) | Standard |
-| file_path | varchar(500) | R2 key |
+| file_path | varchar(500) | `syoksheet-private-{env}` key |
 | file_size | bigint | Standard |
 | mime_type | varchar(100) | Standard |
 | created_at | timestamptz | Set on insert |

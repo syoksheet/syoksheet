@@ -12,8 +12,8 @@ Pro users export a PDF snapshot of their public wall. Product behaviour in syoks
 ## ⚙️ Pipeline
 
 1. A queued job renders the user's public wall to PDF: profile header, public brags with verification badges, and skills summary.
-2. Upload to R2; signed URL with **24-hour** expiry; in-app notification with the link.
-3. R2 lifecycle: export objects deleted at 7 days (same rule as data-export ZIPs).
+2. Upload under the `exports/` prefix of `syoksheet-private-{env}`; signed URL with **24-hour** expiry; in-app notification with the link.
+3. Lifecycle: objects under the `exports/` prefix are deleted at 7 days, the same rule that covers data-export ZIPs.
 
 ## 📏 Rules
 

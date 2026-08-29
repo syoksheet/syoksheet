@@ -11,7 +11,7 @@ Platform-wide validation rules referenced by every feature spec: uploads, identi
 | Org cover image (branding) | 5 MB | jpeg, png, webp |
 | Brag attachment | 10 MB | pdf, jpeg, png, webp |
 
-Files upload to R2; images are validated as real images (not just extension). Attachment count per brag is tier-limited (syoksheet-docs → product/pricing.md).
+Files upload to `syoksheet-private-{env}`; images are validated as real images (not just extension). Attachment count per brag is tier-limited (syoksheet-docs → product/pricing.md).
 
 ## 🔤 Identifiers
 

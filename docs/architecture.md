@@ -1,16 +1,16 @@
 # Application Architecture
 
-How the Laravel application is structured: one app serving four subdomains, guards, databases, queues, events, and integrations. Platform-level architecture (servers, managed resources, Cloudflare) lives in syoksheet-docs → infrastructure/architecture.md.
+How the Laravel application is structured: one app serving four surfaces, guards, databases, queues, events, and integrations. Platform-level architecture (servers, managed resources, Cloudflare) lives in syoksheet-docs → infrastructure/architecture.md.
 
-## 🌐 Subdomain Surfaces
+## 🌐 Surfaces
 
 One application, routed by `Route::domain()` groups:
 
-| Subdomain | Surface | Rendering |
+| Host | Surface | Rendering |
 |-----------|---------|-----------|
 | `app.syoksheet.com` | User app | Inertia + Svelte pages, `web` session auth (user guard) |
 | `admin.syoksheet.com` | Admin panel | Inertia + Svelte pages, admin session guard |
-| `www.syoksheet.com` | Marketing, public walls, jobs directory, policy pages | Server-rendered Blade. SEO-first, no auth |
+| `syoksheet.com` (apex) | Marketing, public walls, jobs directory, policy pages | Server-rendered Blade. SEO-first, no auth. `www.syoksheet.com` redirects here |
 | `api.syoksheet.com` | **The sold API surface**: Pro user tokens, Jobs Push API, Dodo webhooks, verifier/collaborator/invitation token pages' endpoints | JSON via Sanctum bearer tokens / signed or tokened routes |
 
 ## 🔐 Auth & Guards
@@ -72,7 +72,7 @@ Laravel Scout + Meilisearch (a process on the app VPS) for taxonomy search. See 
 
 | Concern | Service | Notes |
 |---------|---------|-------|
-| Files | Cloudflare R2 (`FILESYSTEM_DISK=r2`) | Avatars, logos, attachments, export ZIPs; signed URLs for downloads |
+| Files | Cloudflare R2, two disks (`r2_public`, `r2_private`), default `FILESYSTEM_DISK=r2_private` | Avatars, logos and verification marks in `syoksheet-public-{env}`; attachments, PDF exports and data-export ZIPs in `syoksheet-private-{env}`, reached by signed URL |
 | Mail | Resend | From-addresses: noreply@, team@, billing@ (support@ is inbound-only): catalog in syoksheet-docs → features/notifications.md |
 | Payments | DodoPayments | Webhook-driven sync: [features/billing/webhooks.md](features/billing/webhooks.md) |
 | Realtime | Laravel Reverb | Notification broadcasts + org activity channels ([features/audit/implementation.md](features/audit/implementation.md)) |

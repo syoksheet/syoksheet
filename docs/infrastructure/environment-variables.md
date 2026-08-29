@@ -10,7 +10,26 @@ All environment variables for the Laravel API, set in Forge per environment. Fro
 | APP_ENV | production | `staging` for staging |
 | APP_KEY | base64:xxx… | `php artisan key:generate` |
 | APP_DEBUG | false | `true` for staging |
-| APP_URL | https://app.syoksheet.com | Primary origin; the app also serves api./admin./www. via domain routing (staging: staging.* equivalents) |
+| APP_URL | https://syoksheet.com | Fallback root for URL generation outside a request, never a per-surface setting. Staging: https://staging.syoksheet.com. Local: https://syoksheet.ddev.site |
+
+### APP_URL is a fallback, not an origin
+
+Laravel reads `APP_URL` only when there is no request to take a host from: queued jobs, console commands, mail. Inside a request, `url()` and `route()` follow the actual `Host` header and `Route::domain()` matches on it, so `APP_URL` never decides which surface works.
+
+Three surfaces originate out-of-request links, so no single fallback can be correct for all of them:
+
+| Surface | Links it originates |
+|---------|---------------------|
+| `app.` | Email verification, password reset, account-deletion confirmation and cancellation |
+| `admin.` | Admin authentication mail, account provisioning |
+| apex | Collaborator and verifier invitations |
+
+The rule is therefore that **no notification relies on the fallback**: each builds its URL against its own surface's configured host. `APP_URL` points at the apex so that anything which does fall through fails loudly and identically for every audience, rather than working for users and silently breaking for admins, which is the failure that survives testing.
+
+Signed URLs make this strict rather than cosmetic. The signature covers the full URL and `hasValidSignature()` re-derives it from the incoming request, so a host mismatch is rejected outright, not merely served as a 404.
+
+> [!NOTE]
+> The per-surface host configuration that this rule depends on arrives with the `Route::domain()` groups in Phase 1. Until then no routes exist and the value has no observable effect.
 
 ## 🗄️ Databases
 
@@ -55,6 +74,8 @@ No `SANCTUM_STATEFUL_DOMAINS` or CORS origin list. The UIs are same-origin Inert
 | R2_PUBLIC_URL | https://cdn.syoksheet.com (staging: https://staging.cdn.syoksheet.com) |
 
 Two disks, `r2_public` and `r2_private`, over one credential pair. `FILESYSTEM_DISK` is `r2_private` so an unqualified `Storage::put()` cannot accidentally publish; avatars, org logos and verification marks are written with an explicit `Storage::disk('r2_public')`.
+
+No region or path-style variable exists, deliberately. The S3 driver needs both, but neither varies by environment: R2 always wants `region => 'auto'`, and MinIO needs `use_path_style_endpoint => true`, which R2 also accepts. Both belong hardcoded in the disk definitions rather than in `.env`.
 
 The backup, audit-archive and build-artifact buckets deliberately have no variables here. None is reached through Laravel's filesystem layer: the first two belong to shell commands run by the scheduler, the third to CI and the deploy script, and each carries its own credential scoped to its own bucket.
 
@@ -107,6 +128,6 @@ The backup, audit-archive and build-artifact buckets deliberately have no variab
 | SENTRY_ENVIRONMENT | production / staging / local | One Sentry project, separated by environment |
 | SENTRY_RELEASE | [commit SHA] | Set at deploy; matches the build artifact key and the uploaded source maps |
 | SENTRY_TRACES_SAMPLE_RATE | 0.1 staging | Production tunes per route via `traces_sampler` |
-| SENTRY_SEND_DEFAULT_PII | false | Never `true`. Scrubbing happens in `before_send` |
+| SENTRY_SEND_DEFAULT_PII | false | Never `true`. `before_send` scrubbing is required before launch and is not implemented yet |
 | VITE_SENTRY_DSN | (same DSN) | Browser SDK in the Svelte apps |
 | LOG_CHANNEL | stack | Local: daily only |

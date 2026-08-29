@@ -18,7 +18,7 @@ While suspended: login rejected except for the cancellation flow; profile exclud
 - `personal_access_tokens`: all deleted
 - `social_accounts`: deleted
 - `password`, `two_factor_secret`, `two_factor_recovery_codes`: nulled
-- Avatar. R2 object deleted, `avatar_url` nulled
+- Avatar. Object deleted from `syoksheet-public-{env}`, `avatar_url` nulled
 - `notifications`: deleted
 - `org_members` rows: removed
 - `job_interests` and `match_scores`: deleted; `is_open_to_work` forced false
@@ -62,7 +62,7 @@ See [../../database/audit.md](../../database/audit.md) for the full grant table.
 An erasure request cannot reach a backup. A dump is an immutable snapshot, and rewriting it would destroy the integrity that makes it a backup. The accepted position, which this platform adopts:
 
 - Erasure is applied to **live systems immediately**, on the schedule above.
-- Database dumps in R2 are retained **30 days** and pruned automatically by lifecycle rule, so any snapshot containing erased data ages out within that window.
+- Database dumps in `syoksheet-backups-{env}` are retained **30 days** and pruned automatically by lifecycle rule, so any snapshot containing erased data ages out within that window.
 - If a dump is ever restored, **pending and completed erasures are re-applied to the restored data before it serves traffic**. A restore must never resurrect a deleted account.
 - Managed-cluster point-in-time recovery has the same property and the same 7-day bound.
 

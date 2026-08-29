@@ -121,7 +121,7 @@ Why this exists rather than the `local` disk: `Storage::temporaryUrl()` is unsup
 
 Why it matters enough to be a phase task: cookie scoping across subdomains behaves differently over plain HTTP, and the app serves four of them. Without this, a cookie bug would first appear in Phase 4 auth, would not reproduce anywhere else, and would cost far more to diagnose than this costs to set up.
 
-- [x] `api.`, `app.`, `admin.`, `www.syoksheet.ddev.site` all answer over HTTPS, certificate trusted
+- [x] `syoksheet.ddev.site`, `api.`, `app.` and `admin.syoksheet.ddev.site` all answer over HTTPS, certificate trusted
 
 ### Task 6: Horizon into `require`
 
@@ -182,7 +182,7 @@ Contract tests arrive in Phase 1. Phase 0 is proved by observation, and per the 
 | Claim | Command or check |
 |---|---|
 | Both databases on 18 and healthy | `ddev describe` |
-| Four hostnames answer over trusted HTTPS | Browser or `curl` against `api.`, `app.`, `admin.`, `www.syoksheet.ddev.site` |
+| Four hostnames answer over trusted HTTPS | Browser or `curl` against `syoksheet.ddev.site`, `api.`, `app.` and `admin.syoksheet.ddev.site` |
 | Both connections resolve | `ddev php artisan tinker --execute 'DB::connection("pgsql")->getPdo(); DB::connection("log")->getPdo();'` |
 | Redis matches the spec at runtime | `ddev php artisan tinker --execute 'dd(Redis::connection()->config("GET", "maxmemory-policy"), Redis::connection()->config("GET", "appendonly"));'` |
 | Buggregator receives mail | Test mail sent, visible in the UI, absent from Mailpit |
@@ -211,4 +211,14 @@ Also out of scope: Meilisearch (Phase 10) and Reverb (Phase 7), both noted as "n
 
 ## Noticed, deferred
 
-Nothing outstanding. The earlier `php: ^8.3` versus 8.4 mismatch was resolved in commit `9d23847`: `composer.json` now requires `php ^8.4`, matching `phpstan.neon.dist` and the docs.
+The `php: ^8.3` versus 8.4 mismatch is resolved: commit `9d23847` moved `composer.json` to `php ^8.4`, matching `phpstan.neon.dist` and the docs.
+
+Four items are knowingly carried into Phase 1, each surfaced by the Phase 0 spec review:
+
+| Item | Why it waits | Where it lands |
+|---|---|---|
+| `config/horizon.php` has no `staging` environment | Horizon aborts at boot on any environment absent from `environments`, and staging is provisioned in Phase 2 | Add `staging` when Phase 1 writes the real supervisors |
+| Supervisors are the published stub: one `supervisor-1`, `tries => 1` | Queue priorities live in `config/queue.php`, already Phase 1 scope | The `audit` queue's retry-forever setting is the stated justification for Horizon being in `require`, so the two must not stay divorced |
+| Sentry `before_send` scrubbing | Nothing personal exists to scrub with no routes and no users | Tracked on the launch checklist in syoksheet-docs, infrastructure/operations.md |
+| Per-surface host configuration for out-of-request links | Three surfaces originate links from queued jobs and mail (`app.`, `admin.`, apex), and `APP_URL` is a single fallback that can only be right for one | Phase 1, alongside the `Route::domain()` groups: one config source for both routing and absolute-URL building, so no notification relies on the ambient root. Rule documented in `docs/infrastructure/environment-variables.md` |
+| The local `syoksheet-public-local` bucket is not anonymously readable | MinIO buckets are private by default and no policy was set | `mc anonymous set download` alongside the `r2_public` disk definition |
