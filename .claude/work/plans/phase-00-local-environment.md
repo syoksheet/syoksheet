@@ -109,7 +109,7 @@ Why this exists rather than the `local` disk: `Storage::temporaryUrl()` is unsup
 
 - [x] Compose file written, matching the postgres-audit pattern
 - [x] `ddev restart`, UI loads at the intended hostname
-- [ ] Left until Task 8: mail actually landing in it
+- [x] Left until Task 8: mail actually landing in it
 
 ### Task 5: mkcert
 
@@ -156,9 +156,9 @@ The `build-step` observability review applies from the first exception type, so 
 - `ignore_exceptions`: expected-and-handled conditions are not errors. Validation failures, 404s, auth challenges, CSRF mismatches, rate limits and model-not-found all belong here.
 - `traces_sample_rate`: locally this can be 1.0; the per-route `traces_sampler` closure that staging and production need arrives with real routes.
 
-- [ ] Both packages installed, `--save-exact` respected on the npm side
-- [ ] `config/sentry.php` published, both values set consciously
-- [ ] A deliberately thrown exception appears in Buggregator
+- [x] Both packages installed, `--save-exact` respected on the npm side
+- [x] `config/sentry.php` published, both values set consciously
+- [x] A deliberately thrown exception appears in Buggregator
 
 ### Task 8: `.env` and `.env.example`
 
@@ -172,8 +172,8 @@ Keys to set: `MAIL_MAILER=smtp`, `MAIL_HOST=buggregator`, `MAIL_PORT=1025`, `SEN
 
 Never use Resend locally. Beyond the 3,000/month quota with its 100/day cap, development traffic genuinely delivers, and bounces from fixture data damage the production sending domain's reputation.
 
-- [ ] Both files updated, `.env.example` free of real credentials
-- [ ] A test mail lands in Buggregator and not in Mailpit
+- [x] Both files updated, `.env.example` free of real credentials
+- [x] A test mail lands in Buggregator and not in Mailpit
 
 ## Verification
 

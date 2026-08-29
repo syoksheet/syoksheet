@@ -32,6 +32,7 @@
     },
     "dependencies": {
         "@inertiajs/svelte": "3.7.0",
+        "@sentry/svelte": "10.72.0",
         "@sveltejs/vite-plugin-svelte": "7.3.0",
         "svelte": "5.56.10",
         "svelte-check": "4.7.6",
