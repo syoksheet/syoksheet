@@ -20,7 +20,7 @@ taxonomy_translations: translatable_type, translatable_id, locale, name
 - Covers occupations, skills, categories, and industries.
 - API taxonomy responses return the localized `name` when a translation exists for the user's locale, else the canonical (English) name.
 - Meilisearch indexes translations alongside canonical names and aliases, so search works in any supported language.
-- Population pipeline (when a language is added): taxonomy labels are exported to translation files (`taxonomy:translations-export`), translated in **Weblate** (self-hosted TMS, the GlotPress equivalent for this stack, deployed via `syoksheet-ops`), then imported back (`taxonomy:translations-import`) and re-indexed. No AI in our architecture. Weblate's optional machine-translation suggestions are a TMS setting reviewers may enable, outside our code.
+- Population pipeline (when a language is added): taxonomy labels are exported to translation files (`taxonomy:translations-export`), translated in **Weblate** (self-hosted TMS, the GlotPress equivalent for this stack, deployed via `syoksheet-weblate`), then imported back (`taxonomy:translations-import`) and re-indexed. No AI in our architecture. Weblate's optional machine-translation suggestions are a TMS setting reviewers may enable, outside our code.
 
 > [!NOTE]
 > ESCO's own multilingual labels cover EU languages only. Malay, Chinese, and Tamil translations are produced through the Weblate workflow, not imported.
