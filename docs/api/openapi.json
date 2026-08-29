@@ -3,7 +3,7 @@
   "info": {
     "title": "SyokSheet API",
     "version": "1.0.0",
-    "description": "The SyokSheet API. This spec grows per feature during the build — the markdown specs under docs/features/ are the authoritative API design. Update this file in the same commit as any route change."
+    "description": "The SyokSheet API. This spec grows per feature during the build: the markdown specs under docs/features/ are the authoritative API design. Update this file in the same commit as any route change."
   },
   "servers": [
     {
@@ -63,12 +63,12 @@
       "userBearerAuth": {
         "type": "http",
         "scheme": "bearer",
-        "description": "User API token (user:api ability) — Pro integrations and the Jobs Push API (org Business tokens)."
+        "description": "User API token (user:api ability) for Pro integrations and the Jobs Push API (org Business tokens)."
       },
       "adminBearerAuth": {
         "type": "http",
         "scheme": "bearer",
-        "description": "Admin API token (admin:api ability) — scripts."
+        "description": "Admin API token (admin:api ability) for scripts."
       }
     },
     "schemas": {
@@ -132,7 +132,7 @@
       },
       "BusinessRuleError": {
         "type": "object",
-        "description": "422 for business-rule violations. Stable codes are cataloged in docs/validation.md — frontends key off code, never message.",
+        "description": "422 for business-rule violations. Stable codes are cataloged in docs/validation.md. Frontends key off code, never message.",
         "properties": {
           "message": {
             "type": "string",
