@@ -72,7 +72,7 @@ One container replacing several tools. Reached at `https://buggregator.syoksheet
 | Outgoing mail | `MAIL_MAILER=smtp`, `MAIL_HOST=buggregator`, `MAIL_PORT=1025` |
 | Errors | `SENTRY_LARAVEL_DSN` points here locally, at Sentry in staging and production. Same SDK, same code |
 | Dumps | `dump()` lands here instead of corrupting an Inertia response |
-| Webhook payloads | An HTTP endpoint to point outbound webhooks at, from Phase 15 |
+| Webhook payloads | An HTTP endpoint to point outbound webhooks at, from Phase 16 |
 
 Never use Resend locally. Beyond the 3,000/month quota with its 100/day cap, development traffic genuinely delivers, and bounces from fixture data damage the production sending domain's reputation.
 
@@ -120,5 +120,5 @@ Workers are started manually, never as DDEV daemons: a background worker keeps r
 
 | Service | Arrives | Note |
 |---------|---------|------|
-| Meilisearch | Phase 9 | No maintained DDEV add-on. Add a `.ddev/docker-compose.meilisearch.yaml`, the same pattern as `postgres-audit` |
-| Reverb | Phase 6 | HTTPS means the browser needs `wss://`, so the port must be exposed with the mkcert certificate and `REVERB_*` plus `VITE_REVERB_*` set to match |
+| Meilisearch | Phase 10 | No maintained DDEV add-on. Add a `.ddev/docker-compose.meilisearch.yaml`, the same pattern as `postgres-audit` |
+| Reverb | Phase 7 | HTTPS means the browser needs `wss://`, so the port must be exposed with the mkcert certificate and `REVERB_*` plus `VITE_REVERB_*` set to match |

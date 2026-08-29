@@ -99,7 +99,7 @@ Mitigations: rate-limit the test endpoint per org, and report a coarse outcome (
 `data` mirrors the audit `display` structure, which carries both `internal` and `management` visibility events. Only `management`-visibility events for that organization may ever be delivered: filtering happens where the payload is built, not at the subscription layer, so a mis-subscribed event type cannot leak internal detail.
 
 > [!WARNING]
-> This section is a Phase 15 implementation requirement, not guidance. Each control needs a test: an endpoint resolving to loopback, one returning a redirect to link-local space, one streaming an oversized body, and one whose DNS changes between save and delivery.
+> This section is a Phase 16 implementation requirement, not guidance. Each control needs a test: an endpoint resolving to loopback, one returning a redirect to link-local space, one streaming an oversized body, and one whose DNS changes between save and delivery.
 
 ## 🗄️ Tables
 
