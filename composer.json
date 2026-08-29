@@ -5,7 +5,7 @@
     "description": "SyokSheet — professional achievement platform: verified accomplishments, organisations, and job matching.",
     "license": "proprietary",
     "require": {
-        "php": "^8.3",
+        "php": "^8.4",
         "inertiajs/inertia-laravel": "^3.3",
         "laravel/framework": "^13.17",
         "laravel/tinker": "^3.0",
