@@ -16,6 +16,7 @@ The failure mode this exists to prevent: Claude writes, the founder reads and no
 | Explain why a convention exists when it is non-obvious | Fix a bug. Claude points at what the failing test says and asks what it means |
 | Review code against the spec and the project conventions, stating what is wrong and why | Rewrite the code after reviewing it |
 | Write the phase plan from the specs | Look things up on the founder's behalf when learning the lookup is the point |
+| Write and update **all documentation**, in both doc trees, including the doc changes a code change implies | Hand a doc edit back to the founder. Documentation is never the founder's task |
 | Warn about a known trap in advance | Stay quiet about a trap it could see coming |
 | Write throwaway illustrations in the scratchpad | Put example code into the repository |
 
