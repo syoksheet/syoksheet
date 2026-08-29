@@ -63,7 +63,7 @@ Trigger: push/PR to `main` or `develop`, and `v*` tag pushes.
 4. Laravel Pint (style) + Larastan (static analysis)
 5. Frontend checks: `svelte-check`, ESLint
 6. Pest (`php artisan test`)
-7. Vite production build (`npm run build`)
+7. Vite production build (`npm run build`), then **upload `public/build/` to R2 as `syoksheet-artifacts/$SHA.tar.gz`**: the deploy script fetches this and aborts when it is missing, so the pipeline is incomplete without it. Source maps upload to Sentry here and are excluded from the tarball
 8. **Bruno endpoint smoke tests:** `php artisan migrate --force && php artisan db:seed --class=BrunoSeeder`, `php artisan serve &`, then `npx @usebruno/cli run bruno --env ci --reporter-junit results.xml`: seeded credentials injected via CI env vars; JUnit output annotates failures
 9. On push to `main` (not PR): call the staging Forge deploy hook. On `v*` tag push: update the production Forge site's ref to the tag (Forge API) and call the production deploy hook
 
@@ -78,7 +78,19 @@ Third-party actions are pinned to commit SHAs with the version in a trailing com
 
 The weekly schedule matters: advisories get published against code that has not changed, so a PR-only trigger would never see them.
 
-**Secrets:** `FORGE_DEPLOY_HOOK_PRODUCTION`, `FORGE_DEPLOY_HOOK_STAGING`, `FORGE_API_TOKEN` (to point the production site at the release tag; Bruno CI credentials are non-secret seeder values, set as plain CI env vars)
+**Secrets and CI variables.** Only the deploy- and upload-bearing values are secrets; everything Bruno needs is deliberately not.
+
+| Value | Kind | Needed from | Why |
+|-------|------|-------------|-----|
+| `FORGE_DEPLOY_HOOK_STAGING` | Secret | Phase 2 | Triggers the staging deploy on push to `main` |
+| `FORGE_DEPLOY_HOOK_PRODUCTION` | Secret | Phase 19 | Triggers the production deploy on a `v*` tag |
+| `FORGE_API_TOKEN` | Secret | Phase 19 | Points the production site at the release tag |
+| `R2_ACCESS_KEY_ID` / `R2_SECRET_ACCESS_KEY` / `R2_ENDPOINT` | Secret | Phase 2 | Uploads the SHA-keyed build artifact. The deploy script aborts without it |
+| `CF_ACCESS_CLIENT_ID` / `CF_ACCESS_CLIENT_SECRET` | Secret | Phase 2 | Cloudflare Access service token, so CI can reach staging |
+| `SENTRY_AUTH_TOKEN`, org and project | Secret | Phase 3 | Uploads source maps at build time |
+| Bruno seeder credentials | **Plain CI variable, not a secret** | Phase 1 | `BrunoSeeder` creates them deterministically in a throwaway CI database that lives for one job. Treating them as secrets would imply they protect something |
+
+Phase 1's workflow needs none of the secrets: lint, static analysis, types, tests, build and a Bruno run against a locally served app are all self-contained.
 
 ## ⏪ Rollback
 

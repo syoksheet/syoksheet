@@ -160,7 +160,7 @@ Same change as the code, every time:
 
 - [ ] Route added or changed → `docs/api/openapi.json` **and** the `bruno/` collection
 - [ ] New business rule → stable error code in `docs/validation.md`
-- [ ] New Artisan command → `docs/scheduled-jobs.md`
+- [ ] New **scheduled** Artisan command → `docs/scheduled-jobs.md`. Operational commands (deploy-time, ad hoc) are documented alongside their runbook instead, never in the schedule
 - [ ] New personal-data field → `GenerateDataExportJob` coverage and the Tier 2 anonymisation path, per `docs/features/privacy/`
 - [ ] New audit event → `docs/features/audit/events.md`, with `visibility` set
 - [ ] New consent type → `ConsentType` enum and `docs/features/privacy/consent.md`
@@ -233,10 +233,12 @@ Catch yourself thinking any of these and stop. The thought is the signal, not th
 
 ## Current repo state
 
-Facts that affect the gates, true as of Phase 0:
+Facts that affect the gates. **Phase 0 closed 2026-08-30; Phase 1 has not started.** Re-verify against the codebase rather than trusting this list.
 
-- **Larastan is configured**: `phpstan.neon.dist` exists at level 9, `phpVersion: 80400`. The static-analysis gate is live.
-- **`.ai/rules` does not exist yet** despite CLAUDE.md referencing it. Skip that step until the directory appears; `record-rule` creates it.
+- **Larastan is configured**: `phpstan.neon.dist` at level 9, `phpVersion: 80400`. The static-analysis gate is live and currently clean.
+- **`.ai/rules` exists**: `index.md` maps globs to `general.md`. Read it before editing anything under `.ddev/**`, `.claude/**` or `CLAUDE.md`, and add to it with `record-rule`.
+- **The local environment matches `docs/infrastructure/local-development.md`.** PostgreSQL 18 on both instances, the `syoksheet` database created by a `post-start` hook, `redis.conf` at production parity with its `#ddev-generated` marker deliberately removed, MinIO with `syoksheet-public-local` and `syoksheet-private-local` created by the same hook, Buggregator replacing Mailpit, mkcert trusting all four hostnames. `fail_on_hook_fail: true`, so a failed hook fails the start.
+- **Horizon and Sentry are installed.** `laravel/horizon` and `sentry/sentry-laravel` are in `require`, with `config/horizon.php` and `config/sentry.php` published and configured. `@sentry/svelte` is in `package.json`, not yet wired into any entry point.
 - **`bruno/` does not exist yet**: it is a Phase 1 deliverable, along with `BrunoSeeder`.
-- **The local environment is Phase 0 work and is not done**: DDEV still runs PostgreSQL 16 with Mailpit, no MinIO, no `redis.conf`, no mkcert. Horizon and the Sentry SDK are not installed. Do not assume the environment matches `docs/infrastructure/local-development.md` until Phase 0 closes.
-- The repo is otherwise a near-bare Laravel skeleton: `routes/web.php` and `console.php` only, one `User` model, three default migrations, no `log` connection.
+- The application is otherwise a near-bare Laravel skeleton: `routes/web.php` and `console.php` only, one `User` model with no typed attributes, three default migrations, no `log` connection, no `session` or `queue` Redis connections, and `resources/scss/app.scss` plus `resources/ts/app.ts` as stubs.
+- **Four Phase 0 items were deliberately carried into Phase 1**, listed in that plan's "Noticed, deferred" table: Horizon's missing `staging` environment, the real supervisors, the anonymous-read policy on the local public bucket, and per-surface host configuration.
