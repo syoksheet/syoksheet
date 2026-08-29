@@ -1,9 +1,7 @@
 <?php
 
-use App\Providers\AppServiceProvider;
-use App\Providers\TypeScriptTransformerServiceProvider;
-
 return [
-    AppServiceProvider::class,
-    TypeScriptTransformerServiceProvider::class,
+    App\Providers\AppServiceProvider::class,
+    App\Providers\HorizonServiceProvider::class,
+    App\Providers\TypeScriptTransformerServiceProvider::class,
 ];
