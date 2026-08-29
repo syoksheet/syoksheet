@@ -47,11 +47,16 @@ No `SANCTUM_STATEFUL_DOMAINS` or CORS origin list. The UIs are same-origin Inert
 
 | Variable | Example |
 |----------|---------|
-| FILESYSTEM_DISK | r2 |
+| FILESYSTEM_DISK | r2_private |
 | R2_ACCESS_KEY_ID / R2_SECRET_ACCESS_KEY | [key] / [secret] |
-| R2_BUCKET | syoksheet-uploads (staging: syoksheet-uploads-staging) |
+| R2_PUBLIC_BUCKET | syoksheet-public-production (staging: syoksheet-public-staging) |
+| R2_PRIVATE_BUCKET | syoksheet-private-production (staging: syoksheet-private-staging) |
 | R2_ENDPOINT | https://[account].r2.cloudflarestorage.com |
-| R2_URL | https://uploads.syoksheet.com |
+| R2_PUBLIC_URL | https://cdn.syoksheet.com (staging: https://staging.cdn.syoksheet.com) |
+
+Two disks, `r2_public` and `r2_private`, over one credential pair. `FILESYSTEM_DISK` is `r2_private` so an unqualified `Storage::put()` cannot accidentally publish; avatars, org logos and verification marks are written with an explicit `Storage::disk('r2_public')`.
+
+The backup, audit-archive and build-artifact buckets deliberately have no variables here. None is reached through Laravel's filesystem layer: the first two belong to shell commands run by the scheduler, the third to CI and the deploy script, and each carries its own credential scoped to its own bucket.
 
 ## 📧 Resend
 

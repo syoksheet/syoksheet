@@ -1,5 +1,4 @@
-# DDEV configuration for syoksheet.
-# Reference: https://docs.ddev.com/en/stable/users/configuration/config/
+# DDEV configuration for syoksheet: https://docs.ddev.com/en/stable/users/configuration/config/
 # Every service runs in DDEV. Never call php, composer, psql or npm on the host.
 
 # Project identity
@@ -7,10 +6,8 @@ name: syoksheet
 type: laravel
 docroot: public
 
-# Subdomains
-# The application is one Laravel app serving four surfaces through Route::domain().
-# Declaring all four here means those groups resolve locally exactly as in production,
-# including cookie scoping, which is why local HTTPS (mkcert) matters too.
+# One Laravel app serves four surfaces through Route::domain(). Declaring all four
+# makes those groups, and cookie scoping, resolve locally as they do in production.
 additional_hostnames:
   - api.syoksheet
   - app.syoksheet
@@ -30,30 +27,21 @@ corepack_enable: false
 # Toggle it per session with `ddev xdebug` and `ddev xdebug off`.
 xdebug_enabled: false
 
-# Primary database
-# The audit database (the `log` connection) is a SEPARATE Postgres instance,
-# declared in .ddev/docker-compose.postgres-audit.yaml, mirroring the production
-# split. Two databases, never two schemas: Postgres cannot join or foreign-key
-# across databases, which is what enforces the audit log's "raw IDs, no
-# cross-database FK constraints" rule.
+# The audit database (the `log` connection) is a separate instance, declared in
+# .ddev/docker-compose.postgres-audit.yaml. Two databases, never two schemas.
 database:
   type: postgres
   version: "18"
 
 web_environment: []
 
-# Startup hooks
-# DDEV's Postgres instance always provisions a database named `db`, and that name
-# cannot be configured. The application expects `syoksheet`, the same name used in
-# staging and production, so it is created on every start rather than by hand:
-# a database created manually would not survive `ddev delete`, and a fresh clone
-# would come up broken.
-#
-# The SELECT guard exists because Postgres has no CREATE DATABASE IF NOT EXISTS,
-# so an unguarded hook would fail on every start after the first. No GRANT is
-# needed: the `db` role is a superuser and owns the database it creates. No
-# connection flags are needed either, as PGHOST, PGUSER and PGPASSWORD are already
-# set inside the web container.
+# Run on every start: doing either by hand would not survive `ddev delete`.
 hooks:
   post-start:
+    # DDEV always names its database `db`; the app expects `syoksheet`. The SELECT
+    # guard stands in for the CREATE DATABASE IF NOT EXISTS that Postgres lacks.
     - exec: psql -tAc "SELECT 1 FROM pg_database WHERE datname='syoksheet'" | grep -q 1 || psql -c 'CREATE DATABASE syoksheet OWNER db'
+    # `mc ready` waits because the minio image declares no HEALTHCHECK, so DDEV
+    # cannot gate on it. `--ignore-existing` is mc's own idempotence.
+    - exec: mc ready minio && mc mb --ignore-existing minio/syoksheet-public-local minio/syoksheet-private-local
+      service: minio

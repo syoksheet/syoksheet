@@ -1,5 +1,5 @@
 # Second PostgreSQL instance for the audit database (`log` connection).
-# Mirrors production's separate managed instance — the app talks to it as host `postgres-audit`.
+# Mirrors production's separate managed instance: the app talks to it as host `postgres-audit`.
 services:
   postgres-audit:
     image: postgres:18

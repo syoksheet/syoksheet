@@ -32,7 +32,7 @@ DDEV always provisions its Postgres instance with a database named `db`, and tha
 | postgres-audit | PostgreSQL 18 | Separate instance for the `log` connection, mirroring production's eventual split |
 | redis | Redis 7 | Sessions, cache, queue |
 | buggregator | Mail, dumps, logs, HTTP inspection | Replaces Mailpit. Speaks the Sentry protocol |
-| minio | S3-compatible object storage | Stands in for Cloudflare R2 |
+| minio | S3-compatible object storage | Stands in for Cloudflare R2. Buckets created by the `post-start` hook. S3 API on 10101, console on 9090 |
 | xhgui | Profiling | Started on demand with `ddev xhgui` |
 | mailpit | DDEV built-in mail catcher | Unused. Mail goes to Buggregator, but DDEV always provides this and it cannot be removed |
 
@@ -91,13 +91,43 @@ One container replacing several tools. Reached at `https://buggregator.syoksheet
 | Dumps | `dump()` lands here instead of corrupting an Inertia response |
 | Webhook payloads | An HTTP endpoint to point outbound webhooks at, from Phase 16 |
 
+Declared in `.ddev/docker-compose.buggregator.yaml`, ours rather than a third-party add-on. Image `ghcr.io/buggregator/server:latest`, no volume: captured events are disposable.
+
+| Port | Serves | Reached from |
+|------|--------|--------------|
+| 8000 | Web UI, Sentry protocol, Ray, XHProf, HTTP dumps | The router, as `https://buggregator.syoksheet.ddev.site` |
+| 1025 | SMTP | The web container only, as `buggregator:1025` |
+| 9912 | Symfony VarDumper socket | Published to `127.0.0.1`, for the PhpStorm plugin |
+| 9913 | Monolog `SocketHandler` | Published to `127.0.0.1`, for the PhpStorm plugin |
+
+The two socket ports are published to the host because the IDE plugin connects over raw TCP from outside Docker rather than through the router. SMTP is deliberately not published: nothing outside the Docker network sends mail.
+
+> [!WARNING]
+> `VIRTUAL_HOST` is written out as `buggregator.${DDEV_SITENAME}.ddev.site`, not as `buggregator.$DDEV_HOSTNAME`. `DDEV_HOSTNAME` expands to a comma-separated list of all five project hostnames, so the DDEV docs' subdomain pattern would attach the prefix to the first entry only and leave four bare hostnames claimed alongside it. The hostname needs no entry in `additional_hostnames`: `VIRTUAL_HOST` alone routes it, and the mkcert certificate already covers it.
+
 Never use Resend locally. Beyond the 3,000/month quota with its 100/day cap, development traffic genuinely delivers, and bounces from fixture data damage the production sending domain's reputation.
 
 ## 🗃️ Object Storage
 
 MinIO stands in for R2 using the same S3 driver, so only the endpoint and credentials differ. This matters because the `local` disk does **not** support `Storage::temporaryUrl()`, and signed URLs are required by PDF export (24-hour expiry) and GDPR data exports (48-hour expiry).
 
-MinIO proves the code path; it does not replicate R2's quirks (no ACLs, `AWS_DEFAULT_REGION=auto`, its own CORS behaviour). Staging points at a real R2 bucket for that reason.
+MinIO proves the code path; it does not replicate R2's quirks (no ACLs, `AWS_DEFAULT_REGION=auto`, its own CORS behaviour). Staging points at real R2 buckets for that reason.
+
+| Setting | Value |
+|---------|-------|
+| Console | `https://syoksheet.ddev.site:9090` |
+| S3 endpoint, from the web container | `http://minio:10101` |
+| S3 endpoint, from the host browser | `https://syoksheet.ddev.site:10101` |
+| Access key / secret | `ddevminio` / `ddevminio` |
+| Public bucket | `syoksheet-public-local` |
+| Private bucket | `syoksheet-private-local` |
+
+Local buckets carry `-local` for the same reason production carries `-production`: the name is always `syoksheet-<purpose>-<environment>` with no default case, so a misconfigured environment fails on a bucket that does not exist rather than quietly reaching one that does. The `backups`, `audit-archive` and `artifacts` buckets have no local counterpart, since nothing local runs those jobs.
+
+> [!WARNING]
+> The S3 API listens on **10101**, not the conventional 9000. The add-on's compose file passes `--address :10101` and reserves 9090 for the console. `ddev describe` still lists `minio:9000` because the image exposes it, but nothing serves there, so an endpoint left at 9000 hangs instead of erroring.
+
+Both buckets are created by a `post-start` hook in `.ddev/config.yaml`, never by hand in the console. The `minio` volume is declared in the add-on's compose file, so a hand-made bucket does not survive `ddev delete`, and a fresh clone of the repo would come up with storage that fails on first write. Same reasoning as the `syoksheet` database hook above.
 
 ## ⌨️ Commands
 

@@ -1,0 +1,36 @@
+# Buggregator: mail catcher, Sentry endpoint, dump target and webhook inspector.
+# Replaces Mailpit, which DDEV always provisions and which we leave unused.
+# Reached at https://buggregator.syoksheet.ddev.site; the app talks to it as host `buggregator`.
+# No volume: captured events are disposable local debug traffic.
+services:
+  buggregator:
+    image: ghcr.io/buggregator/server:latest
+    container_name: ddev-${DDEV_SITENAME}-buggregator
+    labels:
+      com.ddev.site-name: ${DDEV_SITENAME}
+      com.ddev.approot: $DDEV_APPROOT
+    environment:
+      # Written out rather than `buggregator.$DDEV_HOSTNAME`: that variable expands to a
+      # comma-separated list of all five project hostnames, so the prefix would attach
+      # to the first one only.
+      VIRTUAL_HOST: buggregator.${DDEV_SITENAME}.ddev.site
+      HTTP_EXPOSE: "80:8000"
+      HTTPS_EXPOSE: "443:8000"
+    expose:
+      - "1025"
+      - "8000"
+      - "9912"
+      - "9913"
+    # Published to the host because the PhpStorm plugin connects over raw TCP from
+    # outside Docker, not through the router. SMTP is not published: mail comes from
+    # the web container as `buggregator:1025`.
+    ports:
+      - "127.0.0.1:9912:9912"
+      - "127.0.0.1:9913:9913"
+    restart: "no"
+    # The image declares no HEALTHCHECK of its own, and ships wget but not curl.
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8000/"]
+      interval: 5s
+      timeout: 3s
+      retries: 10

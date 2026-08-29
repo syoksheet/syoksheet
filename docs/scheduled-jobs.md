@@ -20,7 +20,7 @@ Canonical list of all scheduled Artisan commands. Feature specs link here for fr
 | `analytics:cleanup` | Daily | Prune raw user-wall views > 90 days and raw org views > 12 months (rolled into monthly aggregates first) |
 | `matching:reconcile` | Daily | Repair drifted `match_scores` (stale `computed_at` vs newer brags/postings) |
 | `webhooks:cleanup` | Daily | Prune `org_webhook_deliveries` older than 30 days |
-| `audit:archive` | Monthly | `pg_dump` the audit DB to the dedicated R2 archival bucket: forever retention |
+| `audit:archive` | Monthly | `pg_dump` the audit DB to `syoksheet-audit-archive-{env}`: forever retention |
 | `billing:process-dunning` | Daily | Send day-7/12 dunning reminders; downgrade subscriptions past the 14-day grace |
 
 ## 🔗 Job → Spec Map
