@@ -54,6 +54,11 @@ ddev exec psql -h postgres-audit -U db syoksheet_audit
 
 Audit migrations live in `database/migrations/audit/` with their own history table on the `log` connection.
 
+> [!WARNING]
+> Upgrading the Postgres major version is not a one-line image bump. From 18 onward the image stores data in a version-named directory (`/var/lib/postgresql/18/docker`, where 16 used a flat `/var/lib/postgresql/data`), so `.ddev/docker-compose.postgres-audit.yaml` mounts its volume one level up at `/var/lib/postgresql` and sets no `PGDATA` of its own. Overriding `PGDATA` back to a fixed path appears to work and silently recreates the pre-18 layout, which breaks the next upgrade: version-named directories are what let `pg_upgrade --link` run inside a single mount. The container refuses to start on mismatched data rather than corrupting it, which is a safety feature, not a bug.
+>
+> `ddev delete` removes only DDEV's own `db` volume. The audit volume is declared in our compose file, so it must be removed separately with `docker volume rm ddev-syoksheet_postgres-audit`.
+
 ## 🧠 Redis
 
 Configure `.ddev/redis/redis.conf` to match production exactly:
