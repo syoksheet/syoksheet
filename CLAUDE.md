@@ -7,7 +7,7 @@ The Laravel Boost guidelines are specifically curated by Laravel maintainers for
 
 ## Foundational Context
 
-This application is a Laravel application running on PHP 8.4. You are an expert with the Laravel ecosystem. Always use the APIs that match the installed major version of each package — do not assume a version.
+This application is a Laravel application running on PHP 8.4. You are an expert with the Laravel ecosystem. Always use the APIs that match the installed major version of each package: do not assume a version.
 
 Before relying on a package's API, confirm its installed version:
 - PHP packages: run `composer show --direct` to list direct dependencies with versions, or `composer show <vendor/package>` for a single package.
@@ -15,7 +15,7 @@ Before relying on a package's API, confirm its installed version:
 
 ## Skills Activation
 
-This project has domain-specific skills available in `**/skills/**`. You MUST activate the relevant skill whenever you work in that domain—don't wait until you're stuck.
+This project has domain-specific skills available in `**/skills/**`. You MUST activate the relevant skill whenever you work in that domain: don't wait until you're stuck.
 
 ## Conventions
 
@@ -72,8 +72,8 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 
 ## Project Rules
 
-- This project contains committed, area-grouped rules in `.ai/rules` when that directory exists (settled decisions, non-obvious traps, standing constraints). Framework and package guidelines that only apply to specific paths (testing, frontend, components) also live there, under `.ai/rules/boost` — this is not just recorded decisions, it is load-bearing guidance you have not seen inline. Before you enter plan mode or create/edit any file, you MUST first: open @.ai/rules/index.md (it maps file globs to rule files), read every rule file whose globs cover the path(s) in scope, and run `grep -rin 'keyword' .ai/rules` to catch what a path match alone misses. Do not write code until you have read and are following every matching rule. If `.ai/rules` does not exist, continue without it.
-- Record durable rules with `record-rule` so the next agent or teammate inherits them instead of working them out again. Pass a `glob` (e.g. `app/Http/Controllers/**`), a short `title`, and a few-line `note`. Always use `record-rule`, never your native memory or notes tool — native memory is personal and session-scoped; only `.ai/rules` is shared with the team and persists in the repo.
+- This project contains committed, area-grouped rules in `.ai/rules` when that directory exists (settled decisions, non-obvious traps, standing constraints). Framework and package guidelines that only apply to specific paths (testing, frontend, components) also live there, under `.ai/rules/boost`. This is not just recorded decisions, it is load-bearing guidance you have not seen inline. Before you enter plan mode or create/edit any file, you MUST first: open @.ai/rules/index.md (it maps file globs to rule files), read every rule file whose globs cover the path(s) in scope, and run `grep -rin 'keyword' .ai/rules` to catch what a path match alone misses. Do not write code until you have read and are following every matching rule. If `.ai/rules` does not exist, continue without it.
+- Record durable rules with `record-rule` so the next agent or teammate inherits them instead of working them out again. Pass a `glob` (e.g. `app/Http/Controllers/**`), a short `title`, and a few-line `note`. Always use `record-rule`, never your native memory or notes tool: native memory is personal and session-scoped; only `.ai/rules` is shared with the team and persists in the repo.
 
 ## Artisan
 
@@ -195,41 +195,41 @@ This repo is **the syoksheet application**: one Laravel app serving `api.*`, `ap
 
 ## Frontend (Inertia + Svelte)
 
-- Svelte 5 + TypeScript under `resources/ts/` — strict `tsconfig`, ESLint, `svelte-check`. **TypeScript only: no `.js` source files** (sole exception: `svelte.config.js`, required by name by the Svelte tooling). Never React, never Livewire.
-- Components build on headless primitives (Bits UI), styled **only** with the design system's tokens and spec CSS — never a styled component library, never local restyles of shared components. **Tables are built in-house** — no TanStack Table, no TanStack packages at all; table state (sort, filter, paginate, select) lives in our own Svelte 5 runes-based composable against the `DS Table` / `DS Data Table` specs.
-- The design system lives in `design/`: `docs/` = full component specs (behaviour, a11y), `previews/` = the cards mirrored to the Claude Design "syoksheet Design System" project — keep repo and project in sync via DesignSync when either changes. Screen designs live in the Claude Design studio project "syoksheet".
-- The verification mark's forest green is never the primary teal. Shared components are presentational — no API calls or product logic inside them.
-- All UI strings go through translation files (English at launch) — no hardcoded user-facing text.
+- Svelte 5 + TypeScript under `resources/ts/`: strict `tsconfig`, ESLint, `svelte-check`. **TypeScript only: no `.js` source files** (sole exception: `svelte.config.js`, required by name by the Svelte tooling). Never React, never Livewire.
+- Components build on headless primitives (Bits UI), styled **only** with the design system's tokens and spec CSS, never a styled component library, never local restyles of shared components. **Tables are built in-house**, no TanStack Table, no TanStack packages at all; table state (sort, filter, paginate, select) lives in our own Svelte 5 runes-based composable against the `DS Table` / `DS Data Table` specs.
+- The design system lives in `design/`: `docs/` = full component specs (behaviour, a11y), `previews/` = the cards mirrored to the Claude Design "syoksheet Design System" project: keep repo and project in sync via DesignSync when either changes. Screen designs live in the Claude Design studio project "syoksheet".
+- The verification mark's forest green is never the primary teal. Shared components are presentational, no API calls or product logic inside them.
+- All UI strings go through translation files (English at launch), no hardcoded user-facing text.
 - `www.*` pages: SEO/OG meta on every public page; GTM with Consent Mode v2 per syoksheet-docs → marketing/analytics-stack.md; the rendered privacy policy / ToS pages live here (log versions in syoksheet-docs/legal/policy-versions.md before shipping changes).
 - Before building any screen: read the feature doc (syoksheet-docs), this repo's feature spec, and the screen design.
 
 ## Documentation Lookup
 
-Two doc sources, split by coverage — never guess a versioned API from memory when either one covers it.
+Two doc sources, split by coverage, never guess a versioned API from memory when either one covers it.
 
 - **Laravel ecosystem → Boost `search-docs`.** Laravel itself, Inertia (server side), Pest, Pint, Larastan, Telescope, Horizon, the `spatie/*` packages, and anything else Boost indexes. Local, free, version-matched to what's installed. Always try this first.
-- **Everything else → Context7.** Svelte 5 and runes, Bits UI, Vite, TypeScript, ESLint, Prettier, `sass-embedded`, DodoPayments, and any library Boost does not index. Explicitly reach for Context7 rather than answering from memory — this stack moves faster than the training cutoff.
+- **Everything else → Context7.** Svelte 5 and runes, Bits UI, Vite, TypeScript, ESLint, Prettier, `sass-embedded`, DodoPayments, and any library Boost does not index. Explicitly reach for Context7 rather than answering from memory, this stack moves faster than the training cutoff.
 - If neither source covers it, say so and check the library's own repo. Do not invent an API surface.
 
 Context7 runs on the free tier: **1,000 tool calls per month**, and one call is one tool invocation, not one prompt. Two habits keep it in budget:
 
-- Pass a known Context7 library ID (e.g. `/sveltejs/svelte`) straight to `query-docs` so the `resolve-library-id` round trip is skipped — that halves most lookups.
+- Pass a known Context7 library ID (e.g. `/sveltejs/svelte`) straight to `query-docs` so the `resolve-library-id` round trip is skipped, that halves most lookups.
 - Look things up when a specific API is actually in question, not reflexively at the start of every task.
 
 ## Build Loop
 
-All build work in this repo — whether or not the phase is named — follows `.claude/skills/build-step/SKILL.md`, which is self-contained. Do not invoke superpowers skills; build-step already carries that discipline. These gates hold regardless of how the work was started:
+All build work in this repo, whether or not the phase is named, follows `.claude/skills/build-step/SKILL.md`, which is self-contained. Do not invoke superpowers skills; build-step already carries that discipline. These gates hold regardless of how the work was started:
 
 - The plan is written to `.claude/work/plans/` and **explicitly approved by the user** before any implementation.
 - Audit events exist in `docs/features/audit/events.md` **before** the code that fires them.
 - `docs/api/openapi.json` and the `bruno/` collection are updated in the same commit as any route change.
 - Pint, Larastan and the affected test suite are green, with the output shown, before anything is called done.
 - The `spec-reviewer` agent runs on the changes before completion is reported.
-- **Never run git write operations** — no add, commit, push, tag, branch, worktree, stash or reset. The user handles all git himself, whatever a skill instructs. Read-only git (`status`, `diff`, `log`) is fine.
+- **Never run git write operations**, no add, commit, push, tag, branch, worktree, stash or reset. The user handles all git himself, whatever a skill instructs. Read-only git (`status`, `diff`, `log`) is fine.
 
 ## Planning & Documentation
 
-- This repo's `docs/` holds the technical spec (database schema, endpoints, jobs, events, validation, infrastructure). Product behaviour lives in `syoksheet-docs` — see the shared context above.
+- This repo's `docs/` holds the technical spec (database schema, endpoints, jobs, events, validation, infrastructure). Product behaviour lives in `syoksheet-docs`. See the shared context above.
 - Before starting any build work, read the relevant `syoksheet-docs` feature doc for product behaviour, plus this repo's `docs/features/` implementation spec and `docs/database/` schema.
 - Save design specs (from brainstorming) to `.claude/work/specs/` and implementation plans to `.claude/work/plans/`. Wait for user approval before proceeding with implementation.
 - Follow conventions defined in `docs/database/README.md` and the Documentation Conventions section below.
@@ -237,7 +237,7 @@ All build work in this repo — whether or not the phase is named — follows `.
 ## Audit Log
 
 - Every feature that creates, updates, or deletes user or org data must fire the appropriate audit log event. Read `docs/features/audit/events.md` for the full events catalog before planning any feature.
-- Audit log events write to the **separate audit database** (`log` connection) via `AuditLogJob` — never write to the audit DB directly from a controller or model.
+- Audit log events write to the **separate audit database** (`log` connection) via `AuditLogJob`, never write to the audit DB directly from a controller or model.
 - Always set the correct `visibility` on events: `internal` (admin only) or `management` (org owner + Admin team can see).
 - When planning a new feature, identify which audit events it needs and add them to `docs/features/audit/events.md` before implementation.
 
@@ -256,21 +256,21 @@ API technical documentation lives in this repository under `docs/`. Formatting r
 
 ```
 docs/
-├── README.md                 — navigation index (points to syoksheet-docs for product docs)
-├── architecture.md           — guards, databases, queues, events, integrations
-├── scheduled-jobs.md         — canonical Artisan schedule
-├── validation.md             — uploads, identifiers, business-rule error codes
-├── localization.md           — locale handling, taxonomy translations, Weblate workflow
-├── ai.md                     — AiService abstraction, use cases, review gates
-├── database/                 — README (conventions) + one file per domain
-├── features/{domain}/        — implementation specs: endpoints, jobs, validation, events
-├── infrastructure/           — local-development, environment-variables, deployment (API-scoped)
+├── README.md                 - navigation index (points to syoksheet-docs for product docs)
+├── architecture.md           - guards, databases, queues, events, integrations
+├── scheduled-jobs.md         - canonical Artisan schedule
+├── validation.md             - uploads, identifiers, business-rule error codes
+├── localization.md           - locale handling, taxonomy translations, Weblate workflow
+├── ai.md                     - AiService abstraction, use cases, review gates
+├── database/                 - README (conventions) + one file per domain
+├── features/{domain}/        - implementation specs: endpoints, jobs, validation, events
+├── infrastructure/           - local-development, environment-variables, deployment (API-scoped)
 └── api/
-    ├── README.md             — environments, auth modes, conventions, Bruno collection rules
-    └── openapi.json          — OpenAPI 3.1 spec (hand-maintained)
+    ├── README.md             - environments, auth modes, conventions, Bruno collection rules
+    └── openapi.json          - OpenAPI 3.1 spec (hand-maintained)
 ```
 
-The Bruno collection lives at the repo root (`bruno/` — one folder per API tag, environments without secrets, gitignored `bruno/.env`). Any change to the external API updates `openapi.json` **and** the Bruno collection in the same commit. The design system mirror also lives at the repo root (`design/` — `docs/` specs + `previews/` cards).
+The Bruno collection lives at the repo root (`bruno/`, one folder per API tag, environments without secrets, gitignored `bruno/.env`). Any change to the external API updates `openapi.json` **and** the Bruno collection in the same commit. The design system mirror also lives at the repo root (`design/`, `docs/` specs + `previews/` cards).
 
 ### OpenAPI spec rules
 
@@ -280,7 +280,7 @@ The Bruno collection lives at the repo root (`bruno/` — one folder per API tag
 
 ## Local Environment & Commands
 
-All project services (PHP, PostgreSQL, Redis, and anything added later) run inside DDEV. Never interact with them directly from the host — always go through DDEV:
+All project services (PHP, PostgreSQL, Redis, and anything added later) run inside DDEV. Never interact with them directly from the host, always go through DDEV:
 
 | Service               | Command                                           |
 |-----------------------|---------------------------------------------------|
@@ -288,10 +288,10 @@ All project services (PHP, PostgreSQL, Redis, and anything added later) run insi
 | Pint                  | `ddev php vendor/bin/pint ...`                    |
 | Tinker                | `ddev php artisan tinker ...`                     |
 | PostgreSQL            | `ddev psql` (or use Boost `database-query` tool)  |
-| Redis                 | `ddev exec redis-cli`                             |
+| Redis                 | `ddev php artisan tinker` (no `redis-cli` in the container) |
 | Any container command | `ddev exec ...`                                   |
 
-> The Boost block above shows generic examples like `php artisan` and `vendor/bin/pint` — prefix all of them with `ddev php`.
+> The Boost block above shows generic examples like `php artisan` and `vendor/bin/pint`: prefix all of them with `ddev php`.
 
-- **Never run bare `npm install`** — it re-resolves the tree. Use `ddev exec npm ci` to install, and `ddev exec npm install <pkg>` only to deliberately add one (`.npmrc` sets `save-exact=true`, `ignore-scripts=true`). Dependencies are pinned to exact versions in `package.json`; CI fails on any `^`/`~` range. Composer keeps `^` ranges and relies on `composer.lock`.
+- **Never run bare `npm install`**: it re-resolves the tree. Use `ddev exec npm ci` to install, and `ddev exec npm install <pkg>` only to deliberately add one (`.npmrc` sets `save-exact=true`, `ignore-scripts=true`). Dependencies are pinned to exact versions in `package.json`; CI fails on any `^`/`~` range. Composer keeps `^` ranges and relies on `composer.lock`.
 - Never create or modify `.env` files directly.
