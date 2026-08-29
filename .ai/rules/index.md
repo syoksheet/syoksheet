@@ -4,4 +4,4 @@ Before planning or editing, find the row whose globs match the file's path and r
 
 | Applies to | Rule file |
 | --- | --- |
-| .ddev/** | .ai/rules/general.md |
+| .ddev/**, .claude/** | .ai/rules/general.md |

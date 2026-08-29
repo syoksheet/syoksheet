@@ -1,6 +1,7 @@
 ---
 paths:
   - '.ddev/**'
+  - '.claude/**'
 ---
 
 # General
@@ -14,3 +15,8 @@ One test decides it: does the generated file already state a value you disagree 
 Never edit a marked file to add something it does not mention: owning their whole compose file (image version, ports, volume subpaths) to carry a two-line addition is a bad trade.
 
 Hooks always live in `.ddev/config.yaml`, never a separate `config.*.yaml`: merge behaviour for the `hooks` list across config files is undocumented, and a wrong guess silently stops the existing hooks from running.
+
+## The no-em-dash rule stops at agent tooling files
+The project-wide "never use em dashes" rule applies to documentation, code comments and chat replies. It does NOT apply to `.claude/**` or `.ai/**`: skills, plans, specs, agent definitions and recorded rules are agent tooling, not prose anyone reads as project documentation.
+
+Do not sweep those two directories for em dashes, and do not "fix" them when passing through. Leave whatever punctuation is there.

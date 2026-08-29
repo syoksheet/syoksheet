@@ -56,9 +56,9 @@ Taken from the running environment on 2026-08-29, not from the docs.
 > [!WARNING]
 > DDEV refuses to start against a data volume built by a different major version, and the failure message is not always obvious about why. Both volumes must be destroyed deliberately: DDEV owns the primary one (`ddev delete -O`, the `-O` skips the snapshot), and it does **not** own the audit one, which was declared in our own compose file and must be removed with `docker volume rm`. There is no local data to preserve, so this costs nothing, but it will not happen by itself.
 
-- [ ] Bump both versions
-- [ ] Remove both volumes deliberately
-- [ ] `ddev start`, then `ddev describe` shows 18 on both
+- [x] Bump both versions
+- [x] Remove both volumes deliberately
+- [x] `ddev start`, then `ddev describe` shows 18 on both
 
 ### Task 2: `redis.conf` to production parity
 
@@ -75,9 +75,9 @@ Taken from the running environment on 2026-08-29, not from the docs.
 
 Worth internalising before editing: eviction policy is per **instance**, not per database, so the cache/session/queue split across DBs 1/2/3 does not on its own stop Redis from evicting a queued job under memory pressure. `volatile-lru` does, because it only ever evicts keys that carry an expiry, and queued jobs do not. This is also why `Cache::forever()` is banned project-wide.
 
-- [ ] Edit the three directives, remove the `#ddev-generated` marker
-- [ ] `ddev restart`
-- [ ] Confirm at runtime, not in the file: `ddev php artisan tinker --execute 'dd(Redis::connection()->config("GET", "maxmemory-policy"), Redis::connection()->config("GET", "appendonly"));'`
+- [x] Edit the three directives, remove the `#ddev-generated` marker
+- [x] `ddev restart`
+- [x] Confirm at runtime, not in the file: `ddev php artisan tinker --execute 'dd(Redis::connection()->config("GET", "maxmemory-policy"), Redis::connection()->config("GET", "appendonly"));'`
 
 ### Task 3: MinIO
 
@@ -91,8 +91,8 @@ Worth internalising before editing: eviction policy is per **instance**, not per
 
 Why this exists rather than the `local` disk: `Storage::temporaryUrl()` is unsupported on `local`, and signed URLs are required by PDF export (24-hour expiry) and GDPR data export (48-hour expiry). MinIO proves the code path. It does not replicate R2's quirks (no ACLs, `AWS_DEFAULT_REGION=auto`, its own CORS behaviour), which is why staging points at a real bucket in Phase 2.
 
-- [ ] Add-on installed, `ddev restart`
-- [ ] Console loads, bucket exists
+- [x] Add-on installed, `ddev restart`
+- [x] Console loads, bucket exists
 
 ### Task 4: Buggregator via our own compose file
 
@@ -107,8 +107,8 @@ Why this exists rather than the `local` disk: `Storage::temporaryUrl()` is unsup
 2. ddev.readthedocs.io, "Additional services" / "custom compose files", specifically how a service with a web UI gets a hostname. The `VIRTUAL_HOST` plus `HTTP_EXPOSE`/`HTTPS_EXPOSE` environment variables are the mechanism, and the docs spell out the port-mapping syntax. The spec asks for a `buggregator.` subdomain, which is the part worth getting right rather than settling for a port on the main hostname.
 3. Buggregator's own docs for the image name and its ports. Confirm them rather than trusting a remembered list: the web UI and the Sentry endpoint share the HTTP port, while SMTP and the var-dump socket are separate.
 
-- [ ] Compose file written, matching the postgres-audit pattern
-- [ ] `ddev restart`, UI loads at the intended hostname
+- [x] Compose file written, matching the postgres-audit pattern
+- [x] `ddev restart`, UI loads at the intended hostname
 - [ ] Left until Task 8: mail actually landing in it
 
 ### Task 5: mkcert
@@ -121,7 +121,7 @@ Why this exists rather than the `local` disk: `Storage::temporaryUrl()` is unsup
 
 Why it matters enough to be a phase task: cookie scoping across subdomains behaves differently over plain HTTP, and the app serves four of them. Without this, a cookie bug would first appear in Phase 4 auth, would not reproduce anywhere else, and would cost far more to diagnose than this costs to set up.
 
-- [ ] `api.`, `app.`, `admin.`, `www.syoksheet.ddev.site` all answer over HTTPS, certificate trusted
+- [x] `api.`, `app.`, `admin.`, `www.syoksheet.ddev.site` all answer over HTTPS, certificate trusted
 
 ### Task 6: Horizon into `require`
 
@@ -135,7 +135,7 @@ Why it matters enough to be a phase task: cookie scoping across subdomains behav
 
 `require`, not `require-dev`, deliberately: the `audit` queue's retry-forever behaviour is a Horizon supervisor setting, and every deploy runs `composer install --no-dev`. Hand-typed `queue:work` flags would exercise something different from what ships.
 
-- [ ] Installed under `require`
+- [x] Installed under `require`
 - [ ] Config published
 - [ ] `ddev php artisan horizon` starts without error
 
@@ -211,4 +211,4 @@ Also out of scope: Meilisearch (Phase 10) and Reverb (Phase 7), both noted as "n
 
 ## Noticed, deferred
 
-`composer.json` declares `php: ^8.3` while DDEV, `phpstan.neon.dist` (`phpVersion: 80400`) and every doc target 8.4. Worth tightening, but it belongs with the Phase 1 foundation work rather than the environment.
+Nothing outstanding. The earlier `php: ^8.3` versus 8.4 mismatch was resolved in commit `9d23847`: `composer.json` now requires `php ^8.4`, matching `phpstan.neon.dist` and the docs.
