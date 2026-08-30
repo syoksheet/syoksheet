@@ -44,6 +44,7 @@ Things that must exist or be decided before a phase starts, discovered during de
 ## 📏 Rules of Engagement
 
 - Every phase: feature tests written and passing, audit events added to the catalog **before** implementing, OpenAPI **and** the Bruno collection updated in the same commit as any external-API route.
+- **Reshape the phase's endpoint docs before implementing them.** The tables under `docs/features/` predate Inertia and still carry `/api/v1/...` paths from the old JSON-API design. Each becomes an operation catalogue (operation, host that serves it, behaviour) as its phase starts. Internal routes get no `/api` prefix; whether an operation is sold on `api.*` is decided then and recorded in `openapi.json`.
 - Screens are implemented from their Claude Design files, using only design-system components, a screen without a design gets designed first (studio project, against the published design system).
 - Tier limits are config-driven from their first appearance (phases 4–12) and wired to real subscriptions in phase 13: features never hardcode limits.
 - All UI strings through translation files from the first screen, no retrofitting i18n.

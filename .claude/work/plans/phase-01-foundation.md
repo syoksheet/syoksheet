@@ -131,9 +131,12 @@ Answered before implementing, per the build-step gate.
 
 ### Task 7: `Route::domain()` skeleton
 
-**Files:** modify `bootstrap/app.php` (register the route files), create `routes/app.php`, `routes/admin.php`, `routes/api.php`, `routes/marketing.php`, modify `routes/web.php`.
+**Files:** modify `bootstrap/app.php` (register the route files), create `routes/app.php`, `routes/admin.php`, `routes/api.php`, `routes/public.php`, modify `routes/web.php`.
 
 **Behaviour:** each domain answers only on its own host. A request for an `app.` route sent to the apex 404s.
+
+> [!NOTE]
+> Internal routes carry **no `/api` prefix**: `app.` and `admin.` are Inertia, the apex is Blade, and there is no internal API to prefix. Only `api.` carries versioned JSON, at `/v1/*` and `/admin/v1/*`, with no `/api` prefix because the host already says it. Laravel's `withRouting(api:)` adds `/api` by default, so the api group needs its prefix set explicitly rather than inherited.
 
 **Who writes:** user. This is the structural decision the whole application hangs off.
 

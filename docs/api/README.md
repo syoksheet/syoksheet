@@ -26,7 +26,7 @@ Tokens are created in the respective UIs (password-confirmed). Interactive login
 
 ## 📐 Conventions
 
-- **Versioning**: authenticated app routes under `/api/v1/` (admin: `/api/admin/v1/`). Auth bootstrap routes (`/api/auth/*`) are unversioned.
+- **Versioning**: `/v1/*` for `user:api` token routes, `/admin/v1/*` for `admin:api` token routes. No `/api` prefix: the host already says it. Internal Inertia and Blade routes are not part of this API and carry no version prefix at all.
 - **Resources**: every response body is an Eloquent API Resource: `{ "data": ... }`, with `links`/`meta` for pagination.
 - **Errors**. Laravel defaults: 401 `{ "message": "Unauthenticated." }`, 403, 404, and 422 `{ "message", "errors": { field: [...] } }`. Business-rule violations additionally carry a stable `code` (e.g. `brag_limit_reached`). The catalog lives in [../validation.md](../validation.md); frontends key off codes, never message strings.
 - **Tags**, one per feature domain: `auth`, `users`, `organizations`, `brags`, `jobs`, `billing`, `taxonomy`, `public`, `admin`.
@@ -50,6 +50,12 @@ Tokens are created in the respective UIs (password-confirmed). Interactive login
 | Pest | Primary test suite: business logic, DB state, authorization edge cases |
 | Bruno | Executable collection + black-box HTTP smoke tests through real routing/middleware |
 | OpenAPI | The contract, including the docs handed to Business orgs integrating against the Push API |
+
+## 📚 Relationship to the Feature Specs
+
+The endpoint tables under [../features/](../features/) are **operation catalogues**: what each operation does, what it validates, what it fires, which host serves it. They do not define this API's URLs.
+
+An operation reaches `api.*` only by being added here, to `openapi.json` and to `bruno/`, and that is a per-operation decision made in the phase that builds it. If it is not in `openapi.json`, it is not sold.
 
 ## 📋 Maintenance
 

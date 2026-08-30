@@ -13,6 +13,12 @@ One application, routed by `Route::domain()` groups:
 | `syoksheet.com` (apex) | Marketing, public walls, jobs directory, policy pages | Server-rendered Blade. SEO-first, no auth. `www.syoksheet.com` redirects here |
 | `api.syoksheet.com` | **The sold API**: Pro user tokens, Jobs Push API, Dodo webhooks, verifier/collaborator/invitation token pages' endpoints | JSON via Sanctum bearer tokens / signed or tokened routes |
 
+Paths differ by host, and the difference is load-bearing. `app.` and `admin.` are
+Inertia: a route returns a page, a write returns a redirect, and there is **no `/api`
+prefix**, because there is no internal API to prefix. The apex is Blade for the same
+reason. Only `api.` carries versioned JSON paths, `/v1/*` and `/admin/v1/*`, and it
+needs no `/api` prefix either since the host already says so.
+
 ## 🔐 Auth & Guards
 
 | Host | Auth | Notes |
@@ -26,7 +32,9 @@ One application, routed by `Route::domain()` groups:
 User↔Admin isolation is bidirectional and middleware-enforced: the wrong principal type on either host gets 403. Users resolve through `UserEmailProvider` (`user_emails.type = primary`): there is no `users.email` column.
 
 > [!NOTE]
-> The feature specs under `docs/features/` define each domain's **operations, validation, events, and rules**. Internal UI consumes them as Inertia web routes; the same operations are exposed on `api.*` only where they are part of the sold API (public endpoints, Push API, user/admin token APIs). `openapi.json` and the Bruno collection document the sold API.
+> The feature specs under `docs/features/` are **operation catalogues**, not URL specifications. Each defines an operation's validation, events, rules and error codes, and which host serves it. Whether an operation is also sold on `api.*` is decided per operation as it is built, and recorded in `openapi.json` and the Bruno collection, which are the only statement of the external contract.
+>
+> Tables still carrying `/api/v1/...` paths predate the move to Inertia and are being reshaped phase by phase, as each domain is built.
 
 ## 🖥️ Frontend Layer
 
