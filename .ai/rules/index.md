@@ -5,3 +5,4 @@ Before planning or editing, find the row whose globs match the file's path and r
 | Applies to | Rule file |
 | --- | --- |
 | .ddev/**, .claude/**, CLAUDE.md | .ai/rules/general.md |
+| tests/** | .ai/rules/tests.md |
