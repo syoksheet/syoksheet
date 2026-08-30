@@ -142,10 +142,10 @@ Answered before implementing, per the build-step gate.
 
 **Read first:** `docs/architecture.md` § Domains and § Auth & Guards. Boost `search-docs` for "route domain group" and "withRouting then".
 
-- [ ] Failing test: `DomainRoutingTest`, one case per domain, each asserting the route answers on its own host and 404s on the other three
-- [ ] Implement
-- [ ] Green: `ddev php artisan test --compact --filter=DomainRouting`
-- [ ] `curl` all four local hostnames and confirm each serves its own domain
+- [x] Failing test: `DomainRoutingTest`, one case per domain, each asserting the route answers on its own host and 404s on the other three
+- [x] Implement
+- [x] Green: `ddev php artisan test --compact --filter=DomainRouting`
+- [x] `curl` all four local hostnames and confirm each serves its own domain
 
 ### Task 8: Inertia bootstrap
 
