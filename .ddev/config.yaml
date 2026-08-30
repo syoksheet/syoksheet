@@ -36,6 +36,11 @@ database:
 
 web_environment: []
 
+# DDEV's laravel project type rewrites DB_* and MAIL_* in `.env` on every start,
+# pointing them at its own database and Mailpit. That silently reverts
+# DB_DATABASE to `db` and MAIL_HOST to Mailpit, so `.env` is ours to manage.
+disable_settings_management: true
+
 # A failed hook must fail the start. Left unset it defaults to false, and DDEV
 # reports success while the database or the buckets silently do not exist.
 fail_on_hook_fail: true

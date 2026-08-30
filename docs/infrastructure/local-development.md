@@ -15,6 +15,9 @@ ddev add-on get ddev/ddev-minio
 ddev start
 ```
 
+> [!WARNING]
+> `.ddev/config.yaml` sets `disable_settings_management: true`, and it must stay set. DDEV's `laravel` project type otherwise rewrites `DB_*` and `MAIL_*` in `.env` on **every start**, pointing them at its own `db` database and its built-in Mailpit. The symptom is a value you fixed reverting silently after an unrelated restart: `DB_DATABASE` back to `db`, so migrations land in DDEV's throwaway database, and `MAIL_HOST` back to `127.0.0.1`, so mail never reaches Buggregator. `.env` is ours to manage, seeded from `.env.example`.
+
 HTTPS is used locally so cookie behaviour across the four subdomains matches production. One-time host setup:
 
 ```bash
