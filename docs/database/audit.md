@@ -5,7 +5,7 @@ Tables on the **audit database** (`log` connection). Append-only, forever retent
 > [!NOTE]
 > This is a **separate database** from the primary, not a schema within it. Postgres cannot join or foreign-key across databases, which is what structurally enforces "references are stored as raw IDs". A schema would permit an accidental FK to `users` that quietly makes the eventual split to its own cluster impossible. Migrations run against the `log` connection with their own path and history.
 
-In both deployed environments the audit database is its own managed cluster, with a failure domain separate from the primary. Locally it is a separate container. Staging therefore rehearses production's exact shape, including the private-network connection and the two database users, rather than approximating it.
+The audit database sits on the same managed cluster as the primary, as a separate database rather than a schema. That is what the raw-ID rule needs: Postgres cannot foreign-key across databases within a cluster any more than across clusters. A separate cluster would additionally give it its own failure domain, which the daily dump and the monthly `audit:archive` already largely cover; moving it there later is a `pg_dump syoksheet_audit` and a restore, with no application change.
 
 ## 🔐 Database Users
 

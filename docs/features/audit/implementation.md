@@ -4,7 +4,7 @@ The write path, record contract, and rendering model for the audit log. What it 
 
 ## 🏗️ Architecture
 
-- **Separate database**: `log` connection. A second Forge managed PostgreSQL cluster with its own failure domain in both deployed environments; locally a separate container. Always a separate **database**, never a schema. Migrations run against `log`.
+- **Separate database**: `log` connection, database `syoksheet_audit` on the same managed cluster as the primary. Always a separate **database**, never a schema, so no foreign key can ever reach into it. Migrations run against `log` with their own path and history.
 - **Package**: `spatie/laravel-activitylog` configured to write on the `log` connection.
 - **Append-only**, no `updated_at`, no soft deletes, no FK constraints; records are never modified.
 - **Forever retention**, no pruning, ever. `audit:archive` (monthly) dumps the database to `syoksheet-audit-archive-{env}`, since 7-day managed backups are insufficient disaster recovery for a forever-retention store.

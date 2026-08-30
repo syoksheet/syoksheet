@@ -21,15 +21,14 @@ HTTPS is used locally so cookie behaviour across the four subdomains matches pro
 brew install mkcert nss && mkcert -install && ddev restart
 ```
 
-DDEV always provisions its Postgres instance with a database named `db`, and that name cannot be configured. The application expects `syoksheet`, the same name used in staging and production, so a `post-start` hook in `.ddev/config.yaml` creates it, and `syoksheet_testing` alongside it, on every start. The audit instance needs no hook for `syoksheet_audit`: we own that compose file, so `POSTGRES_DB` names it at first initialisation. That mechanism creates exactly one database and only once, which is why `syoksheet_audit_testing` still needs a hook line, and why that line carries `-h postgres-audit`: without it, `psql` would create it on the primary instance. Nothing is done by hand: a manually created database would not survive `ddev delete`, and a fresh clone would come up broken. The hook guards on `pg_database` because Postgres has no `CREATE DATABASE IF NOT EXISTS`, and needs no `GRANT`, since the `db` role is a superuser and owns what it creates.
+DDEV always provisions its Postgres instance with a database named `db`, and that name cannot be configured. The application expects `syoksheet`, so `.ddev/scripts/create-databases.sh`, run by a `post-start` hook, creates it along with `syoksheet_audit` and the two testing databases on every start. Buckets are created the same way by `create-buckets.sh`, which runs in the minio container because `mc` lives there. Nothing is done by hand: a manually created database would not survive `ddev delete`, and a fresh clone would come up broken. The hook guards on `pg_database` because Postgres has no `CREATE DATABASE IF NOT EXISTS`, and needs no `GRANT`, since the `db` role is a superuser and owns what it creates.
 
 ## 📦 Services
 
 | Service | Provides | Notes |
 |---------|----------|-------|
 | web | PHP 8.4, nginx, Node 24 | Serves all four subdomains |
-| db | PostgreSQL 18 | Database `syoksheet`, created by the `post-start` hook. DDEV's own `db` database is left unused |
-| postgres-audit | PostgreSQL 18 | Separate instance for the `log` connection, mirroring the separate managed cluster both deployed environments use |
+| db | PostgreSQL 18 | Holds all four databases, created by the `post-start` hook. DDEV's own `db` database is left unused |
 | redis | Redis 7 | Sessions, cache, queue |
 | buggregator | Mail, dumps, logs, HTTP inspection | Replaces Mailpit. Speaks the Sentry protocol |
 | minio | S3-compatible object storage | Stands in for Cloudflare R2. Buckets created by the `post-start` hook. S3 API on 10101, console on 9090 |
@@ -48,21 +47,19 @@ Two **databases**, never two schemas. Postgres cannot join or foreign-key across
 | Connection | Host | Database | Test database | Credentials |
 |------------|------|----------|---------------|-------------|
 | `pgsql` (default) | `db` | `syoksheet` | `syoksheet_testing` | `db` / `db` |
-| `log` (audit) | `postgres-audit` | `syoksheet_audit` | `syoksheet_audit_testing` | `db` / `db` |
+| `log` (audit) | `db` | `syoksheet_audit` | `syoksheet_audit_testing` | `db` / `db` |
 
 The suite runs against **PostgreSQL, not SQLite**. `phpunit.xml` points `DB_DATABASE` and `LOG_DB_DATABASE` at the two test databases, and `Tests\TestCase` refuses to run when either connection names a database that does not end in `_testing`, so a misconfiguration fails loudly instead of truncating development data.
 
 ```bash
 ddev php artisan migrate:all              # runs both connections
-ddev exec psql -h postgres-audit -U db syoksheet_audit
+ddev exec psql -d syoksheet_audit
 ```
 
 Audit migrations live in `database/migrations/audit/` with their own history table on the `log` connection.
 
 > [!WARNING]
-> Upgrading the Postgres major version is not a one-line image bump. From 18 onward the image stores data in a version-named directory (`/var/lib/postgresql/18/docker`, where 16 used a flat `/var/lib/postgresql/data`), so `.ddev/docker-compose.postgres-audit.yaml` mounts its volume one level up at `/var/lib/postgresql` and sets no `PGDATA` of its own. Overriding `PGDATA` back to a fixed path appears to work and silently recreates the pre-18 layout, which breaks the next upgrade: version-named directories are what let `pg_upgrade --link` run inside a single mount. The container refuses to start on mismatched data rather than corrupting it, which is a safety feature, not a bug.
->
-> `ddev delete` reclaims volumes carrying the `com.ddev.site-name` label. Both volumes carry it, so both are reclaimed and a version bump needs no manual `docker volume rm`. The label is applied at volume creation, so adding it to an existing volume takes effect only once that volume is recreated.
+> Changing the Postgres major version means destroying the data volume, not only editing `database.version`. DDEV refuses to start against a volume built by a different major version, and the message does not always say why. `ddev delete -O` removes it, the `-O` skipping the snapshot. There is no local data worth preserving, but it will not happen by itself.
 
 ## 🧠 Redis
 
@@ -172,5 +169,5 @@ Workers are started manually, never as DDEV daemons: a background worker keeps r
 
 | Service | Arrives | Note |
 |---------|---------|------|
-| Meilisearch | Phase 10 | No maintained DDEV add-on. Add a `.ddev/docker-compose.meilisearch.yaml`, the same pattern as `postgres-audit` |
+| Meilisearch | Phase 10 | No maintained DDEV add-on. Add a `.ddev/docker-compose.meilisearch.yaml`, the same pattern as `buggregator` |
 | Reverb | Phase 7 | HTTPS means the browser needs `wss://`, so the port must be exposed with the mkcert certificate and `REVERB_*` plus `VITE_REVERB_*` set to match |

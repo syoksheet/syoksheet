@@ -32,7 +32,7 @@ Phase 1 has no API routes, so a Bruno collection can only exercise `/up`.
 
 ## 5. The suite runs on PostgreSQL
 
-`phpunit.xml` inherited Laravel's `sqlite` + `:memory:` default, which blocked Task 2 (two connections against two Postgres instances) and Task 3 outright (SQLite has no roles or grants), and silently permitted schemas Postgres would reject.
+`phpunit.xml` inherited Laravel's `sqlite` + `:memory:` default, which blocked Task 2 (two connections, two databases) and Task 3 outright (SQLite has no roles or grants), and silently permitted schemas Postgres would reject.
 
 **Resolution:** two test databases created by the `post-start` hook, `phpunit.xml` pointed at them, and a guard in `Tests\TestCase` that refuses any connection whose database does not end in `_testing`. Separate databases rather than a dedicated test instance, because CI provisions one PostgreSQL service and local must not test a shape CI does not have.
 

@@ -60,7 +60,7 @@ Answered before implementing, per the build-step gate.
 
 **Files:** modify `config/database.php` (`log` connection), create `database/migrations/audit/.gitkeep`, create `app/Console/Commands/MigrateAll.php`, test `tests/Feature/MigrateAllTest.php`.
 
-**Behaviour:** `DB::connection('log')` resolves against `postgres-audit`. `migrate:all` runs the default path on `pgsql` and `database/migrations/audit/` on `log`, each with its own history table, and passes `--force` through.
+**Behaviour:** `DB::connection('log')` resolves against database `syoksheet_audit` on the same host as `pgsql`. `migrate:all` runs the default path on `pgsql` and `database/migrations/audit/` on `log`, each with its own history table, and passes `--force` through.
 
 **Who writes:** user. The connection is configuration; the command is the first real Artisan class in the codebase and the deploy script depends on it.
 
@@ -69,7 +69,7 @@ Answered before implementing, per the build-step gate.
 - [ ] Failing test: `migrate:all runs both connections` — fails because the command does not exist
 - [ ] Implement
 - [ ] Green: `ddev php artisan test --compact --filter=MigrateAll`
-- [ ] `ddev exec psql -h postgres-audit -U db syoksheet_audit -c '\dt'` shows the audit history table
+- [ ] `ddev exec psql -d syoksheet_audit -c '\dt'` shows the audit history table
 
 ### Task 3: Audit database roles and default privileges
 

@@ -33,7 +33,7 @@ Signed URLs make this strict rather than cosmetic. The signature covers the full
 
 ## 🗄️ Databases
 
-Primary (`DB_*`) and audit (`LOG_DB_*`): two separate Forge managed PostgreSQL clusters per environment, reached over the Forge private network with public access disabled. Production and staging differ only in cluster size and credentials.
+Primary (`DB_*`) and audit (`LOG_DB_*`): two databases on one Forge managed PostgreSQL cluster per environment, reached over the Forge private network with public access disabled. The two connections share a host and differ in database name and credentials. Production and staging differ only in cluster size and credentials.
 
 | Variable | Example | Notes |
 |----------|---------|-------|
@@ -41,7 +41,7 @@ Primary (`DB_*`) and audit (`LOG_DB_*`): two separate Forge managed PostgreSQL c
 | DB_HOST / DB_PORT | [cluster private host] / [cluster port] | From the cluster's credentials panel |
 | DB_DATABASE / DB_USERNAME / DB_PASSWORD | syoksheet / syoksheet / [secure] | Per environment |
 | DB_SSLMODE | require | Managed DB requirement |
-| LOG_DB_HOST / LOG_DB_PORT | [audit cluster private host] / [cluster port] | Separate cluster |
+| LOG_DB_HOST / LOG_DB_PORT | Same values as `DB_HOST` / `DB_PORT` | Same cluster, different database |
 | LOG_DB_DATABASE / LOG_DB_USERNAME / LOG_DB_PASSWORD | syoksheet_audit / … / [secure] | `log` connection |
 | LOG_DB_SSLMODE | require | Standard |
 
