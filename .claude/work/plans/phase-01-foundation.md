@@ -84,9 +84,9 @@ Answered before implementing, per the build-step gate.
 > [!WARNING]
 > The erasure user's `UPDATE` is column-scoped and `ALTER DEFAULT PRIVILEGES` cannot express a column list. That half is Phase 6's, added beside each table's migration. Do not fake it with a table-wide `UPDATE`: that dissolves the append-only guarantee this migration exists to create.
 
-- [ ] Failing test: `AuditRolesTest` asserts both roles exist and the application role has no `UPDATE` default privilege
-- [ ] Implement
-- [ ] Green: `ddev php artisan test --compact --filter=AuditRoles`
+- [x] Failing test: `AuditRolesTest` asserts both roles exist and the application role has no `UPDATE` default privilege
+- [x] Implement
+- [x] Green: `ddev php artisan test --compact --filter=AuditRoles`
 
 ### Task 4: Horizon supervisors and the staging environment
 

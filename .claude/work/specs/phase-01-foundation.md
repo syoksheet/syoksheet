@@ -44,6 +44,28 @@ Nothing in the suite writes to Redis: cache and session are `array`, the queue i
 
 When that happens, `RedisConnectionTest` needs attention in the same change: it asserts the real database numbers, so overriding them for tests would make it assert the overrides and stop verifying anything.
 
+## 7. Audit role names, and no passwords in the migration
+
+`database/audit.md` describes an "Application" and an "Erasure" user without naming them.
+
+**Resolution:** `syoksheet_audit_app` and `syoksheet_audit_erasure`. Roles are cluster-wide, so the prefix earns its place the same way the database prefix does.
+
+They are created with `LOGIN` and **no password**. A password is a credential, which is environment config rather than schema, and putting one in a migration commits a secret to git. `operations.md` already treats recreating these users as a provisioning step, so staging sets its own in Phase 2 and production in Phase 19. Nothing connects as them before Phase 6.
+
+## 8. The audit database needs three identities, not two
+
+Task 3 surfaced a gap the specs do not cover. `database/audit.md` names two runtime users, but a third is implied and unnamed:
+
+| Identity | Does what | Specified |
+|---|---|---|
+| Owner | Runs `migrate --database=audit`, creates and **owns** the tables | No |
+| Application | `INSERT`, `SELECT`, for `AuditLogJob` and reads | Yes |
+| Erasure | `UPDATE` on anonymisable columns | Yes |
+
+A table's owner can always do anything to it, including `DROP`, and that cannot be revoked. So if the application connects as the role that ran the migrations, the append-only guarantee is worth nothing. One Laravel connection cannot be both, because a role with only `INSERT`/`SELECT` cannot `CREATE TABLE`.
+
+**Not resolved here.** Task 3 only creates roles and default privileges, which is coherent either way. **Phase 6 must decide** how many audit connections exist and which role each uses, before `AuditLogJob` writes anything. Deciding it later means retrofitting every audit write path.
+
 ## Related corrections made while resolving these
 
 | Correction | Where |
