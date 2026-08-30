@@ -47,16 +47,42 @@ return [
             'report' => false,
         ],
 
-        's3' => [
+        /*
+        | Two R2 disks rather than one, because R2 has no per-object ACLs: binding a
+        | custom domain publishes the whole bucket, so anything reached by signed URL
+        | has to live somewhere a domain is never bound to.
+        |
+        | `region` and `use_path_style_endpoint` are constants, not env: R2 always
+        | wants `auto`, and MinIO needs path style, which R2 also accepts.
+        |
+        | `throw` is true on both. A failed avatar upload or a failed export write
+        | returning `false` is trivial to ignore at the call site, and the failure
+        | then surfaces months later as a missing file.
+        */
+
+        'r2_public' => [
             'driver' => 's3',
-            'key' => env('AWS_ACCESS_KEY_ID'),
-            'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_DEFAULT_REGION'),
-            'bucket' => env('AWS_BUCKET'),
-            'url' => env('AWS_URL'),
-            'endpoint' => env('AWS_ENDPOINT'),
-            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            'throw' => false,
+            'key' => env('R2_ACCESS_KEY_ID'),
+            'secret' => env('R2_SECRET_ACCESS_KEY'),
+            'region' => 'auto',
+            'bucket' => env('R2_PUBLIC_BUCKET'),
+            'url' => env('R2_PUBLIC_URL'),
+            'endpoint' => env('R2_ENDPOINT'),
+            'use_path_style_endpoint' => true,
+            'visibility' => 'public',
+            'throw' => true,
+            'report' => false,
+        ],
+
+        'r2_private' => [
+            'driver' => 's3',
+            'key' => env('R2_ACCESS_KEY_ID'),
+            'secret' => env('R2_SECRET_ACCESS_KEY'),
+            'region' => 'auto',
+            'bucket' => env('R2_PRIVATE_BUCKET'),
+            'endpoint' => env('R2_ENDPOINT'),
+            'use_path_style_endpoint' => true,
+            'throw' => true,
             'report' => false,
         ],
 

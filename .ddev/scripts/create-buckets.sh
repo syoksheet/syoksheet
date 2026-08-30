@@ -13,3 +13,8 @@ mc ready minio
 
 # --ignore-existing is mc's own idempotence; this runs on every start.
 mc mb --ignore-existing minio/syoksheet-public-local minio/syoksheet-private-local
+
+# The public bucket stands in for one R2 serves through a custom domain, which makes
+# the whole bucket world-readable. Without this, R2_PUBLIC_URL would 403 locally and
+# work in production, which is the wrong way round for a rehearsal.
+mc anonymous set download minio/syoksheet-public-local

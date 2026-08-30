@@ -110,10 +110,10 @@ Answered before implementing, per the build-step gate.
 
 **Read first:** `docs/infrastructure/environment-variables.md` § Cloudflare R2, including the note on why region and path style are hardcoded rather than env-driven. `docs/infrastructure/local-development.md` § Object Storage for the `:10101` endpoint trap.
 
-- [ ] Failing test: `FilesystemDisksTest` asserts both disks resolve and `temporaryUrl()` works on `r2_private`
-- [ ] Implement
-- [ ] Green: `ddev php artisan test --compact --filter=FilesystemDisks`
-- [ ] `mc anonymous set download` added to the hook; `curl` the public bucket URL and get 200, not 403
+- [x] Failing test: `FilesystemDisksTest` asserts both disks resolve and `temporaryUrl()` works on `r2_private`
+- [x] Implement
+- [x] Green: `ddev php artisan test --compact --filter=FilesystemDisks`
+- [x] `mc anonymous set download` added to the hook; `curl` the public bucket URL and get 200, not 403
 
 ### Task 6: Per-surface host configuration
 
