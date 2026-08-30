@@ -1,9 +1,9 @@
 # Audit: Database Schema
 
-Tables on the **audit database** (`log` connection). Append-only, forever retention, no FK constraints, no soft deletes, no `updated_at`.
+Tables on the **audit database** (`audit` connection). Append-only, forever retention, no FK constraints, no soft deletes, no `updated_at`.
 
 > [!NOTE]
-> This is a **separate database** from the primary, not a schema within it. Postgres cannot join or foreign-key across databases, which is what structurally enforces "references are stored as raw IDs". A schema would permit an accidental FK to `users` that quietly makes the eventual split to its own cluster impossible. Migrations run against the `log` connection with their own path and history.
+> This is a **separate database** from the primary, not a schema within it. Postgres cannot join or foreign-key across databases, which is what structurally enforces "references are stored as raw IDs". A schema would permit an accidental FK to `users` that quietly makes the eventual split to its own cluster impossible. Migrations run against the `audit` connection with their own path and history.
 
 The audit database sits on the same managed cluster as the primary, as a separate database rather than a schema. That is what the raw-ID rule needs: Postgres cannot foreign-key across databases within a cluster any more than across clusters. A separate cluster would additionally give it its own failure domain, which the daily dump and the monthly `audit:archive` already largely cover; moving it there later is a `pg_dump syoksheet_audit` and a restore, with no application change.
 
@@ -21,7 +21,7 @@ Append-only is enforced by Postgres permissions, not by application convention, 
 
 ## 📋 audit_logs
 
-Every significant platform event, written via `spatie/laravel-activitylog` configured for the `log` connection. See [features/audit/implementation.md](../features/audit/implementation.md) for the write path and [features/audit/events.md](../features/audit/events.md) for the full catalog.
+Every significant platform event, written via `spatie/laravel-activitylog` configured for the `audit` connection. See [features/audit/implementation.md](../features/audit/implementation.md) for the write path and [features/audit/events.md](../features/audit/events.md) for the full catalog.
 
 | Column | Type | Notes |
 |--------|------|-------|

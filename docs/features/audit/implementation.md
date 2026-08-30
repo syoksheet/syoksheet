@@ -4,8 +4,8 @@ The write path, record contract, and rendering model for the audit log. What it 
 
 ## 🏗️ Architecture
 
-- **Separate database**: `log` connection, database `syoksheet_audit` on the same managed cluster as the primary. Always a separate **database**, never a schema, so no foreign key can ever reach into it. Migrations run against `log` with their own path and history.
-- **Package**: `spatie/laravel-activitylog` configured to write on the `log` connection.
+- **Separate database**: `audit` connection, database `syoksheet_audit` on the same managed cluster as the primary. Always a separate **database**, never a schema, so no foreign key can ever reach into it. Migrations run against `log` with their own path and history.
+- **Package**: `spatie/laravel-activitylog` configured to write on the `audit` connection.
 - **Append-only**, no `updated_at`, no soft deletes, no FK constraints; records are never modified.
 - **Forever retention**, no pruning, ever. `audit:archive` (monthly) dumps the database to `syoksheet-audit-archive-{env}`, since 7-day managed backups are insufficient disaster recovery for a forever-retention store.
 
@@ -15,7 +15,7 @@ One domain event fires → independent queued listeners route to their destinati
 
 | Listener | Queue priority | Writes to |
 |----------|---------------|-----------|
-| `AuditLogJob` | Highest: retries forever | Audit DB (`log` connection) |
+| `AuditLogJob` | Highest: retries forever | Audit DB (`audit` connection) |
 | `NotificationJob` | Medium | Primary DB (`notifications`) |
 
 Controllers and models never write to the audit DB directly, always through the event → `AuditLogJob` path.

@@ -39,9 +39,9 @@ User↔Admin isolation is bidirectional and middleware-enforced: the wrong princ
 | Connection | Instance | Holds |
 |------------|----------|-------|
 | `pgsql` (default) | Database `syoksheet` on the environment's managed PostgreSQL cluster | All application data: 61 tables, listed in [database/README.md](database/README.md) |
-| `log` | Database `syoksheet_audit` on the **same** cluster. A separate database, never a schema: Postgres cannot join or foreign-key across databases, which is what enforces the audit log's raw-ID rule | `audit_logs`, `security_incidents`, `security_incident_affected_records`: append-only, forever retention |
+| `audit` | Database `syoksheet_audit` on the **same** cluster. A separate database, never a schema: Postgres cannot join or foreign-key across databases, which is what enforces the audit log's raw-ID rule | `audit_logs`, `security_incidents`, `security_incident_affected_records`: append-only, forever retention |
 
-Schema conventions and per-domain docs: [database/README.md](database/README.md). Writes to the `log` connection go through `AuditLogJob` only.
+Schema conventions and per-domain docs: [database/README.md](database/README.md). Writes to the `audit` connection go through `AuditLogJob` only.
 
 ## 🧰 Redis
 

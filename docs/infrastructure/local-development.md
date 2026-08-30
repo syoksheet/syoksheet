@@ -47,16 +47,16 @@ Two **databases**, never two schemas. Postgres cannot join or foreign-key across
 | Connection | Host | Database | Test database | Credentials |
 |------------|------|----------|---------------|-------------|
 | `pgsql` (default) | `db` | `syoksheet` | `syoksheet_testing` | `db` / `db` |
-| `log` (audit) | `db` | `syoksheet_audit` | `syoksheet_audit_testing` | `db` / `db` |
+| `audit` | `db` | `syoksheet_audit` | `syoksheet_audit_testing` | `db` / `db` |
 
-The suite runs against **PostgreSQL, not SQLite**. `phpunit.xml` points `DB_DATABASE` and `LOG_DB_DATABASE` at the two test databases, and `Tests\TestCase` refuses to run when either connection names a database that does not end in `_testing`, so a misconfiguration fails loudly instead of truncating development data.
+The suite runs against **PostgreSQL, not SQLite**. `phpunit.xml` points `DB_DATABASE` and `AUDIT_DB_DATABASE` at the two test databases, and `Tests\TestCase` refuses to run when either connection names a database that does not end in `_testing`, so a misconfiguration fails loudly instead of truncating development data.
 
 ```bash
 ddev php artisan migrate:all              # runs both connections
 ddev exec psql -d syoksheet_audit
 ```
 
-Audit migrations live in `database/migrations/audit/` with their own history table on the `log` connection.
+Audit migrations live in `database/migrations/audit/` with their own history table on the `audit` connection.
 
 > [!WARNING]
 > Changing the Postgres major version means destroying the data volume, not only editing `database.version`. DDEV refuses to start against a volume built by a different major version, and the message does not always say why. `ddev delete -O` removes it, the `-O` skipping the snapshot. There is no local data worth preserving, but it will not happen by itself.

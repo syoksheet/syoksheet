@@ -16,7 +16,7 @@ Values copied verbatim from the specs. Do not paraphrase these into something th
 |---|---|---|
 | PostgreSQL, both instances | `18` | local-development.md § Services |
 | Primary connection | `pgsql`, host `db`, database `syoksheet`, `db`/`db` | local-development.md § Databases |
-| Audit connection | `log`, host `postgres-audit`, database `syoksheet_audit`, `db`/`db` | local-development.md § Databases |
+| Audit connection | `audit`, database `syoksheet_audit`, `db`/`db` | local-development.md § Databases |
 | `maxmemory-policy` | `volatile-lru` | local-development.md § Redis |
 | `appendonly` | `yes` | local-development.md § Redis |
 | `appendfsync` | `everysec` | local-development.md § Redis |
@@ -193,7 +193,7 @@ Contract tests arrive in Phase 1. Phase 0 is proved by observation, and per the 
 
 The Larastan run carries extra weight here: it is the gate that went unrun in the previous session because Docker was down. Level 9 on a near-bare skeleton should be clean. If it is not, that is a finding to resolve in this phase rather than carry into Phase 1.
 
-The `log` connection does not exist in `config/database.php` yet, so its `getPdo()` check only becomes meaningful once Phase 1 defines it. Phase 0 proves the container answers; `ddev exec psql -h postgres-audit -U db syoksheet_audit` is the check that works today.
+The `audit` connection does not exist in `config/database.php` yet, so its `getPdo()` check only becomes meaningful once Phase 1 defines it. Phase 0 proves the container answers; `ddev exec psql -h postgres-audit -U db syoksheet_audit` is the check that works today.
 
 ## Artifacts
 
@@ -205,7 +205,7 @@ If a durable convention emerges (for instance, the shape every hand-written `.dd
 
 ## Out of scope
 
-Phase 0 provides the containers. **Phase 1** makes the application use them: the `log` connection definition in `config/database.php`, the audit migrations path and the audit database's two-user grants as code, the Redis queue priorities in `config/queue.php`, the `Route::domain()` skeleton, the Inertia bootstrap, design tokens as SCSS, CI, and the `AiService` and `bruno/` scaffolds.
+Phase 0 provides the containers. **Phase 1** makes the application use them: the `audit` connection definition in `config/database.php`, the audit migrations path and the audit database's two-user grants as code, the Redis queue priorities in `config/queue.php`, the `Route::domain()` skeleton, the Inertia bootstrap, design tokens as SCSS, CI, and the `AiService` and `bruno/` scaffolds.
 
 Also out of scope: Meilisearch (Phase 10) and Reverb (Phase 7), both noted as "not yet local" in the spec.
 

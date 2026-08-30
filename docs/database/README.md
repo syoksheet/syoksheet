@@ -12,7 +12,7 @@ Two PostgreSQL 18 instances. The primary database holds all application data; th
 | Timestamps | `timestamptz` on all `created_at`, `updated_at`, `deleted_at` columns |
 | Soft deletes | users, brags, organizations, verifications |
 | Enums | Stored as `varchar`, validated by PHP enums in the app, never DB enum types |
-| Audit DB | Separate connection (`log`). No FK constraints, no `updated_at`, no soft deletes. Append-only forever. |
+| Audit DB | Separate connection (`audit`). No FK constraints, no `updated_at`, no soft deletes. Append-only forever. |
 
 ## 📂 Files
 

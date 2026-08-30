@@ -19,8 +19,8 @@ Values copied verbatim from the specs. Do not paraphrase.
 | Surfaces | `app.`, `admin.`, apex, `api.` | architecture.md § Surfaces |
 | Audit application user | `INSERT`, `SELECT` only. No `UPDATE`, no `DELETE`, ever | database/audit.md:16 |
 | Audit erasure user | `UPDATE` on anonymisable columns only | database/audit.md:17 |
-| Audit connection name | `log` | architecture.md § Databases |
-| Audit migrations path | `database/migrations/audit/`, own history table on `log` | local-development.md:55 |
+| Audit connection name | `audit` | architecture.md § Databases |
+| Audit migrations path | `database/migrations/audit/`, own history table on `audit` | local-development.md:55 |
 | Filesystem disks | `r2_public`, `r2_private`; `FILESYSTEM_DISK=r2_private` | environment-variables.md § Cloudflare R2 |
 | R2 region / path style | `auto` / `true`, hardcoded constants, never env | environment-variables.md § Cloudflare R2 |
 | Error-code shape | 422 with a stable `code` beside the message | validation.md § Business-Rule Error Codes |
@@ -56,11 +56,11 @@ Answered before implementing, per the build-step gate.
 - [x] Green: `ddev php artisan test --compact --filter=RedisConnection`
 - [x] Uncomment the two `.env` keys, `ddev restart`, confirm requests still serve
 
-### Task 2: The `log` connection, audit migrations path, and `migrate:all`
+### Task 2: The `audit` connection, audit migrations path, and `migrate:all`
 
-**Files:** modify `config/database.php` (`log` connection), create `database/migrations/audit/.gitkeep`, create `app/Console/Commands/MigrateAll.php`, test `tests/Feature/MigrateAllTest.php`.
+**Files:** modify `config/database.php` (`audit` connection), create `database/migrations/audit/.gitkeep`, create `app/Console/Commands/MigrateAll.php`, test `tests/Feature/MigrateAllTest.php`.
 
-**Behaviour:** `DB::connection('log')` resolves against database `syoksheet_audit` on the same host as `pgsql`. `migrate:all` runs the default path on `pgsql` and `database/migrations/audit/` on `log`, each with its own history table, and passes `--force` through.
+**Behaviour:** `DB::connection('audit')` resolves against database `syoksheet_audit` on the same host as `pgsql`. `migrate:all` runs the default path on `pgsql` and `database/migrations/audit/` on `log`, each with its own history table, and passes `--force` through.
 
 **Who writes:** user. The connection is configuration; the command is the first real Artisan class in the codebase and the deploy script depends on it.
 
