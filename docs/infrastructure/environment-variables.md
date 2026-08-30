@@ -39,7 +39,7 @@ Primary (`DB_*`) and audit (`AUDIT_DB_*`): two databases on one Forge managed Po
 |----------|---------|-------|
 | DB_CONNECTION | pgsql | Standard |
 | DB_HOST / DB_PORT | [cluster private host] / [cluster port] | From the cluster's credentials panel |
-| DB_DATABASE / DB_USERNAME / DB_PASSWORD | syoksheet / syoksheet / [secure] | Per environment |
+| DB_DATABASE / DB_USERNAME / DB_PASSWORD | syoksheet_primary / syoksheet / [secure] | Per environment |
 | DB_SSLMODE | require | Managed DB requirement |
 | AUDIT_DB_HOST / AUDIT_DB_PORT | Same values as `DB_HOST` / `DB_PORT` | Same cluster, different database |
 | AUDIT_DB_DATABASE / AUDIT_DB_USERNAME / AUDIT_DB_PASSWORD | syoksheet_audit / … / [secure] | `audit` connection |

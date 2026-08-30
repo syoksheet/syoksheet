@@ -47,7 +47,7 @@ Two **databases**, never two schemas. Postgres cannot join or foreign-key across
 
 | Connection | Host | Database | Test database | Credentials |
 |------------|------|----------|---------------|-------------|
-| `pgsql` (default) | `db` | `syoksheet` | `syoksheet_testing` | `db` / `db` |
+| `pgsql` (default) | `db` | `syoksheet_primary` | `syoksheet_primary_testing` | `db` / `db` |
 | `audit` | `db` | `syoksheet_audit` | `syoksheet_audit_testing` | `db` / `db` |
 
 The suite runs against **PostgreSQL, not SQLite**. `phpunit.xml` points `DB_DATABASE` and `AUDIT_DB_DATABASE` at the two test databases, and `Tests\TestCase` refuses to run when either connection names a database that does not end in `_testing`, so a misconfiguration fails loudly instead of truncating development data.

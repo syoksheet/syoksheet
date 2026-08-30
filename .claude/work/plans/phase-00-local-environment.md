@@ -15,7 +15,7 @@ Values copied verbatim from the specs. Do not paraphrase these into something th
 | Setting | Value | Source |
 |---|---|---|
 | PostgreSQL, both instances | `18` | local-development.md § Services |
-| Primary connection | `pgsql`, host `db`, database `syoksheet`, `db`/`db` | local-development.md § Databases |
+| Primary connection | `pgsql`, host `db`, database `syoksheet_primary`, `db`/`db` | local-development.md § Databases |
 | Audit connection | `audit`, database `syoksheet_audit`, `db`/`db` | local-development.md § Databases |
 | `maxmemory-policy` | `volatile-lru` | local-development.md § Redis |
 | `appendonly` | `yes` | local-development.md § Redis |

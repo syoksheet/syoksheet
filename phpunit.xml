@@ -24,7 +24,7 @@
         <env name="BROADCAST_CONNECTION" value="null"/>
         <env name="CACHE_STORE" value="array"/>
         <env name="DB_CONNECTION" value="pgsql"/>
-        <env name="DB_DATABASE" value="syoksheet_testing"/>
+        <env name="DB_DATABASE" value="syoksheet_primary_testing"/>
         <env name="AUDIT_DB_DATABASE" value="syoksheet_audit_testing"/>
         <env name="DB_URL" value=""/>
         <env name="MAIL_MAILER" value="array"/>

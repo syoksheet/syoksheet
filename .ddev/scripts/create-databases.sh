@@ -12,10 +12,10 @@
 set -euo pipefail
 
 databases=(
-  syoksheet               # the application
-  syoksheet_testing       # the suite, per DB_DATABASE in phpunit.xml
-  syoksheet_audit         # the `log` connection: a separate database, never a schema
-  syoksheet_audit_testing # the `log` connection under test
+  syoksheet_primary         # the application
+  syoksheet_primary_testing # the suite, per DB_DATABASE in phpunit.xml
+  syoksheet_audit           # the `audit` connection: a separate database, never a schema
+  syoksheet_audit_testing   # the `audit` connection under test
 )
 
 for database in "${databases[@]}"; do
