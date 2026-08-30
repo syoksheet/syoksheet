@@ -29,12 +29,15 @@ DDEV always provisions its Postgres instance with a database named `db`, and tha
 |---------|----------|-------|
 | web | PHP 8.4, nginx, Node 24 | Serves all four subdomains |
 | db | PostgreSQL 18 | Database `syoksheet`, created by the `post-start` hook. DDEV's own `db` database is left unused |
-| postgres-audit | PostgreSQL 18 | Separate instance for the `log` connection, mirroring production's eventual split |
+| postgres-audit | PostgreSQL 18 | Separate instance for the `log` connection, mirroring the separate managed cluster both deployed environments use |
 | redis | Redis 7 | Sessions, cache, queue |
 | buggregator | Mail, dumps, logs, HTTP inspection | Replaces Mailpit. Speaks the Sentry protocol |
 | minio | S3-compatible object storage | Stands in for Cloudflare R2. Buckets created by the `post-start` hook. S3 API on 10101, console on 9090 |
+| redis-insight | Redis browser UI | `ddev redis-insight`, or `https://syoksheet.ddev.site:5540`. Depends on the redis add-on. Local convenience only, never deployed |
 | xhgui | Profiling | Started on demand with `ddev xhgui` |
 | mailpit | DDEV built-in mail catcher | Unused. Mail goes to Buggregator, but DDEV always provides this and it cannot be removed |
+
+RedisInsight's volume carries no `com.ddev.site-name` label, so saved connections survive `ddev delete` while the data they point at does not.
 
 Base URL: `https://app.syoksheet.ddev.site`. Three additional hostnames plus DDEV's own `syoksheet.ddev.site` give all four surfaces locally, so `Route::domain()` groups behave exactly as in production. Marketing sits on the bare hostname, mirroring the apex; there is no local `www.`, because there is no apex redirect to rehearse.
 
@@ -57,7 +60,7 @@ Audit migrations live in `database/migrations/audit/` with their own history tab
 > [!WARNING]
 > Upgrading the Postgres major version is not a one-line image bump. From 18 onward the image stores data in a version-named directory (`/var/lib/postgresql/18/docker`, where 16 used a flat `/var/lib/postgresql/data`), so `.ddev/docker-compose.postgres-audit.yaml` mounts its volume one level up at `/var/lib/postgresql` and sets no `PGDATA` of its own. Overriding `PGDATA` back to a fixed path appears to work and silently recreates the pre-18 layout, which breaks the next upgrade: version-named directories are what let `pg_upgrade --link` run inside a single mount. The container refuses to start on mismatched data rather than corrupting it, which is a safety feature, not a bug.
 >
-> `ddev delete` reclaims volumes carrying the `com.ddev.site-name` label. The audit volume is declared without one, so it must be removed separately with `docker volume rm ddev-syoksheet_postgres-audit`. Label authorship is irrelevant: the label alone decides.
+> `ddev delete` reclaims volumes carrying the `com.ddev.site-name` label. Both volumes carry it, so both are reclaimed and a version bump needs no manual `docker volume rm`. The label is applied at volume creation, so adding it to an existing volume takes effect only once that volume is recreated.
 
 ## 🧠 Redis
 

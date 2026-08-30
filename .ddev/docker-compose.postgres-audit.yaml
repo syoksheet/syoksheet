@@ -22,3 +22,5 @@ services:
 
 volumes:
   postgres-audit:
+    labels:
+      com.ddev.site-name: ${DDEV_SITENAME}
