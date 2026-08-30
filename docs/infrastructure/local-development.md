@@ -36,8 +36,6 @@ DDEV always provisions its Postgres instance with a database named `db`, and tha
 | xhgui | Profiling | Started on demand with `ddev xhgui` |
 | mailpit | DDEV built-in mail catcher | Unused. Mail goes to Buggregator, but DDEV always provides this and it cannot be removed |
 
-RedisInsight's volume carries no `com.ddev.site-name` label, so saved connections survive `ddev delete` while the data they point at does not.
-
 Base URL: `https://app.syoksheet.ddev.site`. Three additional hostnames plus DDEV's own `syoksheet.ddev.site` give all four surfaces locally, so `Route::domain()` groups behave exactly as in production. Marketing sits on the bare hostname, mirroring the apex; there is no local `www.`, because there is no apex redirect to rehearse.
 
 ## 🗄️ Databases
@@ -129,7 +127,7 @@ Local buckets carry `-local` for the same reason production carries `-production
 > [!WARNING]
 > The S3 API listens on **10101**, not the conventional 9000. The add-on's compose file passes `--address :10101` and reserves 9090 for the console. `ddev describe` still lists `minio:9000` because the image exposes it, but nothing serves there, so an endpoint left at 9000 hangs instead of erroring.
 
-Both buckets are created by a `post-start` hook in `.ddev/config.yaml`, never by hand in the console. The `minio` volume carries the `com.ddev.site-name` label, so `ddev delete` reclaims it and a hand-made bucket does not survive; a fresh clone would then come up with storage that fails on first write. Same reasoning as the `syoksheet` database hook above. The hook is allowed to fail the start, because `.ddev/config.yaml` sets `fail_on_hook_fail: true`; without it a failed hook still reports a successful `ddev start`.
+Both buckets are created by a `post-start` hook in `.ddev/config.yaml`, never by hand in the console. `ddev delete` reclaims every volume in the project's Compose group, add-on volumes included, so a hand-made bucket does not survive and a fresh clone would come up with storage that fails on first write. Same reasoning as the `syoksheet` database hook above. The hook is allowed to fail the start, because `.ddev/config.yaml` sets `fail_on_hook_fail: true`; without it a failed hook still reports a successful `ddev start`.
 
 ## ⌨️ Commands
 
