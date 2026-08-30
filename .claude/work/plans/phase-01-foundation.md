@@ -66,10 +66,10 @@ Answered before implementing, per the build-step gate.
 
 **Read first:** `docs/database/README.md` § Conventions, `docs/architecture.md` § Databases, `docs/infrastructure/deployment.md:37`. Boost `search-docs` for "migrate path connection" and "artisan command signature".
 
-- [ ] Failing test: `migrate:all runs both connections` — fails because the command does not exist
-- [ ] Implement
-- [ ] Green: `ddev php artisan test --compact --filter=MigrateAll`
-- [ ] `ddev exec psql -d syoksheet_audit -c '\dt'` shows the audit history table
+- [x] Failing test: `migrate:all runs both connections` — fails because the command does not exist
+- [x] Implement
+- [x] Green: `ddev php artisan test --compact --filter=MigrateAll`
+- [x] `ddev exec psql -d syoksheet_audit -c '\dt'` shows the audit history table
 
 ### Task 3: Audit database roles and default privileges
 
