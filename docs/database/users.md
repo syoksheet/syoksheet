@@ -30,7 +30,7 @@ There is **no `email` column**: all emails live in `user_emails`.
 | plan | varchar(20) | Default `free` (`free`, `pro`) |
 | is_open_to_work | boolean | Default false: requires JobMatching + AiProcessing consents to enable |
 | notification_preferences | jsonb | Nullable, per-category email toggles, e.g. `{"verification": {"email": false}}`; null = all on. Categories: `verification`, `collaboration`, `organization`, `jobs` |
-| suspended_at | timestamptz | Nullable: set by admin suspension and deletion cooling-off; suspended users are 404 on public surfaces, 403 on login |
+| suspended_at | timestamptz | Nullable: set by admin suspension and deletion cooling-off; suspended users are 404 on public pages, 403 on login |
 | remember_token | varchar(100) | Laravel session persistence |
 | created_at, updated_at | timestamptz | Managed by Eloquent |
 | deleted_at | timestamptz | Soft delete |

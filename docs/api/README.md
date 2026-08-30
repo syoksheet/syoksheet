@@ -3,7 +3,7 @@
 Conventions for the syoksheet API, its OpenAPI 3.1 spec ([openapi.json](openapi.json)), and the Bruno collection (`bruno/` at the repo root), the git-versioned, executable request collection used for interactive work and CI endpoint smoke tests.
 
 > [!NOTE]
-> `api.syoksheet.com` is the **external, sold surface**: public endpoints, Pro user tokens, the Jobs Push API, admin script tokens, and webhooks. Internal UI runs on Inertia web routes and does not consume this API. The OpenAPI spec and Bruno collection cover the external surface.
+> `api.syoksheet.com` is the **external, sold API**: public endpoints, Pro user tokens, the Jobs Push API, admin script tokens, and webhooks. Internal UI runs on Inertia web routes and does not consume this API. The OpenAPI spec and Bruno collection cover the external API.
 
 ## 🌍 Environments
 
@@ -22,7 +22,7 @@ Sanctum bearer tokens, two modes:
 | User bearer (`userBearerAuth`) | `Authorization: Bearer {token}`: `user:api` ability | Pro third-party integrations, Jobs Push API (org Business tokens) |
 | Admin bearer (`adminBearerAuth`) | `Authorization: Bearer {token}`: `admin:api` ability | Admin scripts |
 
-Tokens are created in the respective UIs (password-confirmed). Interactive login/session auth belongs to the Inertia web surfaces, not this API. See [../architecture.md](../architecture.md).
+Tokens are created in the respective UIs (password-confirmed). Interactive login/session auth belongs to the Inertia web routes, not this API. See [../architecture.md](../architecture.md).
 
 ## 📐 Conventions
 

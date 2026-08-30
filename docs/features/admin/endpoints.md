@@ -42,7 +42,7 @@ Separate `Admin` model on the `admins` table. Two auth paths: the admin session 
 |-------|-----------|-----------|
 | `GET /api/admin/v1/users` | `users.view` | Search/list (`?search=`), paginated |
 | `GET /api/admin/v1/users/{user}` | `users.view` | Profile: logged as `admin.user_data_viewed` |
-| `PATCH /api/admin/v1/users/{user}` | `users.edit` | Update; `{ suspended: bool }` (sets/clears `suspended_at`) requires `users.suspend`: suspended users are 404 on public surfaces, 403 on login |
+| `PATCH /api/admin/v1/users/{user}` | `users.edit` | Update; `{ suspended: bool }` (sets/clears `suspended_at`) requires `users.suspend`: suspended users are 404 on public pages, 403 on login |
 | `POST /api/admin/v1/users/{user}/impersonate` | `users.impersonate` | Impersonation token. See [impersonation.md](impersonation.md) |
 
 ### Content & Verification

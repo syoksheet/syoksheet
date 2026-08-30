@@ -1,21 +1,21 @@
 # Application Architecture
 
-How the Laravel application is structured: one app serving four surfaces, guards, databases, queues, events, and integrations. Platform-level architecture (servers, managed resources, Cloudflare) lives in syoksheet-docs → infrastructure/architecture.md.
+How the Laravel application is structured: one app serving four domains, guards, databases, queues, events, and integrations. Platform-level architecture (servers, managed resources, Cloudflare) lives in syoksheet-docs → infrastructure/architecture.md.
 
-## 🌐 Surfaces
+## 🌐 Domains
 
 One application, routed by `Route::domain()` groups:
 
-| Host | Surface | Rendering |
+| Host | Serves | Rendering |
 |-----------|---------|-----------|
 | `app.syoksheet.com` | User app | Inertia + Svelte pages, `web` session auth (user guard) |
 | `admin.syoksheet.com` | Admin panel | Inertia + Svelte pages, admin session guard |
 | `syoksheet.com` (apex) | Marketing, public walls, jobs directory, policy pages | Server-rendered Blade. SEO-first, no auth. `www.syoksheet.com` redirects here |
-| `api.syoksheet.com` | **The sold API surface**: Pro user tokens, Jobs Push API, Dodo webhooks, verifier/collaborator/invitation token pages' endpoints | JSON via Sanctum bearer tokens / signed or tokened routes |
+| `api.syoksheet.com` | **The sold API**: Pro user tokens, Jobs Push API, Dodo webhooks, verifier/collaborator/invitation token pages' endpoints | JSON via Sanctum bearer tokens / signed or tokened routes |
 
 ## 🔐 Auth & Guards
 
-| Surface | Auth | Notes |
+| Host | Auth | Notes |
 |---------|------|-------|
 | `app.*` Inertia routes | Session (`web` guard, user provider) | Same-origin, no CORS, no Sanctum-SPA layer |
 | `admin.*` Inertia routes | Session (`admin` guard) | Separate guard + provider; bidirectional isolation as before |
@@ -23,10 +23,10 @@ One application, routed by `Route::domain()` groups:
 | `api.*` `/admin/v1/*` | `auth:sanctum` → `EnsureAdmin` | `admin:api` bearer tokens (scripts) |
 | Auth flows, `/verify/*`, `/collaborate/*`, `/invitations/*`, public endpoints, webhooks | Unauthenticated | Rate limited; token- or signature-scoped where applicable |
 
-User↔Admin isolation is bidirectional and middleware-enforced: the wrong principal type on either surface gets 403. Users resolve through `UserEmailProvider` (`user_emails.type = primary`): there is no `users.email` column.
+User↔Admin isolation is bidirectional and middleware-enforced: the wrong principal type on either host gets 403. Users resolve through `UserEmailProvider` (`user_emails.type = primary`): there is no `users.email` column.
 
 > [!NOTE]
-> The feature specs under `docs/features/` define each domain's **operations, validation, events, and rules**. Internal UI consumes them as Inertia web routes; the same operations are exposed on `api.*` only where they are part of the sold surface (public endpoints, Push API, user/admin token APIs). `openapi.json` and the Bruno collection document the sold surface.
+> The feature specs under `docs/features/` define each domain's **operations, validation, events, and rules**. Internal UI consumes them as Inertia web routes; the same operations are exposed on `api.*` only where they are part of the sold API (public endpoints, Push API, user/admin token APIs). `openapi.json` and the Bruno collection document the sold API.
 
 ## 🖥️ Frontend Layer
 

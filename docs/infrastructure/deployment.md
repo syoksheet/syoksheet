@@ -32,7 +32,7 @@ php artisan queue:restart
 php artisan optimize
 ```
 
-The Forge site carries all four surfaces as aliases (the apex, `api.`, `app.`, `admin.`) with one SSL cert; Laravel routes per host.
+The Forge site carries all four domains as aliases (the apex, `api.`, `app.`, `admin.`) with one SSL cert; Laravel routes per host.
 
 `php artisan migrate:all --force` runs both connections: `pgsql` and `audit`, each with its own migration path and history.
 

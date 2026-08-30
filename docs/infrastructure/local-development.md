@@ -39,7 +39,7 @@ DDEV always provisions its Postgres instance with a database named `db`, and tha
 | xhgui | Profiling | Started on demand with `ddev xhgui` |
 | mailpit | DDEV built-in mail catcher | Unused. Mail goes to Buggregator, but DDEV always provides this and it cannot be removed |
 
-Base URL: `https://app.syoksheet.ddev.site`. Three additional hostnames plus DDEV's own `syoksheet.ddev.site` give all four surfaces locally, so `Route::domain()` groups behave exactly as in production. Marketing sits on the bare hostname, mirroring the apex; there is no local `www.`, because there is no apex redirect to rehearse.
+Base URL: `https://app.syoksheet.ddev.site`. Three additional hostnames plus DDEV's own `syoksheet.ddev.site` give all four domains locally, so `Route::domain()` groups behave exactly as in production. Marketing sits on the bare hostname, mirroring the apex; there is no local `www.`, because there is no apex redirect to rehearse.
 
 ## 🗄️ Databases
 

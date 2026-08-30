@@ -4,7 +4,7 @@ A single `AiService` abstraction with swappable provider drivers. Claude API (An
 
 ## 🧩 The Abstraction
 
-- `AiService` is the only surface application code touches; a provider driver (`anthropic` default) implements it. Swapping providers is a config change, never a refactor.
+- `AiService` is the only contract application code touches; a provider driver (`anthropic` default) implements it. Swapping providers is a config change, never a refactor.
 - All AI calls run in **queued jobs only**, never during a web request.
 - Model selection per task class, in config: a capable model for similarity judgment (default `claude-sonnet-5`), an economical one for bulk scoring (default `claude-haiku-4-5`).
 - Failures degrade gracefully: an AI outage delays review-queue population; nothing user-facing breaks.

@@ -25,7 +25,7 @@ Tables for organisations, membership, teams and permissions, join requests, depa
 | is_dns_verified | boolean | Default false |
 | dns_verified_at | timestamptz | Nullable |
 | plan | varchar(20) | Default `free` (`free`, `business`) |
-| suspended_at | timestamptz | Nullable: admin suspension; suspended orgs are 404 on public surfaces |
+| suspended_at | timestamptz | Nullable: admin suspension; suspended orgs are 404 on public pages |
 | created_at, updated_at | timestamptz | Managed by Eloquent |
 | deleted_at | timestamptz | Soft delete |
 

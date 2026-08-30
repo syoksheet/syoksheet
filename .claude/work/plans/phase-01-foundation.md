@@ -2,7 +2,7 @@
 
 **Goal:** make the application use the environment Phase 0 built, and put every convention later phases depend on in place before any feature exists.
 
-**Specs:** `docs/architecture.md` (surfaces, guards, connections, Redis split, queues), `docs/validation.md` (error codes), `docs/localization.md`, `docs/ai.md`, `docs/api/README.md` (Bruno rules), `docs/database/README.md` + `docs/database/audit.md` (conventions, audit users), `docs/infrastructure/deployment.md` (CI pipeline, secrets), `docs/infrastructure/local-development.md`, `.claude/work/specs/phase-01-foundation.md` (the four resolved holes).
+**Specs:** `docs/architecture.md` (domains, guards, connections, Redis split, queues), `docs/validation.md` (error codes), `docs/localization.md`, `docs/ai.md`, `docs/api/README.md` (Bruno rules), `docs/database/README.md` + `docs/database/audit.md` (conventions, audit users), `docs/infrastructure/deployment.md` (CI pipeline, secrets), `docs/infrastructure/local-development.md`, `.claude/work/specs/phase-01-foundation.md` (the four resolved holes).
 
 **Audit events:** none. This phase writes no user or org data.
 
@@ -16,7 +16,7 @@ Values copied verbatim from the specs. Do not paraphrase.
 |---|---|---|
 | Redis DB split | default 0, cache 1, session 2, queue 3 | architecture.md § Redis |
 | Queues and priority | `audit` (highest, retries forever), `notifications` (medium), `default` (normal) | architecture.md § Events, Queues & Jobs |
-| Surfaces | `app.`, `admin.`, apex, `api.` | architecture.md § Surfaces |
+| Domains | `app.`, `admin.`, apex, `api.` | architecture.md § Domains |
 | Audit application user | `INSERT`, `SELECT` only. No `UPDATE`, no `DELETE`, ever | database/audit.md:16 |
 | Audit erasure user | `UPDATE` on anonymisable columns only | database/audit.md:17 |
 | Audit connection name | `audit` | architecture.md § Databases |
@@ -115,34 +115,34 @@ Answered before implementing, per the build-step gate.
 - [x] Green: `ddev php artisan test --compact --filter=FilesystemDisks`
 - [x] `mc anonymous set download` added to the hook; `curl` the public bucket URL and get 200, not 403
 
-### Task 6: Per-surface host configuration
+### Task 6: Per-domain host configuration
 
-**Files:** create `config/domains.php`, modify `.env.example` (four host keys).
+**Files:** create `config/domains.php` and `app/Enums/Domain.php`, modify `.env` and `.env.example` (four host keys).
 
-**Behaviour:** one config source naming the four surface hosts per environment, consumed by both `Route::domain()` in Task 7 and by absolute-URL building in later phases. Named `domains` to match the Laravel method that reads it, so `Route::domain(config('domains.admin'))` needs no explanation.
+**Behaviour:** one config source naming the four domain hosts per environment, consumed by both `Route::domain()` in Task 7 and by absolute-URL building in later phases. Named `domains` to match the Laravel method that reads it, so `Route::domain(config('domains.admin'))` needs no explanation.
 
 **Who writes:** user.
 
 **Read first:** `docs/infrastructure/environment-variables.md` § "APP_URL is a fallback, not an origin". The rule this exists to enforce: no notification relies on the ambient root.
 
-- [ ] Implement
-- [ ] Contract test: `DomainConfigTest` asserts all four hosts resolve and none is empty
-- [ ] Green: `ddev php artisan test --compact --filter=DomainConfig`
+- [x] Implement
+- [x] Contract test: `DomainConfigTest` asserts all four hosts resolve and none is empty
+- [x] Green: `ddev php artisan test --compact --filter=DomainConfig`
 
 ### Task 7: `Route::domain()` skeleton
 
 **Files:** modify `bootstrap/app.php` (register the route files), create `routes/app.php`, `routes/admin.php`, `routes/api.php`, `routes/marketing.php`, modify `routes/web.php`.
 
-**Behaviour:** each surface answers only on its own host. A request for an `app.` route sent to the apex 404s.
+**Behaviour:** each domain answers only on its own host. A request for an `app.` route sent to the apex 404s.
 
 **Who writes:** user. This is the structural decision the whole application hangs off.
 
-**Read first:** `docs/architecture.md` § Surfaces and § Auth & Guards. Boost `search-docs` for "route domain group" and "withRouting then".
+**Read first:** `docs/architecture.md` § Domains and § Auth & Guards. Boost `search-docs` for "route domain group" and "withRouting then".
 
-- [ ] Failing test: `SurfaceRoutingTest`, one case per surface, each asserting the route answers on its own host and 404s on the other three
+- [ ] Failing test: `DomainRoutingTest`, one case per domain, each asserting the route answers on its own host and 404s on the other three
 - [ ] Implement
-- [ ] Green: `ddev php artisan test --compact --filter=SurfaceRouting`
-- [ ] `curl` all four local hostnames and confirm each serves its own surface
+- [ ] Green: `ddev php artisan test --compact --filter=DomainRouting`
+- [ ] `curl` all four local hostnames and confirm each serves its own domain
 
 ### Task 8: Inertia bootstrap
 
@@ -242,7 +242,7 @@ Answered before implementing, per the build-step gate.
 | New personal-data field | None |
 | New audit event | None |
 | New consent type | None |
-| New durable convention | Record with `record-rule` if one emerges, likely around the surface-routing pattern |
+| New durable convention | Record with `record-rule` if one emerges, likely around the domain-routing pattern |
 
 ## Out of scope
 

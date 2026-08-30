@@ -187,7 +187,7 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 
 @../syoksheet-docs/claude-context.md
 
-This repo is **the syoksheet application**: one Laravel app serving `api.*`, `app.*`, `admin.*`, and the apex (`syoksheet.com`, marketing) via `Route::domain()` groups. The app and admin UIs are Inertia + Svelte 5 + TS; the apex is server-rendered Blade; `api.*` is the external sold surface only (Pro tokens, Jobs Push API, webhooks, public endpoints).
+This repo is **the syoksheet application**: one Laravel app serving `api.*`, `app.*`, `admin.*`, and the apex (`syoksheet.com`, marketing) via `Route::domain()` groups. The app and admin UIs are Inertia + Svelte 5 + TS; the apex is server-rendered Blade; `api.*` is the external sold API only (Pro tokens, Jobs Push API, webhooks, public endpoints).
 
 ## PHP
 
@@ -209,7 +209,7 @@ Two doc sources, split by coverage, never guess a versioned API from memory when
 
 - **Laravel ecosystem → Boost `search-docs`.** Laravel itself, Inertia (server side), Pest, Pint, Larastan, Telescope, Horizon, the `spatie/*` packages, and anything else Boost indexes. Local, free, version-matched to what's installed. Always try this first.
 - **Everything else → Context7.** Svelte 5 and runes, Bits UI, Vite, TypeScript, ESLint, Prettier, `sass-embedded`, DodoPayments, and any library Boost does not index. Explicitly reach for Context7 rather than answering from memory, this stack moves faster than the training cutoff.
-- If neither source covers it, say so and check the library's own repo. Do not invent an API surface.
+- If neither source covers it, say so and check the library's own repo. Do not invent an API.
 
 Context7 runs on the free tier: **1,000 tool calls per month**, and one call is one tool invocation, not one prompt. Two habits keep it in budget:
 

@@ -54,7 +54,7 @@ The frontend maps `log_name + event` to a display template (`brag.verification_a
 
 The audit log is the single source of truth for activity. Contextual views (brag history, org audit view) query it filtered by subject or `organization_id`, no separate activity tables.
 
-The **org activity stream** is the live surface over the same data: `GET /api/v1/organizations/{org}/activity` (Management team) serves the cursor-paginated backlog, and after `AuditLogJob` persists a `management`-visibility event with an `organization_id`, it broadcasts the event's `display` payload on the org's private Reverb channel (`org.{id}.activity`, Management-authorized). The broadcast happens only after the durable write succeeds. The stream can never show an event the audit log doesn't hold.
+The **org activity stream** is the live view over the same data: `GET /api/v1/organizations/{org}/activity` (Management team) serves the cursor-paginated backlog, and after `AuditLogJob` persists a `management`-visibility event with an `organization_id`, it broadcasts the event's `display` payload on the org's private Reverb channel (`org.{id}.activity`, Management-authorized). The broadcast happens only after the durable write succeeds. The stream can never show an event the audit log doesn't hold.
 
 ## 🔒 Erasure Handling
 

@@ -10,26 +10,26 @@ All environment variables for the Laravel API, set in Forge per environment. Fro
 | APP_ENV | production | `staging` for staging |
 | APP_KEY | base64:xxx… | `php artisan key:generate` |
 | APP_DEBUG | false | `true` for staging |
-| APP_URL | https://syoksheet.com | Fallback root for URL generation outside a request, never a per-surface setting. Staging: https://staging.syoksheet.com. Local: https://syoksheet.ddev.site |
+| APP_URL | https://syoksheet.com | Fallback root for URL generation outside a request, never a per-domain setting. Staging: https://staging.syoksheet.com. Local: https://syoksheet.ddev.site |
 
 ### APP_URL is a fallback, not an origin
 
-Laravel reads `APP_URL` only when there is no request to take a host from: queued jobs, console commands, mail. Inside a request, `url()` and `route()` follow the actual `Host` header and `Route::domain()` matches on it, so `APP_URL` never decides which surface works.
+Laravel reads `APP_URL` only when there is no request to take a host from: queued jobs, console commands, mail. Inside a request, `url()` and `route()` follow the actual `Host` header and `Route::domain()` matches on it, so `APP_URL` never decides which domain works.
 
-Three surfaces originate out-of-request links, so no single fallback can be correct for all of them:
+Three domains originate out-of-request links, so no single fallback can be correct for all of them:
 
-| Surface | Links it originates |
+| Domain | Links it originates |
 |---------|---------------------|
 | `app.` | Email verification, password reset, account-deletion confirmation and cancellation |
 | `admin.` | Admin authentication mail, account provisioning |
 | apex | Collaborator and verifier invitations |
 
-The rule is therefore that **no notification relies on the fallback**: each builds its URL against its own surface's configured host. `APP_URL` points at the apex so that anything which does fall through fails loudly and identically for every audience, rather than working for users and silently breaking for admins, which is the failure that survives testing.
+The rule is therefore that **no notification relies on the fallback**: each builds its URL against its own domain's configured host. `APP_URL` points at the apex so that anything which does fall through fails loudly and identically for every audience, rather than working for users and silently breaking for admins, which is the failure that survives testing.
 
 Signed URLs make this strict rather than cosmetic. The signature covers the full URL and `hasValidSignature()` re-derives it from the incoming request, so a host mismatch is rejected outright, not merely served as a 404.
 
 > [!NOTE]
-> The per-surface host configuration that this rule depends on arrives with the `Route::domain()` groups in Phase 1. Until then no routes exist and the value has no observable effect.
+> The per-domain host configuration that this rule depends on arrives with the `Route::domain()` groups in Phase 1. Until then no routes exist and the value has no observable effect.
 
 ## 🗄️ Databases
 
