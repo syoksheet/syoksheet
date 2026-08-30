@@ -21,7 +21,7 @@ HTTPS is used locally so cookie behaviour across the four subdomains matches pro
 brew install mkcert nss && mkcert -install && ddev restart
 ```
 
-DDEV always provisions its Postgres instance with a database named `db`, and that name cannot be configured. The application expects `syoksheet`, the same name used in staging and production, so a `post-start` hook in `.ddev/config.yaml` creates it on every start. Nothing is done by hand: a manually created database would not survive `ddev delete`, and a fresh clone would come up broken. The hook guards on `pg_database` because Postgres has no `CREATE DATABASE IF NOT EXISTS`, and needs no `GRANT`, since the `db` role is a superuser and owns what it creates.
+DDEV always provisions its Postgres instance with a database named `db`, and that name cannot be configured. The application expects `syoksheet`, the same name used in staging and production, so a `post-start` hook in `.ddev/config.yaml` creates it, and `syoksheet_testing` alongside it, on every start. The audit instance needs no hook for `syoksheet_audit`: we own that compose file, so `POSTGRES_DB` names it at first initialisation. That mechanism creates exactly one database and only once, which is why `syoksheet_audit_testing` still needs a hook line, and why that line carries `-h postgres-audit`: without it, `psql` would create it on the primary instance. Nothing is done by hand: a manually created database would not survive `ddev delete`, and a fresh clone would come up broken. The hook guards on `pg_database` because Postgres has no `CREATE DATABASE IF NOT EXISTS`, and needs no `GRANT`, since the `db` role is a superuser and owns what it creates.
 
 ## 📦 Services
 
@@ -45,10 +45,12 @@ Base URL: `https://app.syoksheet.ddev.site`. Three additional hostnames plus DDE
 
 Two **databases**, never two schemas. Postgres cannot join or foreign-key across databases, which is what enforces the audit log's "raw IDs, no cross-database FK constraints".
 
-| Connection | Host | Database | Credentials |
-|------------|------|----------|-------------|
-| `pgsql` (default) | `db` | `syoksheet` | `db` / `db` |
-| `log` (audit) | `postgres-audit` | `syoksheet_audit` | `db` / `db` |
+| Connection | Host | Database | Test database | Credentials |
+|------------|------|----------|---------------|-------------|
+| `pgsql` (default) | `db` | `syoksheet` | `syoksheet_testing` | `db` / `db` |
+| `log` (audit) | `postgres-audit` | `syoksheet_audit` | `syoksheet_audit_testing` | `db` / `db` |
+
+The suite runs against **PostgreSQL, not SQLite**. `phpunit.xml` points `DB_DATABASE` and `LOG_DB_DATABASE` at the two test databases, and `Tests\TestCase` refuses to run when either connection names a database that does not end in `_testing`, so a misconfiguration fails loudly instead of truncating development data.
 
 ```bash
 ddev php artisan migrate:all              # runs both connections

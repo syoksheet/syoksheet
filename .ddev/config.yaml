@@ -42,9 +42,15 @@ fail_on_hook_fail: true
 # Run on every start: doing either by hand would not survive `ddev delete`.
 hooks:
   post-start:
-    # DDEV always names its database `db`; the app expects `syoksheet`. The SELECT
-    # guard stands in for the CREATE DATABASE IF NOT EXISTS that Postgres lacks.
+    # DDEV always names its database `db`; the app expects `syoksheet` and the
+    # suite `syoksheet_testing`. The SELECT guard stands in for the
+    # CREATE DATABASE IF NOT EXISTS that Postgres lacks.
     - exec: psql -tAc "SELECT 1 FROM pg_database WHERE datname='syoksheet'" | grep -q 1 || psql -c 'CREATE DATABASE syoksheet OWNER db'
+    - exec: psql -tAc "SELECT 1 FROM pg_database WHERE datname='syoksheet_testing'" | grep -q 1 || psql -c 'CREATE DATABASE syoksheet_testing OWNER db'
+    # `syoksheet_audit` is created by POSTGRES_DB when the audit volume first
+    # initializes, and that mechanism only ever makes one database, so the test
+    # one needs the hook. Without -h, psql would create it on the primary.
+    - exec: psql -h postgres-audit -d syoksheet_audit -tAc "SELECT 1 FROM pg_database WHERE datname='syoksheet_audit_testing'" | grep -q 1 || psql -h postgres-audit -d syoksheet_audit -c 'CREATE DATABASE syoksheet_audit_testing OWNER db'
     # `mc ready` waits because the minio image declares no HEALTHCHECK, so DDEV
     # cannot gate on it. `--ignore-existing` is mc's own idempotence.
     - exec: mc ready minio && mc mb --ignore-existing minio/syoksheet-public-local minio/syoksheet-private-local

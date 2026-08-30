@@ -30,6 +30,20 @@ Phase 1 has no API routes, so a Bruno collection can only exercise `/up`.
 
 **Why:** its Phase 1 value is not testing the API, which does not exist. It is proving the pipeline (seeder runs, `artisan serve` comes up, `bru run` executes, the JUnit reporter annotates failures) before Phase 2's first real deploy depends on all of it. Deferring to Phase 4 was considered and rejected: it would move that discovery into the deploy.
 
+## 5. The suite runs on PostgreSQL
+
+`phpunit.xml` inherited Laravel's `sqlite` + `:memory:` default, which blocked Task 2 (two connections against two Postgres instances) and Task 3 outright (SQLite has no roles or grants), and silently permitted schemas Postgres would reject.
+
+**Resolution:** two test databases created by the `post-start` hook, `phpunit.xml` pointed at them, and a guard in `Tests\TestCase` that refuses any connection whose database does not end in `_testing`. Separate databases rather than a dedicated test instance, because CI provisions one PostgreSQL service and local must not test a shape CI does not have.
+
+## 6. Redis is deliberately not isolated for tests
+
+Nothing in the suite writes to Redis: cache and session are `array`, the queue is `sync`, and `RedisConnectionTest` only reads which database a connection selected.
+
+**Resolution:** no test Redis databases for now. **The trigger to revisit is the first test that writes to Redis**, which is Phase 6's `AuditLogJob` or Phase 7's notifications. A key prefix is not sufficient isolation: Laravel's `RedisStore::flush()` calls `flushdb()`, which ignores the prefix and would wipe development data. Separate database numbers are the only real isolation.
+
+When that happens, `RedisConnectionTest` needs attention in the same change: it asserts the real database numbers, so overriding them for tests would make it assert the overrides and stop verifying anything.
+
 ## Related corrections made while resolving these
 
 | Correction | Where |

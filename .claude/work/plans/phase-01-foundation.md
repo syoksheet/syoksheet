@@ -27,6 +27,8 @@ Values copied verbatim from the specs. Do not paraphrase.
 | AI config keys | `AI_PROVIDER`, `ANTHROPIC_API_KEY`, `AI_MODEL_JUDGMENT`, `AI_MODEL_BULK` | ai.md § Configuration |
 | Bruno environments | `local`, `ci`, `staging`. **Production is never a Bruno environment** | api/README.md § Bruno Collection |
 | CI secrets needed this phase | None | deployment.md § Secrets and CI variables |
+| Test databases | `syoksheet_testing`, `syoksheet_audit_testing`, created by the `post-start` hook | local-development.md § Databases |
+| Test engine | PostgreSQL, never SQLite. `Tests\TestCase` refuses a database not ending in `_testing` | decisions.md, 2026-08-30 |
 
 ## Observability review
 
