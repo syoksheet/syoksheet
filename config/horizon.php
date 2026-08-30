@@ -196,8 +196,46 @@ return [
     |
     */
 
+    /*
+    | One supervisor per queue rather than one supervisor listing three queues,
+    | because `tries` is a supervisor-level setting: the audit queue retries
+    | forever while the others give up, and a single supervisor cannot express
+    | both. `timeout` stays below `queue.connections.redis.retry_after` (90),
+    | or a job would be retried while the first attempt is still running.
+    */
+
     'defaults' => [
-        'supervisor-1' => [
+        'audit' => [
+            'connection' => 'redis',
+            'queue' => ['audit'],
+            'balance' => 'auto',
+            'autoScalingStrategy' => 'time',
+            'maxProcesses' => 1,
+            'maxTime' => 0,
+            'maxJobs' => 0,
+            'memory' => 128,
+            // Never give up. An audit record that fails to write is a compliance
+            // gap, and losing it silently is worse than retrying indefinitely.
+            'tries' => 0,
+            'timeout' => 60,
+            'nice' => 0,
+        ],
+
+        'notifications' => [
+            'connection' => 'redis',
+            'queue' => ['notifications'],
+            'balance' => 'auto',
+            'autoScalingStrategy' => 'time',
+            'maxProcesses' => 1,
+            'maxTime' => 0,
+            'maxJobs' => 0,
+            'memory' => 128,
+            'tries' => 3,
+            'timeout' => 60,
+            'nice' => 0,
+        ],
+
+        'default' => [
             'connection' => 'redis',
             'queue' => ['default'],
             'balance' => 'auto',
@@ -206,7 +244,7 @@ return [
             'maxTime' => 0,
             'maxJobs' => 0,
             'memory' => 128,
-            'tries' => 1,
+            'tries' => 3,
             'timeout' => 60,
             'nice' => 0,
         ],
@@ -214,16 +252,44 @@ return [
 
     'environments' => [
         'production' => [
-            'supervisor-1' => [
-                'maxProcesses' => 10,
+            'audit' => [
+                'maxProcesses' => 2,
+                'balanceMaxShift' => 1,
+                'balanceCooldown' => 3,
+            ],
+            'notifications' => [
+                'maxProcesses' => 2,
+                'balanceMaxShift' => 1,
+                'balanceCooldown' => 3,
+            ],
+            'default' => [
+                'maxProcesses' => 6,
                 'balanceMaxShift' => 1,
                 'balanceCooldown' => 3,
             ],
         ],
 
+        'staging' => [
+            'audit' => [
+                'maxProcesses' => 1,
+            ],
+            'notifications' => [
+                'maxProcesses' => 1,
+            ],
+            'default' => [
+                'maxProcesses' => 2,
+            ],
+        ],
+
         'local' => [
-            'supervisor-1' => [
-                'maxProcesses' => 3,
+            'audit' => [
+                'maxProcesses' => 1,
+            ],
+            'notifications' => [
+                'maxProcesses' => 1,
+            ],
+            'default' => [
+                'maxProcesses' => 1,
             ],
         ],
     ],

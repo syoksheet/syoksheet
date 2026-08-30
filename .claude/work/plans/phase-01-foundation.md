@@ -96,9 +96,9 @@ Answered before implementing, per the build-step gate.
 
 **Who writes:** claude. Pure configuration whose every value is already fixed by `docs/architecture.md`, and Horizon aborts at boot without a `staging` key, which Phase 2 needs.
 
-- [ ] Implement
-- [ ] Contract test: `HorizonConfigTest` asserts all three environments exist and `audit` has unlimited tries
-- [ ] Green: `ddev php artisan test --compact --filter=HorizonConfig`
+- [x] Implement
+- [x] Contract test: `HorizonConfigTest` asserts all three environments exist and `audit` has unlimited tries
+- [x] Green: `ddev php artisan test --compact --filter=HorizonConfig`
 
 ### Task 5: Filesystem disks and the local public bucket policy
 
