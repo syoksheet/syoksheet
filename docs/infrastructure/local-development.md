@@ -144,6 +144,7 @@ Both buckets are created by a `post-start` hook in `.ddev/config.yaml`, never by
 | Svelte types | `ddev exec npm run check` |
 | JS lint | `ddev exec npm run lint` |
 | Install JS deps | `ddev exec npm ci` |
+| Vite dev server | `ddev exec npm run dev` |
 | Tinker | `ddev php artisan tinker` |
 | PostgreSQL | `ddev psql` |
 | Redis | `docker exec ddev-syoksheet-redis redis-cli PING` |

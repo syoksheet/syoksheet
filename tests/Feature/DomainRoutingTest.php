@@ -1,33 +1,35 @@
 <?php
 
 use App\Enums\Domain;
+use Illuminate\Support\Facades\Route;
 
 dataset('domains', [
-    'public' => [Domain::Public, '/', 'public'],
-    'app' => [Domain::App, '/', 'app'],
-    'admin' => [Domain::Admin, '/', 'admin'],
-    'api' => [Domain::Api, '/v1', 'api'],
+    'public' => [Domain::Public, '/', 'public.home'],
+    'app' => [Domain::App, '/', 'app.home'],
+    'admin' => [Domain::Admin, '/', 'admin.home'],
+    'api' => [Domain::Api, '/v1', 'api.v1.index'],
 ]);
 
-it('answers on its own host', function (Domain $domain, string $path, string $body) {
-    $this->get("https://{$domain->host()}{$path}")
-        ->assertOk()
-        ->assertContent($body);
+it('answers on its own host', function (Domain $domain, string $path, string $route) {
+    $this->get("https://{$domain->host()}{$path}")->assertOk();
+
+    expect(Route::currentRouteName())->toBe($route);
 })->with('domains');
 
 /**
- * Three domains all serve `/`, so a 404 check would prove nothing: the response would
- * be 200 from a different handler. What matters is that no host ever runs another
- * domain's route, which is what a group registered without `Route::domain()` would do.
+ * Three domains all serve `/`, so checking for a 404 proves nothing: the wrong host
+ * still returns 200, just from a different handler. What matters is which route ran,
+ * which is the thing a group registered without Route::domain() gets wrong.
  */
-it('never runs one domain route from another host', function (Domain $domain, string $path, string $body) {
+it('never runs one domain route from another host', function (Domain $domain, string $path, string $route) {
     foreach (Domain::cases() as $other) {
         if ($other === $domain) {
             continue;
         }
 
-        expect($this->get("https://{$other->host()}{$path}")->getContent())
-            ->not->toBe($body);
+        $this->get("https://{$other->host()}{$path}");
+
+        expect(Route::currentRouteName())->not->toBe($route);
     }
 })->with('domains');
 

@@ -10,14 +10,19 @@ One application, routed by `Route::domain()` groups:
 |-----------|---------|-----------|
 | `app.syoksheet.com` | User app | Inertia + Svelte pages, `web` session auth (user guard) |
 | `admin.syoksheet.com` | Admin panel | Inertia + Svelte pages, admin session guard |
-| `syoksheet.com` (apex) | Marketing, public walls, jobs directory, policy pages | Server-rendered Blade. SEO-first, no auth. `www.syoksheet.com` redirects here |
+| `syoksheet.com` (apex) | Marketing, public walls, jobs directory, policy pages | Inertia + Svelte with server-side rendering. SEO-first, no auth. `www.syoksheet.com` redirects here |
 | `api.syoksheet.com` | **The sold API**: Pro user tokens, Jobs Push API, Dodo webhooks, verifier/collaborator/invitation token pages' endpoints | JSON via Sanctum bearer tokens / signed or tokened routes |
 
-Paths differ by host, and the difference is load-bearing. `app.` and `admin.` are
+Paths differ by host, and the difference is load-bearing. All three HTML hosts are
 Inertia: a route returns a page, a write returns a redirect, and there is **no `/api`
-prefix**, because there is no internal API to prefix. The apex is Blade for the same
-reason. Only `api.` carries versioned JSON paths, `/v1/*` and `/admin/v1/*`, and it
-needs no `/api` prefix either since the host already says so.
+prefix**, because there is no internal API to prefix. Only `api.` carries versioned
+JSON paths, `/v1/*` and `/admin/v1/*`, and it needs no `/api` prefix either since the
+host already says so.
+
+Server-side rendering runs on the apex alone, because it is the only host whose pages
+are crawled. `app.` and `admin.` sit behind auth and disable it. The full reasoning,
+along with the process isolation, caching and client-side rules that follow from it,
+is in `.claude/work/specs/ssr-and-domain-rendering.md`.
 
 ## 🔐 Auth & Guards
 
@@ -39,6 +44,8 @@ User↔Admin isolation is bidirectional and middleware-enforced: the wrong princ
 ## 🖥️ Frontend Layer
 
 - Inertia + **Svelte 5** + TypeScript, built by Vite (Laravel-native). The frontend is a self-contained TS project under `resources/ts/`: own `tsconfig` (strict), ESLint, `svelte-check`.
+- **One bundle per domain**, not one shared bundle: `app.ts`, `admin.ts` and `public.ts`, each declaring its own page directory under `resources/ts/pages/`. The apex must never ship admin code, and a marketing visitor must not download the product UI.
+- **Server-side rendering runs on the apex only**, from a fourth entry, `ssr.ts`. `app.` and `admin.` are authenticated and never crawled, so they disable it. Rendering, isolation, caching and the client-side rules that follow are in `.claude/work/specs/ssr-and-domain-rendering.md`.
 - Components: headless primitives (Bits UI) styled by the design system tokens. Specs and the mirror live in `design/` at the repo root. The data table is built in-house (no TanStack Table).
 - PHP enums/DTOs generate TS types (`spatie/typescript-transformer`), no hand-duplicated types.
 
@@ -46,7 +53,7 @@ User↔Admin isolation is bidirectional and middleware-enforced: the wrong princ
 
 | Connection | Instance | Holds |
 |------------|----------|-------|
-| `pgsql` (default) | Database `syoksheet` on the environment's managed PostgreSQL cluster | All application data: 61 tables, listed in [database/README.md](database/README.md) |
+| `pgsql` (default) | Database `syoksheet_primary` on the environment's managed PostgreSQL cluster | All application data: 61 tables, listed in [database/README.md](database/README.md) |
 | `audit` | Database `syoksheet_audit` on the **same** cluster. A separate database, never a schema: Postgres cannot join or foreign-key across databases, which is what enforces the audit log's raw-ID rule | `audit_logs`, `security_incidents`, `security_incident_affected_records`: append-only, forever retention |
 
 Schema conventions and per-domain docs: [database/README.md](database/README.md). Writes to the `audit` connection go through `AuditLogJob` only.

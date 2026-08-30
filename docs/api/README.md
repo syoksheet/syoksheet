@@ -26,7 +26,7 @@ Tokens are created in the respective UIs (password-confirmed). Interactive login
 
 ## 📐 Conventions
 
-- **Versioning**: `/v1/*` for `user:api` token routes, `/admin/v1/*` for `admin:api` token routes. No `/api` prefix: the host already says it. Internal Inertia and Blade routes are not part of this API and carry no version prefix at all.
+- **Versioning**: `/v1/*` for `user:api` token routes, `/admin/v1/*` for `admin:api` token routes. No `/api` prefix: the host already says it. Internal Inertia routes are not part of this API and carry no version prefix at all.
 - **Resources**: every response body is an Eloquent API Resource: `{ "data": ... }`, with `links`/`meta` for pagination.
 - **Errors**. Laravel defaults: 401 `{ "message": "Unauthenticated." }`, 403, 404, and 422 `{ "message", "errors": { field: [...] } }`. Business-rule violations additionally carry a stable `code` (e.g. `brag_limit_reached`). The catalog lives in [../validation.md](../validation.md); frontends key off codes, never message strings.
 - **Tags**, one per feature domain: `auth`, `users`, `organizations`, `brags`, `jobs`, `billing`, `taxonomy`, `public`, `admin`.

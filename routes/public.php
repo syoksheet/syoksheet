@@ -1,10 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 /*
-| The apex: marketing, public walls, the jobs directory and policy pages.
-| Server-rendered Blade, SEO-first, no auth.
+| The apex: marketing, public walls, the jobs directory and policy pages. Inertia
+| pages, server-rendered, no auth and no session. This is the only domain we render on
+| the server, because it is the only one that gets crawled.
 */
 
-Route::get('/', fn () => response('public'))->name('public.home');
+Route::get('/', fn () => Inertia::render('Home'))->name('public.home');

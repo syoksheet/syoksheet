@@ -5,6 +5,10 @@
     "moduleResolution": "bundler",
     "strict": true,
     "noEmit": true,
+    // Has to stay on. Inertia 3.7.0 ships two broken .d.ts files: @inertiajs/core
+    // re-exports an axios adapter whose types import axios, which v3 dropped, and
+    // Render.svelte.d.ts has an import that clashes with its own local declaration.
+    // Neither is ours to fix and both break the build with this off. See inertia#3123.
     "skipLibCheck": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
@@ -12,17 +16,15 @@
     "verbatimModuleSyntax": true,
     "allowJs": true,
     "checkJs": false,
+    // Browser code only, so no Node types here. Adding them would let `process` and
+    // `Buffer` type-check inside a bundle that has neither, turning a compile error
+    // into a runtime one. The config files get them from tsconfig.node.json instead.
     "types": ["vite/client"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["resources/ts/*"]
     }
   },
-  "include": [
-    "resources/ts/**/*.ts",
-    "resources/ts/**/*.svelte",
-    "*.config.ts",
-    "svelte.config.js"
-  ],
+  "include": ["resources/ts/**/*.ts", "resources/ts/**/*.svelte"],
   "exclude": ["node_modules", "public", "vendor"]
 }

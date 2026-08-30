@@ -4,16 +4,17 @@
     "license": "UNLICENSED",
     "type": "module",
     "scripts": {
-        "build": "vite build",
+        "build": "vite build && vite build --ssr",
         "dev": "vite",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
         "format": "prettier --write \"resources/**/*.{ts,svelte,scss}\" \"*.config.{js,ts}\" \"svelte.config.js\"",
         "format:check": "prettier --check \"resources/**/*.{ts,svelte,scss}\" \"*.config.{js,ts}\" \"svelte.config.js\"",
-        "check": "svelte-check --tsconfig ./tsconfig.json"
+        "check": "svelte-check --tsconfig ./tsconfig.json --config ./svelte.config.js && tsc --noEmit -p tsconfig.node.json"
     },
     "devDependencies": {
         "@eslint/js": "10.0.1",
+        "@types/node": "26.4.0",
         "concurrently": "10.0.5",
         "eslint": "10.9.0",
         "eslint-config-prettier": "10.1.8",
@@ -32,6 +33,7 @@
     },
     "dependencies": {
         "@inertiajs/svelte": "3.7.0",
+        "@inertiajs/vite": "3.7.0",
         "@sentry/svelte": "10.72.0",
         "@sveltejs/vite-plugin-svelte": "7.3.0",
         "svelte": "5.56.10",

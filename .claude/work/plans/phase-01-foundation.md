@@ -136,7 +136,7 @@ Answered before implementing, per the build-step gate.
 **Behaviour:** each domain answers only on its own host. A request for an `app.` route sent to the apex 404s.
 
 > [!NOTE]
-> Internal routes carry **no `/api` prefix**: `app.` and `admin.` are Inertia, the apex is Blade, and there is no internal API to prefix. Only `api.` carries versioned JSON, at `/v1/*` and `/admin/v1/*`, with no `/api` prefix because the host already says it. Laravel's `withRouting(api:)` adds `/api` by default, so the api group needs its prefix set explicitly rather than inherited.
+> Internal routes carry **no `/api` prefix**: `app.`, `admin.` and the apex are all Inertia, and there is no internal API to prefix. Only `api.` carries versioned JSON, at `/v1/*` and `/admin/v1/*`, with no `/api` prefix because the host already says it. Laravel's `withRouting(api:)` adds `/api` by default, so the api group needs its prefix set explicitly rather than inherited.
 
 **Who writes:** user. This is the structural decision the whole application hangs off.
 
@@ -151,16 +151,18 @@ Answered before implementing, per the build-step gate.
 
 **Files:** modify `bootstrap/app.php` (Inertia middleware), create `app/Http/Middleware/HandleInertiaRequests.php`, create `resources/views/app.blade.php`, modify `resources/ts/app.ts` (page resolution), create `resources/ts/pages/Welcome.svelte`.
 
+> **Superseded by `phase-01-apex-ssr.md`.** That plan splits `HandleInertiaRequests` into one middleware class per domain and moves the pages under `resources/ts/pages/<domain>/`. The files named above no longer exist under these names. This task record is kept as written, since it describes what was built at the time.
+
 **Behaviour:** an Inertia page renders on `app.` through Svelte 5, with shared props flowing from the middleware.
 
 **Who writes:** user.
 
 **Read first:** the `inertia-svelte-development` skill, which is the authority for client-side patterns here. Boost `search-docs` for Inertia v3 server-side setup. `docs/architecture.md` § Frontend Layer.
 
-- [ ] Implement
-- [ ] Contract test: `InertiaBootstrapTest` asserts the `app.` root returns an Inertia response with the expected component
-- [ ] Green: `ddev php artisan test --compact --filter=InertiaBootstrap`
-- [ ] `ddev exec npm run check` and `ddev exec npm run lint` clean
+- [x] Implement
+- [x] Contract test: `InertiaBootstrapTest` asserts the `app.` root returns an Inertia response with the expected component
+- [x] Green: `ddev php artisan test --compact --filter=InertiaBootstrap`
+- [x] `ddev exec npm run check` and `ddev exec npm run lint` clean
 
 ### Task 9: Design tokens and Geist fonts
 

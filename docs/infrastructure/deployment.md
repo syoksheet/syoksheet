@@ -19,9 +19,9 @@ composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 # Built assets come from CI, keyed by commit SHA. Abort if missing: continuing
 # would serve new server code against the previous deploy's JavaScript.
 SHA=$(git rev-parse HEAD)
-rm -rf public/build
+rm -rf public/build bootstrap/ssr
 aws s3 cp "s3://syoksheet-artifacts/$SHA.tar.gz" /tmp/build.tar.gz --endpoint-url "$R2_ENDPOINT" || exit 1
-tar -xzf /tmp/build.tar.gz -C public/ || exit 1
+tar -xzf /tmp/build.tar.gz -C . || exit 1
 rm /tmp/build.tar.gz
 
 php artisan migrate:all --force
@@ -30,6 +30,12 @@ php artisan route:cache
 php artisan view:cache
 php artisan queue:restart
 php artisan optimize
+
+# Stop the SSR daemon so the supervisor restarts it against the new bundle.
+# `|| true` is required: the command returns a failure exit code whenever it cannot
+# reach the daemon, so the first deploy (before the daemon exists) and any deploy
+# where it is already down would otherwise be reported as a failed deployment.
+php artisan inertia:stop-ssr || true
 ```
 
 The Forge site carries all four domains as aliases (the apex, `api.`, `app.`, `admin.`) with one SSL cert; Laravel routes per host.
@@ -43,15 +49,20 @@ Because assets are built in CI, the **build inputs are excluded too**.
 | Path | On the server? | Why |
 |------|----------------|-----|
 | `resources/ts/`, `resources/scss/` | Excluded | Build inputs; the server never builds |
+| `bootstrap/ssr/` | **Fetched, not committed** | The SSR bundle rides in the CI artifact, which is rooted at the repo root and holds both `public/build/` and `bootstrap/ssr/` |
 | `vite.config.ts`, `svelte.config.js`, `tsconfig.json` | Excluded | Same |
-| `package.json`, `package-lock.json`, `.npmrc` | Excluded | No Node on the server |
-| `resources/views/`, `lang/` | **Kept** | Blade renders the apex marketing pages and the Inertia root view; translations are read at runtime |
+| `package.json`, `package-lock.json`, `.npmrc` | Excluded | Nothing is installed or built on the server; the SSR bundle is self-contained |
+| `resources/views/`, `lang/` | **Kept** | Blade renders the Inertia root views; translations are read at runtime |
 | `composer.json`, `composer.lock` | Kept | Needed by `composer install` |
 | Lint configs | Excluded | Nothing lints on the server |
 | `phpunit.xml`, `tests/` | Excluded | Tests run in CI |
 | `.github/` | Excluded | Actions runs from GitHub's own copy |
 
-**No Node is installed on either server.**
+**Node is installed on the app server as a runtime only.** The apex is server-rendered,
+so `php artisan inertia:start-ssr` needs the `node` binary. Nothing is ever installed or
+built there: `ssr.noExternal` bundles every dependency into `bootstrap/ssr/`, so there is
+no `npm ci`, no `node_modules`, and no package manifest on the server. The daemon runs as
+its own unprivileged user, restricted to loopback. The queue server has no Node at all.
 
 ## 🤖 CI Pipeline (GitHub Actions)
 
@@ -63,9 +74,19 @@ Trigger: push/PR to `main` or `develop`, and `v*` tag pushes.
 4. Laravel Pint (style) + Larastan (static analysis)
 5. Frontend checks: `svelte-check`, ESLint
 6. Pest (`php artisan test`)
-7. Vite production build (`npm run build`), then **upload `public/build/` to R2 as `syoksheet-artifacts/$SHA.tar.gz`**: the deploy script fetches this and aborts when it is missing, so the pipeline is incomplete without it. Source maps upload to Sentry here and are excluded from the tarball
+7. Vite production build (`npm run build`), which emits the client bundles **and** the SSR bundle, then **upload `public/build/` and `bootstrap/ssr/` to R2 as `syoksheet-artifacts/$SHA.tar.gz`**: the deploy script fetches this and aborts when it is missing, so the pipeline is incomplete without it. Both must ride in the same artifact, since a client bundle deployed against a stale SSR bundle renders one markup on the server and another in the browser. Source maps upload to Sentry here and are excluded from the tarball
 8. **Bruno endpoint smoke tests:** `php artisan migrate --force && php artisan db:seed --class=BrunoSeeder`, `php artisan serve &`, then `npx @usebruno/cli run bruno --env ci --reporter-junit results.xml`: seeded credentials injected via CI env vars; JUnit output annotates failures
 9. On push to `main` (not PR): call the staging Forge deploy hook. On `v*` tag push: update the production Forge site's ref to the tag (Forge API) and call the production deploy hook
+
+## 🌐 Cloudflare Rules (apex, required at launch)
+
+Not code, and not optional. The apex is the only cached domain and these rules are what make that safe.
+
+| Rule | Why |
+|------|-----|
+| Bypass cache for any request carrying `X-Inertia` | An Inertia visit returns JSON from the same URL as the HTML page. Cloudflare only honours `Vary` for `Accept-Encoding`, so without this the edge can serve JSON to someone asking for the page, or cached HTML to an Inertia visit |
+| Cache key: path + locale + an allowlist of query params | Unknown params must be stripped, otherwise `?x=1`, `?x=2` and so on each cost a render and the cache can be busted indefinitely |
+| Rate limiting per IP, generous | Cache hits never reach the origin, so this only ever sees misses. The ceiling has to stay high enough never to throttle a search crawler |
 
 ## 🔒 Supply-Chain Workflow
 

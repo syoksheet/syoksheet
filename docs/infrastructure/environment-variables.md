@@ -58,7 +58,7 @@ Primary (`DB_*`) and audit (`AUDIT_DB_*`): two databases on one Forge managed Po
 
 | Variable | Example | Notes |
 |----------|---------|-------|
-| SESSION_DOMAIN | .syoksheet.com | Leading dot, both environments: sessions work across the app's subdomains; guard separation (user vs admin) is enforced by guards, not cookies |
+| SESSION_DOMAIN | null | Host-only, both environments. Only `app.` and `admin.` hold a session and they run separate guards, so neither needs the other's cookie. A leading-dot parent domain would also send it to `api.`, which is bearer-token only, and to the apex, which is public, stateless and cached. Guard separation is enforced by guards, not cookies |
 
 No `SANCTUM_STATEFUL_DOMAINS` or CORS origin list. The UIs are same-origin Inertia pages, and `api.*` is bearer-token/webhook traffic. Public `api.*` GET endpoints may enable permissive CORS if third parties embed them.
 
@@ -131,3 +131,22 @@ The backup, audit-archive and build-artifact buckets deliberately have no variab
 | SENTRY_SEND_DEFAULT_PII | false | Never `true`. `before_send` scrubbing is required before launch and is not implemented yet |
 | VITE_SENTRY_DSN | (same DSN) | Browser SDK in the Svelte apps |
 | LOG_CHANNEL | stack | Local: daily only |
+
+## 🖥️ Server-Side Rendering
+
+Only the apex is server-side rendered. `app.` and `admin.` opt out in their middleware, not through configuration.
+
+| Variable | Example | Notes |
+|----------|---------|-------|
+| INERTIA_SSR_ENABLED | true | Locally the renderer is served by `npm run dev`. With Vite not running, apex pages fall back to client-side rendering and a refused connection is deliberately not reported |
+| INERTIA_SSR_URL | http://127.0.0.1:13714 | Loopback only, never reachable off the machine. The port must match `vite.config.ts`, which pins the same value: changing one alone disables SSR silently, with only a Sentry message to show for it |
+
+## 🗂️ Apex Response Cache
+
+`Cache-Control` on apex GET responses, read by Cloudflare. The apex is the only cacheable domain, because it is the only one that shares no user data.
+
+| Variable | Example | Notes |
+|----------|---------|-------|
+| PUBLIC_CACHE_MAX_AGE | 60 | Seconds a response is fresh |
+| PUBLIC_CACHE_STALE_WHILE_REVALIDATE | 300 | Serve stale and refresh in the background, which keeps the renderer off the critical path |
+| PUBLIC_CACHE_STALE_IF_ERROR | 86400 | Keep serving the last good copy through an origin or SSR outage |

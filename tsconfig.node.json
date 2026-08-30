@@ -1,0 +1,9 @@
+{
+  // The build and tooling configs. These genuinely run in Node, so they get Node
+  // types, while the browser code in tsconfig.json does not.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["node"]
+  },
+  "include": ["*.config.ts", "svelte.config.js"]
+}

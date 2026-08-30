@@ -1,10 +1,15 @@
 <?php
 
 use App\Enums\Domain;
+use App\Http\Middleware\HandleAdminInertiaRequests;
+use App\Http\Middleware\HandleAppInertiaRequests;
+use App\Http\Middleware\HandlePublicInertiaRequests;
+use App\Http\Middleware\SetPublicCacheHeaders;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Support\Facades\Route;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -12,28 +17,42 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
         /*
-        | Every group is domain-scoped, so no route file is reachable from a host it
-        | does not belong to. There is deliberately no `web:` argument: it registers
-        | without a domain, and anything in it would answer on all four hosts.
+        | Every group is tied to a domain, so no route file answers on a host it does
+        | not belong to. There is no `web:` argument on purpose: it registers without a
+        | domain and anything in it would answer on all four hosts. `api:` is unused for
+        | the same reason, plus it prefixes `/api` and the API host does not need that.
         |
-        | `api:` is unused for the same reason plus one more: it prefixes `/api`, and
-        | the API host needs no such prefix.
+        | Middleware is listed here because groups registered this way inherit nothing.
+        | Each Inertia domain gets its own class so the apex can never pick up a prop
+        | built from a logged-in user.
         |
-        | Middleware is attached explicitly here because a group registered this way
-        | inherits nothing. Inertia needs the session, cookies and CSRF that `web`
-        | brings; the API wants `api` instead, which throttles and holds no session.
+        | The apex does not use `web`, and that is the important bit. `web` starts a
+        | session, a session sets a cookie, and a response with Set-Cookie is not
+        | cacheable. The apex is public, identical for everyone and server-rendered, so
+        | staying stateless is what lets the CDN hold it. Nothing here needs a session:
+        | Inertia's middleware guards every session call with hasSession(). Note that
+        | Inertia\Response::__construct calls session() without a guard, but it returns
+        | the default rather than throwing, so the only cost is building the session
+        | manager. That is the line to recheck on an Inertia upgrade.
+        |
+        | When the apex needs a form, that POST gets its own small session-enabled
+        | group rather than putting a session on every GET.
         */
         then: function (): void {
             Route::domain(Domain::Public->host())
-                ->middleware('web')
+                ->middleware([
+                    SubstituteBindings::class,
+                    SetPublicCacheHeaders::class,
+                    HandlePublicInertiaRequests::class,
+                ])
                 ->group(base_path('routes/public.php'));
 
             Route::domain(Domain::App->host())
-                ->middleware('web')
+                ->middleware(['web', HandleAppInertiaRequests::class])
                 ->group(base_path('routes/app.php'));
 
             Route::domain(Domain::Admin->host())
-                ->middleware('web')
+                ->middleware(['web', HandleAdminInertiaRequests::class])
                 ->group(base_path('routes/admin.php'));
 
             Route::domain(Domain::Api->host())
