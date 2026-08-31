@@ -51,3 +51,35 @@ Things that must exist or be decided before a phase starts, discovered during de
 - Phases 14–16 are independent of each other and can reorder freely; everything else is dependency-ordered.
 - Privacy phase 2 (17) comes after all data-owning domains so export and erasure are complete on first build.
 - From Phase 2 onward every phase deploys to staging. A phase is not done because it passes locally.
+
+## 📤 Carried Forward from Phases 0 and 1
+
+Recorded here because the phase plans that produced these were deleted once their phases
+closed. Everything below is a commitment made during Phase 1 that a later phase owes.
+Items already carried by a code comment or another doc are noted as such rather than
+repeated.
+
+| Owed by | Item | Where it already lives |
+|---|---|---|
+| Phase 2 | Artifact upload to R2 and the Forge deploy hooks | Stubbed with a comment in `.github/workflows/assets.yml` |
+| Phase 2 | A deploy workflow, and the repository secrets it needs | `docs/infrastructure/deployment.md` § Secrets |
+| Phase 2 | SSR daemon: supervisor unit, its own unprivileged user, loopback-only egress | `syoksheet-docs → infrastructure/setup.md`, Forge daemon list |
+| Phase 2 | Revisit GitHub Team. Free gives a private repo no branch protection, so CI reports but cannot block | Trigger: a second committer, or a red build able to deploy |
+| Phase 3 | Source map upload to Sentry at build time | `docs/infrastructure/deployment.md` § CI Pipeline |
+| Phase 3 | Design-system components. Phase 1 shipped tokens and fonts only | `design/docs/` |
+| Phase 4 | `App\Models\User` and the users schema. The skeleton model and factory were deleted: no table existed behind them | `config/auth.php` names the class as a string until then |
+| Phase 4 | `javascript:` URL validation on user-supplied links, enforced in a Form Request | `.claude/work/specs/ssr-and-domain-rendering.md` § Client-side safety |
+| Phase 6 | The erasure role's column-scoped `UPDATE` grant, beside each table's migration | `docs/database/audit.md` |
+| Phase 6 | Audit tables and the activitylog configuration | `docs/features/audit/events.md` |
+| Phase 10 | The two AI use cases. Phase 1 installed and configured the SDK only | `docs/ai.md` |
+| Phase 14 | Apex SEO and Open Graph meta, GTM with Consent Mode v2. Placeholders ship today | Comments in `resources/views/domains/public.blade.php` and `pages/public/Home.svelte` |
+| Phase 14 | Cloudflare cache rules for the apex, including the `X-Inertia` bypass | `docs/infrastructure/deployment.md` § Cloudflare Rules |
+| Phase 14 | `Route::pattern` constraints on apex wildcards before any is added | `.claude/work/specs/ssr-and-domain-rendering.md` |
+
+### Known gaps, owned by nobody yet
+
+| Gap | Note |
+|---|---|
+| Sentry `before_send` PII scrubbing | Required before launch, tracked on the launch checklist in `syoksheet-docs → infrastructure/operations.md` |
+| No `traces_sampler`; the apex inherits the global sample rate | `config/sentry.php` is a single global rate. Costs money rather than correctness |
+| The Inertia SSR gateway sets no HTTP timeout | Laravel's 30s default applies, so a hung renderer can hold a PHP-FPM worker. Accepted deliberately; `stale-if-error` limits it to cold pages |
