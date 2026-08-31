@@ -184,7 +184,9 @@ Answered before implementing, per the build-step gate.
 
 **Behaviour:** throwing `BusinessRuleException` with an `ErrorCode` case produces `{ "message": ..., "code": ... }` at 422 and is not reported to Sentry.
 
-**Who writes:** user. The enum convention is already set by `QueueName` in Task 1; this one adds the fifteen catalogued codes and the exception that carries them.
+**Who writes:** claude, handed over by the user mid-task. The enum convention is already set by `QueueName` in Task 1; this one adds the fourteen catalogued codes and the exception that carries them.
+
+> The catalogue said fifteen. `sso_required` was moved out to `docs/validation.md` § Authorization codes before implementation: it is a 403 raised in middleware, not a 422 business rule, and it only sat in that table because `BusinessRuleError` was the one error shape carrying a `code`.
 
 **Read first:** `docs/validation.md` § Business-Rule Error Codes for all fifteen codes. `CLAUDE.md` § PHP on enum conventions. `docs/api/README.md` § Conventions on the error shape.
 

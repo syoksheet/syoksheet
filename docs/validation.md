@@ -49,7 +49,21 @@ Rule violations return 422 with a stable `code` alongside the message, so fronte
 | `export_cooldown` / `export_in_progress` | Data/PDF export rules |
 | `consents_required` | Open-to-work enable without JobMatching + AiProcessing |
 | `reserved_name` | Username/slug on the reserved list |
-| `sso_required` | Org-space request without an active org SSO session (403) |
 | `work_domain_primary` | Making an address on a DNS-verified org domain the primary email |
 
 New business rules add their code here and to the OpenAPI `BusinessRuleError` component.
+
+### Authorization codes
+
+`sso_required` used to sit in the table above. It does not belong there: it answers a
+different question. A 422 means the request was allowed but the system's state refused
+it, such as hitting a tier limit. A 403 means the caller may not do this at all, which
+is what a missing org SSO session is. It is also enforced in middleware, before any
+controller runs a business check.
+
+It has no home yet because `ForbiddenError` carries only a `message`, with no machine-
+readable code, and the frontend needs one to tell "redirect to the IdP" apart from an
+ordinary refusal.
+
+**When org SSO is built:** add a `code` field to the `ForbiddenError` component and
+raise `sso_required` through that, not through `BusinessRuleException`.

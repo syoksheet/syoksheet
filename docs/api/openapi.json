@@ -140,6 +140,23 @@
           },
           "code": {
             "type": "string",
+            "description": "Stable machine-readable code. Frontends branch on this, never on message.",
+            "enum": [
+              "attachment_limit_reached",
+              "brag_limit_reached",
+              "consents_required",
+              "export_cooldown",
+              "export_in_progress",
+              "fields_locked",
+              "job_posting_limit_reached",
+              "member_limit_reached",
+              "owned_orgs_exist",
+              "pending_verification_limit_reached",
+              "queue_capacity_reached",
+              "reserved_name",
+              "team_limit_reached",
+              "work_domain_primary"
+            ],
             "example": "brag_limit_reached"
           }
         },

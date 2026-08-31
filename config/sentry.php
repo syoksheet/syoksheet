@@ -1,5 +1,6 @@
 <?php
 
+use App\Exceptions\BusinessRuleException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -66,6 +67,7 @@ return [
     // response. They are user behaviour, not defects: reporting them buries real
     // bugs under noise.
     'ignore_exceptions' => [
+        BusinessRuleException::class,
         ValidationException::class,
         NotFoundHttpException::class,
         ModelNotFoundException::class,

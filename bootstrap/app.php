@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\Domain;
+use App\Exceptions\BusinessRuleException;
 use App\Http\Middleware\HandleAdminInertiaRequests;
 use App\Http\Middleware\HandleAppInertiaRequests;
 use App\Http\Middleware\HandlePublicInertiaRequests;
@@ -11,6 +12,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpFoundation\Response;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -64,6 +66,16 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        // A business rule refusing the request is an expected outcome, so it renders
+        // itself rather than reaching the default handler. Frontends read `code`; the
+        // message is copy and may change.
+        $exceptions->render(function (BusinessRuleException $e, Request $request) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'code' => $e->errorCode->value,
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        });
+
         // Keyed on the host, not the path. The API lives at `/v1/*` rather than
         // `/api/*`, so a path check would silently stop matching and return HTML
         // errors to a JSON client that did not send an Accept header.
