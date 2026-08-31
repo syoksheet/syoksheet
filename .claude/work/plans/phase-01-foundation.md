@@ -242,7 +242,9 @@ Answered before implementing, per the build-step gate.
 
 ### Task 13: GitHub Actions CI workflow
 
-**Files:** create `.github/workflows/ci.yml`.
+**Files:** two composite actions under `.github/actions/`, five workflows under `.github/workflows/`. Full plan in `phase-01-ci.md`.
+
+> **Reshaped before implementation.** The plan said one `ci.yml`. The user asked for workflows split by scope, and research backed it: Laravel's own framework repo runs 13 workflow files, splitting test workflows by the service they need. Shared setup moves into composite actions so the split costs no duplication.
 
 **Behaviour:** the nine documented steps run on push and PR to `main` and `develop`, and on `v*` tags. Phase 1 implements steps 1 to 8; the artifact upload and deploy hooks are stubbed with a comment naming Phase 2, since neither has anywhere to go yet.
 
@@ -250,8 +252,13 @@ Answered before implementing, per the build-step gate.
 
 **Read first (for review):** `docs/infrastructure/deployment.md` § CI Pipeline and § Secrets and CI variables. `.github/workflows/security.yml` for the pinning convention: third-party actions pinned to commit SHAs with the version in a trailing comment, never to tags.
 
-- [ ] Implement
-- [ ] Green: the workflow passes on a pushed branch, with all eight steps visible
+- [x] Implement
+- [ ] Green: the workflows pass on a pushed branch (only verifiable after a push)
+
+**Verified locally before pushing:** every workflow's YAML parses, and the api-smoke
+sequence was run for real in the container: `artisan serve` on 127.0.0.1:8000, then
+`cd bruno && bru run --env ci`, all green. `migrate:all --force` and
+`db:seed --class=BrunoSeeder --force` both accept their flags.
 
 ## Artifacts
 

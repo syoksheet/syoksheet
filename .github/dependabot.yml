@@ -1,0 +1,65 @@
+version: 2
+
+# Dependabot opens pull requests; .github/workflows/security.yml fails builds. They are
+# complements: one proposes the fix, the other stops us shipping without it.
+#
+# The github-actions block is the one that earns its keep. We pin actions to commit SHAs,
+# which is good security and means nothing ever updates them. Dependabot bumps the SHA
+# and keeps the trailing version comment, so the pins stay current without hand-editing.
+#
+# Mondays, matching the security workflow's schedule, so dependency news arrives together.
+
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+      timezone: Etc/UTC
+    commit-message:
+      prefix: 'ci'
+    groups:
+      # One PR for all action bumps. They are almost always safe together and reviewing
+      # five separate SHA changes is worse than reviewing one.
+      actions:
+        patterns: ['*']
+
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+      timezone: Etc/UTC
+    commit-message:
+      prefix: 'build'
+    # .npmrc sets save-exact, and security.yml asserts every direct dependency is pinned
+    # to an exact version. `increase` keeps that: it rewrites the pin rather than
+    # widening it to a range.
+    versioning-strategy: increase
+    groups:
+      dev-dependencies:
+        dependency-type: development
+        update-types: [minor, patch]
+      production-dependencies:
+        dependency-type: production
+        update-types: [minor, patch]
+
+  - package-ecosystem: composer
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+      timezone: Etc/UTC
+    commit-message:
+      prefix: 'build'
+    groups:
+      php-minor-and-patch:
+        patterns: ['*']
+        update-types: [minor, patch]
+
+# Majors are deliberately left ungrouped and arrive as their own pull requests. A major
+# bump deserves reading the changelog, which does not happen when it is buried in a batch
+# of fifteen patches.

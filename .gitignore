@@ -17,6 +17,7 @@
 /.claude/settings.local.json
 /bootstrap/ssr
 /bruno/.env
+/bruno-results.xml
 /public/build
 /public/fonts-manifest.dev.json
 /public/hot

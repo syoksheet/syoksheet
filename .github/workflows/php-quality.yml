@@ -1,0 +1,52 @@
+name: PHP quality
+
+# Style and static analysis. Neither needs a database, so they stay out of the test
+# workflow and report in seconds.
+#
+# Third-party actions are pinned to commit SHAs, never tags: a tag can be repointed at
+# malicious code in the action's own repo.
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: php-quality-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pint:
+    name: Code style
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-php
+
+      # --test rather than fixing. Laravel's own example fixes and then commits the
+      # result with a bot, which needs write permissions; we would rather fail and let
+      # the author run Pint.
+      - name: Check code style
+        run: vendor/bin/pint --test
+
+  larastan:
+    name: Static analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-php
+
+      # --error-format=github turns findings into inline pull request annotations
+      # instead of a wall of text at the end of a log.
+      - name: Analyse
+        run: vendor/bin/phpstan analyse --no-progress --error-format=github

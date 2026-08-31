@@ -1,0 +1,89 @@
+name: PHP tests
+
+# The only PHP job needing services, so it is isolated: the fast gates in php-quality.yml
+# report without waiting for Postgres and Redis to come up.
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: php-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pest:
+    name: Pest
+    runs-on: ubuntu-latest
+
+    services:
+      # Matching the local DDEV versions. A test suite that passes here and fails on a
+      # different major is a bad trade for a slightly newer image.
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: syoksheet_primary_testing
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      AUDIT_DB_HOST: 127.0.0.1
+      AUDIT_DB_PORT: 5432
+      AUDIT_DB_USERNAME: postgres
+      AUDIT_DB_PASSWORD: postgres
+      REDIS_HOST: 127.0.0.1
+      REDIS_PORT: 6379
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-php
+
+      # The service container creates one database from POSTGRES_DB. We run two: the
+      # audit log is a separate database rather than a schema, because Postgres cannot
+      # foreign-key across databases and that is what keeps audit references raw ids.
+      # Mirrors .ddev/scripts/create-databases.sh.
+      - name: Create the audit database
+        env:
+          PGPASSWORD: postgres
+        run: psql -h 127.0.0.1 -U postgres -c 'CREATE DATABASE syoksheet_audit_testing'
+
+      # config/domains.php has no fallback values on purpose: Route::domain(null) means
+      # "any host", so an unset value would serve the admin panel everywhere. Domain::host()
+      # throws instead, and it runs at route registration, so the app will not boot
+      # without these. .env.example carries them.
+      - name: Prepare the environment file
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      # Redis is genuinely required despite the array cache and sync queue in
+      # phpunit.xml: RedisConnectionTest opens a real connection. Without it, 4 tests fail.
+      - name: Run tests
+        run: php artisan test --compact

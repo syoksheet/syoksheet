@@ -1,0 +1,49 @@
+name: Assets
+
+# Asset compilation on its own, because it is the step the deploy depends on: servers
+# never build, they fetch what this produces.
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: assets-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-node
+
+      # `npm run build` is `vite build && vite build --ssr`, emitting the three client
+      # bundles into public/build and the SSR bundle into bootstrap/ssr. Both halves must
+      # ship together: a client bundle paired with a stale SSR bundle renders one markup
+      # on the server and another in the browser.
+      - name: Build client and SSR bundles
+        run: npm run build
+
+      - name: Confirm both halves were produced
+        run: |
+          test -f public/build/manifest.json || { echo 'Missing the client manifest.'; exit 1; }
+          test -f bootstrap/ssr/ssr.js || { echo 'Missing the SSR bundle.'; exit 1; }
+          echo 'Client manifest and SSR bundle present.'
+
+      # Phase 2: tar public/build and bootstrap/ssr together, upload to R2 as
+      # syoksheet-artifacts/$SHA.tar.gz, and upload source maps to Sentry (Phase 3).
+      # The deploy script fetches by commit SHA and aborts when the artifact is missing,
+      # so this stub is the only reason deploys are not wired yet. Needs
+      # R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY and R2_ENDPOINT as repository secrets.
+      - name: Upload build artifact
+        run: echo 'Artifact upload lands in Phase 2, with the staging deploy.'

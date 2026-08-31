@@ -1,0 +1,103 @@
+name: API smoke
+
+# The Bruno collection against a served app. Its value in Phase 1 is not testing the API,
+# which barely exists: it is proving the pipeline works (seeder runs, the app serves, the
+# collection executes) before the first real deploy depends on all of it.
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: api-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  bruno:
+    name: Bruno
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: syoksheet_primary
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_DATABASE: syoksheet_primary
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      AUDIT_DB_HOST: 127.0.0.1
+      AUDIT_DB_PORT: 5432
+      AUDIT_DB_DATABASE: syoksheet_audit
+      AUDIT_DB_USERNAME: postgres
+      AUDIT_DB_PASSWORD: postgres
+      REDIS_HOST: 127.0.0.1
+      REDIS_PORT: 6379
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-php
+      - uses: ./.github/actions/setup-node
+
+      - name: Create the audit database
+        env:
+          PGPASSWORD: postgres
+        run: psql -h 127.0.0.1 -U postgres -c 'CREATE DATABASE syoksheet_audit'
+
+      # Domain::host() throws on an unset DOMAIN_*, and it runs at route registration, so
+      # the app will not boot without these. .env.example carries them.
+      - name: Prepare the environment file
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      # Both connections, each with its own migration path and history table.
+      - name: Migrate
+        run: php artisan migrate:all --force
+
+      - name: Seed the collection's fixtures
+        run: php artisan db:seed --class=BrunoSeeder --force
+
+      - name: Serve the application
+        run: |
+          php artisan serve --host=127.0.0.1 --port=8000 &
+          curl --silent --retry 30 --retry-connrefused --retry-delay 1 \
+            --output /dev/null http://127.0.0.1:8000/up
+          echo 'Application is answering.'
+
+      # The CLI only starts at a collection root, so the `cd` is required rather than
+      # stylistic. `/up` answers here because Laravel registers it outside every
+      # Route::domain() group; the first genuinely domain-scoped request in this
+      # collection will need DOMAIN_API pointed at the served host, or a Host header.
+      - name: Run the collection
+        run: |
+          cd bruno
+          npx --yes @usebruno/cli run --env ci --reporter-junit ../bruno-results.xml

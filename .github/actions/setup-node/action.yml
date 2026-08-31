@@ -1,0 +1,20 @@
+name: Setup Node
+description: Node 24 with a lockfile-only npm install.
+
+# The repository must already be checked out: a local action lives in the repo, so the
+# job cannot reach this file before its own checkout step runs.
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      with:
+        node-version: '24'
+        cache: npm
+
+    # `npm ci` fails when package.json and the lockfile disagree, so a hand-edited
+    # manifest cannot slip through. .npmrc sets ignore-scripts=true, so no dependency
+    # lifecycle script runs on this runner.
+    - name: Install from lockfile
+      shell: bash
+      run: npm ci
