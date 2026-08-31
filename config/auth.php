@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\User;
-
 return [
 
     /*
@@ -64,7 +62,10 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', User::class),
+            // Phase 4 creates App\Models\User alongside the users schema. Naming the
+            // class as a string keeps this file honest until then: nothing here can
+            // reference a model that does not exist.
+            'model' => env('AUTH_MODEL', 'App\\Models\\User'),
         ],
 
         // 'users' => [

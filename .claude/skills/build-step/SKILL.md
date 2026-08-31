@@ -149,10 +149,16 @@ Before any claim of done, passing, fixed or working:
 |---|---|
 | Tests pass | Test output in this session, 0 failures |
 | Pint clean | Pint output, this run |
-| Larastan clean | `phpstan analyse` output, exit 0 |
+| Larastan clean | `phpstan clear-result-cache` **then** `phpstan analyse`, exit 0 |
 | Types clean | `npm run check` output |
 | Bug fixed | The original failing test, now green |
 | Subagent finished | The diff, read, not the agent's own success report |
+
+**Clear the Larastan result cache before claiming it is clean.** `.phpstan.cache` is
+gitignored, so it exists locally and never in CI. A cached result can report `[OK] No
+errors` against a state of the code that no longer holds, which is not a hypothetical:
+it hid a real error here for several sessions, and only CI running cold caught it.
+`ddev php vendor/bin/phpstan clear-result-cache` first, or CI is the only honest run.
 
 ## Artifact sync checklist
 

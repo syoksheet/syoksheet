@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Horizon\HorizonApplicationServiceProvider;
 
@@ -21,6 +20,8 @@ class HorizonServiceProvider extends HorizonApplicationServiceProvider
      */
     protected function gate(): void
     {
-        Gate::define('viewHorizon', fn (?User $user = null): bool => false);
+        // Closed to everyone until admin authentication exists in Phase 5. Untyped
+        // because there is no user model yet: the users schema arrives in Phase 4.
+        Gate::define('viewHorizon', fn (?object $user = null): bool => false);
     }
 }
