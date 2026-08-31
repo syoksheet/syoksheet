@@ -1,0 +1,34 @@
+// Geist, served from our own repo. The files live in resources/fonts/ with their
+// licence; the README there covers where they came from and how to update them.
+//
+// Variable files, so one download covers every weight we use: 400 through 700 sans,
+// 400 through 600 mono. Seven static files would be the alternative.
+//
+// font-display: swap paints fallback text straight away and swaps when Geist arrives.
+// Blocking instead would leave headings invisible for up to three seconds.
+
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('../fonts/Geist-Variable.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Geist';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('../fonts/Geist-Italic-Variable.woff2') format('woff2');
+}
+
+// No mono italic. Mono carries IDs, timestamps and hashes, which are never italic, so
+// a browser-synthesised oblique is fine on the rare occasion it happens at all.
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('../fonts/GeistMono-Variable.woff2') format('woff2');
+}

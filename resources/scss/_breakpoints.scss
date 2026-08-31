@@ -1,0 +1,31 @@
+// Breakpoints are SCSS variables rather than custom properties, and they have to be:
+// CSS custom properties do not work inside a media query condition. @media
+// (min-width: var(--bp-md)) silently matches nothing. This is the one part of the
+// system a component cannot read at runtime.
+//
+// Mobile-first, so use min-width and let the larger screens add to the base.
+//
+// The 980px figure comes from the spacing spec, where the sidebar collapses to its
+// rail. Note the design cards' own CSS uses 820px and 900px: those belong to the
+// preview pages' layout, not the product's.
+
+@use 'sass:map';
+
+$breakpoints: (
+  // single column below this, and gutters drop to 20px
+  'sm': 640px,
+  // the sidebar expands from its 64px rail to 252px
+  'md': 980px,
+  // 1080px content plus two 40px gutters: the layout stops growing
+  'lg': 1160px
+);
+
+@mixin at-least($name) {
+  @if not map.has-key($breakpoints, $name) {
+    @error 'Unknown breakpoint `#{$name}`. Use one of: #{map.keys($breakpoints)}.';
+  }
+
+  @media (min-width: map.get($breakpoints, $name)) {
+    @content;
+  }
+}

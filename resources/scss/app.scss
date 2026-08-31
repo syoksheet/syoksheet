@@ -1,4 +1,15 @@
 // syoksheet global stylesheet.
-// Design tokens (teal primary, forest verified, pure neutral, amber/clay status,
-// radii, Geist type) and base styles land with the design-system phase, sourced
-// from the specs in design/docs/. All styling is bespoke SCSS on Bits UI primitives.
+//
+// Token layers, in order:
+//   _primitives  raw palette, referenced only by _semantic
+//   _semantic    what things are for, the only layer components may use
+//   _typography  the eight type styles as mixins
+//   _breakpoints SCSS only, because media queries cannot read custom properties
+//
+// All styling is bespoke SCSS on Bits UI primitives. No styled component library.
+
+@use 'fonts';
+@use 'primitives';
+@use 'semantic';
+@use 'typography';
+@use 'breakpoints';

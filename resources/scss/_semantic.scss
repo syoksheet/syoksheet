@@ -1,0 +1,110 @@
+// What things are for. Components use these and nothing else.
+//
+// The rule: a component never references a primitive (--n-*, --teal-*, --clay-* and
+// friends). If you write var(--n-600) in a component you lose the ability to change
+// "secondary text" without hunting through every file guessing which greys meant that.
+//
+// Some of these resolve to the same value today. --color-info and --color-action are
+// both teal-600, --color-success and --color-verified are both verify-600. They are
+// different meanings that happen to share a colour, and keeping them apart is the
+// whole point of this layer.
+
+:root {
+  // Surfaces
+  --color-canvas: var(--n-0); // the page
+  --color-surface: var(--n-0); // cards and panels on the page
+  --color-scrim: rgb(10 10 11 / 45%); // behind modals and drawers
+
+  // Text
+  --color-text: #141416; // headings and body, the default
+  --color-text-secondary: var(--n-600); // supporting copy, descriptions
+  --color-text-muted: var(--n-500); // timestamps, hints, counts
+
+  // Borders
+  --color-border: var(--n-200); // card edges and dividers
+  --color-border-strong: var(--n-300); // inputs and controls
+  --color-border-subtle: var(--n-150); // row separators inside a card
+
+  // Action
+  --color-action: var(--teal-600);
+  --color-action-hover: var(--teal-700);
+  --color-action-subtle: var(--teal-50);
+  --color-on-action: var(--n-0);
+
+  // Focus. Brighter than the action colour on purpose, so the ring reads against a
+  // teal button. Used as: outline 2px solid, 2px offset.
+  --color-focus: var(--teal-500);
+
+  // Status. Info is brand teal and success is forest: they are close, so tone always
+  // comes with an icon or label as well, never colour alone.
+  --color-info: var(--teal-600);
+  --color-info-subtle: var(--teal-50);
+  --color-success: var(--verify-600);
+  --color-success-subtle: var(--verify-50);
+  --color-on-success: var(--n-0);
+  --color-warning: var(--amber-600);
+  --color-warning-subtle: var(--amber-50);
+  --color-danger: var(--clay-600);
+  --color-danger-strong: var(--clay-700);
+  --color-danger-subtle: var(--clay-50);
+  --color-on-danger: var(--n-0);
+
+  // Verification. Same value as success, different meaning: this one is an identity
+  // element (the mark, verified badges), not a status message.
+  --color-verified: var(--verify-600);
+  --color-verified-subtle: var(--verify-50);
+
+  // Disabled. Deliberately below AA contrast, which is the one exception to the
+  // "everything meets AA" rule: WCAG 1.4.3 exempts inactive controls, and disabled
+  // text that passed AA would be indistinguishable from text you can actually use.
+  --color-text-disabled: var(--n-400);
+  --color-surface-disabled: var(--n-100);
+  --color-border-disabled: var(--n-200);
+
+  // Radius. sm chips and grouped inputs, md buttons and inputs, lg cards, xl hero
+  // panels and modals.
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 18px;
+
+  // Elevation. Most surfaces have none: it signals interactivity and overlay depth.
+  --shadow-xs: 0 1px 2px rgb(10 10 11 / 5%);
+  --shadow-sm: 0 1px 3px rgb(10 10 11 / 7%), 0 1px 2px rgb(10 10 11 / 4%);
+  --shadow-md: 0 8px 22px -10px rgb(10 10 11 / 16%), 0 2px 6px -3px rgb(10 10 11 / 8%);
+  --shadow-lg: 0 22px 48px -18px rgb(10 10 11 / 22%), 0 6px 14px -8px rgb(10 10 11 / 10%);
+
+  // Spacing. 8px base with 4px half-steps. Always applied with flex/grid gap, never
+  // as bare margins between siblings.
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  // Motion. Three durations, one curve for movement and plain ease for fades.
+  --duration-fast: 120ms; // hover, colour, background
+  --duration-base: 160ms; // card lift, fades, toggles
+  --duration-slow: 240ms; // expand/collapse, overlay and drawer enter
+  --ease-move: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-fade: ease;
+
+  // Layout. A fixed sidebar plus a centred content column.
+  --layout-sidebar: 252px;
+  --layout-sidebar-rail: 64px; // below the md breakpoint
+  --layout-content: 760px; // forms and reading
+  --layout-content-wide: 1080px; // tables and dense grids
+  --layout-gutter: 40px;
+  --layout-gutter-narrow: 20px;
+
+  // Icons. One outline family, currentColor, this stroke width everywhere.
+  --icon-stroke: 1.75;
+
+  // Families. The @font-face rules live in _typography.scss.
+  --font-sans: 'Geist', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, monospace;
+}
