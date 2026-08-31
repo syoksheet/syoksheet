@@ -8,7 +8,7 @@ Technical documentation for the syoksheet Laravel API. The implementation spec t
 - [Scheduled Jobs](scheduled-jobs.md): canonical Artisan schedule
 - [Validation Conventions](validation.md): uploads, identifiers, business-rule error codes
 - [Localization](localization.md): locale handling, taxonomy translations, Weblate workflow, English-first launch
-- [AI Integration](ai.md). AiService abstraction, use cases, review gates, no-personal-data rule
+- [AI Integration](ai.md). Laravel AI SDK, use cases, review gates, no-personal-data rule
 
 ## 🗄️ Database
 

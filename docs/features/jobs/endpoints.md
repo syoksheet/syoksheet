@@ -30,7 +30,7 @@ Freeform titles and descriptions must map to taxonomy before publish:
 
 1. On create (either source), the title is scored against occupations + aliases (same Meilisearch index); top suggestions attached.
 2. Description text is scanned for skill matches against skills + aliases; suggestions attached with `is_required` guesses.
-3. Low-confidence results (no strong Meilisearch hit) fall back to `AiService` for suggestion: queued, review-gated, org-authored text only. See [ai.md](../../ai.md).
+3. Low-confidence results (no strong Meilisearch hit) fall back to an AI agent for suggestion: queued, review-gated, org-authored text only. See [ai.md](../../ai.md).
 3. UI creation: the org picks the occupation directly at creation (suggestions pre-filled). API creation: suggestions await review.
 4. Publishing requires a confirmed `occupation_id`. Skills are optional but recommended.
 

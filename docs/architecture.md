@@ -91,7 +91,7 @@ Laravel Scout + Meilisearch (a process on the app VPS) for taxonomy search. See 
 | Mail | Resend | From-addresses: noreply@, team@, billing@ (support@ is inbound-only): catalog in syoksheet-docs → features/notifications.md |
 | Payments | DodoPayments | Webhook-driven sync: [features/billing/webhooks.md](features/billing/webhooks.md) |
 | Realtime | Laravel Reverb | Notification broadcasts + org activity channels ([features/audit/implementation.md](features/audit/implementation.md)) |
-| AI | Claude API via `AiService` | Two batch, review-gated uses; no personal data: [ai.md](ai.md) |
+| AI | Claude API via `laravel/ai` | Two batch, review-gated uses; no personal data: [ai.md](ai.md) |
 | SSO gate | `EnsureOrgSsoSession` | Org-scoped routes when the org enables SSO: [features/auth/sso.md](features/auth/sso.md) |
 
 ## 📈 Observability

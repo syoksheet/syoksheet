@@ -115,7 +115,7 @@ The backup, audit-archive and build-artifact buckets deliberately have no variab
 
 | Variable | Example | Notes |
 |----------|---------|-------|
-| AI_PROVIDER | anthropic | `AiService` driver |
+| AI_PROVIDER | anthropic | Sets `ai.default` for the Laravel AI SDK. The only provider we configure |
 | ANTHROPIC_API_KEY | sk-ant-… | Empty locally. AI jobs no-op |
 | AI_MODEL_JUDGMENT | claude-sonnet-5 | Similarity judgment |
 | AI_MODEL_BULK | claude-haiku-4-5 | Bulk scoring |

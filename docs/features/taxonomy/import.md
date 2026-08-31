@@ -27,7 +27,7 @@ The official ESCO↔O*NET crosswalk is checked first:
 
 ### 4. AI-assisted review
 
-Unmatched records are scored for semantic similarity against existing canonical records via `AiService` (queued, batch, see [ai.md](../../ai.md)); candidates above the threshold enter the admin review queue.
+Unmatched records are scored for semantic similarity against existing canonical records via a queued AI agent (batch, see [ai.md](../../ai.md)); candidates above the threshold enter the admin review queue.
 
 | Action | Result |
 |--------|--------|

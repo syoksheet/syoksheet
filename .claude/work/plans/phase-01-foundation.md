@@ -194,22 +194,31 @@ Answered before implementing, per the build-step gate.
 - [ ] Implement
 - [ ] Green: `ddev php artisan test --compact --filter=BusinessRuleException`
 
-### Task 11: `AiService` scaffold
+### Task 11: AI SDK scaffold
 
-**Files:** create `app/Services/Ai/AiService.php` (contract), `app/Services/Ai/AnthropicDriver.php`, `config/ai.php`, modify `.env.example`.
+**Files:** install `laravel/ai`, publish and configure `config/ai.php`, modify `.env` and `.env.example`.
 
-**Behaviour:** the driver resolves from config. With `ANTHROPIC_API_KEY` empty it no-ops with a logged skip rather than throwing.
+**Behaviour:** the SDK is installed and configured for Anthropic only, with no key set locally.
 
-**Who writes:** user.
+**Who writes:** claude, handed over by the user.
 
-**Read first:** `docs/ai.md` in full, especially the two hard rules: human review gate, no personal data. The `claude-api` skill for model ids, and `ai.md` § Configuration for the two model keys.
+> **Reworked mid-task.** This first shipped as a hand-rolled `AiService` contract plus an
+> `AnthropicDriver`, per the original plan. The user asked whether we were following the
+> Laravel AI SDK; we were not, and had not checked. All of it was deleted and replaced
+> with `laravel/ai`. The SDK gives provider swapping, queued calls and structured output
+> as maintained first-party code, and both our use cases want structured output rather
+> than the raw string the hand-rolled contract returned. See the 2026-08-31 row in
+> `syoksheet-docs/product/decisions.md`.
+
+**Read first:** `docs/ai.md`, especially the two hard rules: human review gate, no personal data. https://laravel.com/framework/docs/ai-sdk for agents, `#[Model]` attributes and structured output.
 
 > [!NOTE]
-> Scaffold only. No provider call is made in this phase, and no use case is implemented until Phase 10.
+> Scaffold only. No agent is created and no provider call is made in this phase; the two
+> use cases arrive in Phase 10.
 
-- [ ] Failing test: `AiServiceTest` asserts the driver resolves from config and no-ops without a key
-- [ ] Implement
-- [ ] Green: `ddev php artisan test --compact --filter=AiService`
+- [x] Failing test: `AiServiceTest` asserts the SDK registers, defaults to Anthropic, configures no other provider, and publishes no conversation tables
+- [x] Implement
+- [x] Green: `ddev php artisan test --compact --filter=AiService`
 
 ### Task 12: `bruno/` scaffold and `BrunoSeeder`
 
