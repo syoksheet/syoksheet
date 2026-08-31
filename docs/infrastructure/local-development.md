@@ -15,6 +15,21 @@ ddev add-on get ddev/ddev-minio
 ddev start
 ```
 
+> [!IMPORTANT]
+> **On a fresh clone, copy `.env.example` to `.env` before running `composer install`.**
+> Composer's `post-autoload-dump` hook runs `artisan package:discover`, which boots the
+> application, and booting registers routes. `bootstrap/app.php` asks `Domain::host()`
+> for all four hosts, and `config/domains.php` has no fallback values on purpose, so an
+> unset `DOMAIN_*` throws rather than silently serving every domain everywhere. The
+> failure looks like a Composer error, which sends you looking in the wrong place:
+>
+> ```
+> RuntimeException: No host configured for the public domain. Set DOMAIN_PUBLIC ...
+> Script @php artisan package:discover --ansi ... returned with error code 1
+> ```
+>
+> CI does the same thing, in `.github/actions/setup-php`, for the same reason.
+
 > [!WARNING]
 > `.ddev/config.yaml` sets `disable_settings_management: true`, and it must stay set. DDEV's `laravel` project type otherwise rewrites `DB_*` and `MAIL_*` in `.env` on **every start**, pointing them at its own `db` database and its built-in Mailpit. The symptom is a value you fixed reverting silently after an unrelated restart: `DB_DATABASE` back to `db`, so migrations land in DDEV's throwaway database, and `MAIL_HOST` back to `127.0.0.1`, so mail never reaches Buggregator. `.env` is ours to manage, seeded from `.env.example`.
 

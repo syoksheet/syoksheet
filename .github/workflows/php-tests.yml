@@ -74,14 +74,10 @@ jobs:
           PGPASSWORD: postgres
         run: psql -h 127.0.0.1 -U postgres -c 'CREATE DATABASE syoksheet_audit_testing'
 
-      # config/domains.php has no fallback values on purpose: Route::domain(null) means
-      # "any host", so an unset value would serve the admin panel everywhere. Domain::host()
-      # throws instead, and it runs at route registration, so the app will not boot
-      # without these. .env.example carries them.
-      - name: Prepare the environment file
-        run: |
-          cp .env.example .env
-          php artisan key:generate
+      # .env is created by the setup-php action, before composer install boots the app
+      # and trips Domain::host(). The key needs vendor/, so it belongs here instead.
+      - name: Generate the application key
+        run: php artisan key:generate
 
       # Redis is genuinely required despite the array cache and sync queue in
       # phpunit.xml: RedisConnectionTest opens a real connection. Without it, 4 tests fail.

@@ -13,6 +13,17 @@ runs:
         coverage: none
         tools: composer:v2
 
+    # Must happen before the install, not after. `composer install` fires
+    # post-autoload-dump, which runs `artisan package:discover`, which boots the
+    # application. Booting registers routes, and bootstrap/app.php asks Domain::host()
+    # for all four hosts. config/domains.php has no fallback values on purpose, so an
+    # unset DOMAIN_* throws there rather than silently serving every domain everywhere.
+    #
+    # The same applies to a fresh clone: `composer install` needs a .env to exist.
+    - name: Prepare the environment file
+      shell: bash
+      run: test -f .env || cp .env.example .env
+
     - name: Resolve the Composer cache directory
       id: composer-cache
       shell: bash
