@@ -1,0 +1,39 @@
+meta {
+  name: Health check
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/up
+  body: none
+  auth: none
+}
+
+docs {
+  Laravel's health endpoint. It is registered outside every `Route::domain()` group, so
+  it answers on all four hosts. That is what makes it usable as the CI smoke test today,
+  before any domain-scoped route exists.
+
+  It content-negotiates: JSON for an `Accept: application/json` client like this one, and
+  an HTML page for a browser. Asserting the JSON is deliberate, since the HTML is
+  framework-rendered and not our contract.
+
+  Smoke depth only, per the collection rules: status, shape, and that the answer is not
+  cached. What "healthy" ought to mean belongs in Pest.
+}
+
+headers {
+  Accept: application/json
+}
+
+assert {
+  res.status: eq 200
+  res.body.status: eq up
+}
+
+tests {
+  test("is not cached, so a stale 200 cannot mask an outage", function () {
+    expect(res.getHeader("cache-control")).to.contain("no-cache");
+  });
+}

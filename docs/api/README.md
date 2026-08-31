@@ -41,7 +41,7 @@ Tokens are created in the respective UIs (password-confirmed). Interactive login
 | Environments | `local` (DDEV), `ci`, `staging`: non-secret config only. **Production is intentionally absent.** |
 | Secrets | Gitignored `bruno/.env`, read via `{{process.env.X}}`: tokens and passwords never committed |
 | Tests | Each request carries `assert`/`tests` blocks: status, response shape, and 401/403 guard checks: smoke depth only; business logic belongs to Pest |
-| CI | `bru run bruno --env ci --reporter-junit` against a served app seeded by `BrunoSeeder`. See [../infrastructure/deployment.md](../infrastructure/deployment.md) |
+| CI | `bru run --env ci --reporter-junit` against a served app seeded by `BrunoSeeder`, run **from inside `bruno/`**: the CLI refuses to start anywhere but a collection root. See [../infrastructure/deployment.md](../infrastructure/deployment.md) |
 
 ## 📐 Division of Responsibility
 

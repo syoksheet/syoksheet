@@ -75,7 +75,8 @@ Trigger: push/PR to `main` or `develop`, and `v*` tag pushes.
 5. Frontend checks: `svelte-check`, ESLint
 6. Pest (`php artisan test`)
 7. Vite production build (`npm run build`), which emits the client bundles **and** the SSR bundle, then **upload `public/build/` and `bootstrap/ssr/` to R2 as `syoksheet-artifacts/$SHA.tar.gz`**: the deploy script fetches this and aborts when it is missing, so the pipeline is incomplete without it. Both must ride in the same artifact, since a client bundle deployed against a stale SSR bundle renders one markup on the server and another in the browser. Source maps upload to Sentry here and are excluded from the tarball
-8. **Bruno endpoint smoke tests:** `php artisan migrate --force && php artisan db:seed --class=BrunoSeeder`, `php artisan serve &`, then `npx @usebruno/cli run bruno --env ci --reporter-junit results.xml`: seeded credentials injected via CI env vars; JUnit output annotates failures
+8. **Bruno endpoint smoke tests:** `php artisan migrate --force && php artisan db:seed --class=BrunoSeeder`, `php artisan serve &`, then `cd bruno && npx @usebruno/cli run --env ci --reporter-junit ../results.xml`: seeded credentials injected via CI env vars; JUnit output annotates failures. The `cd` is required, since the CLI only starts at a collection root
+   > **Domain-scoped routes will not answer on `127.0.0.1:8000`.** `/up` works today because Laravel registers it outside every `Route::domain()` group. The moment a real `api.` route is added to this collection, CI needs either `DOMAIN_API` pointed at the served host or a `Host` header on each request. Decide it then rather than discovering it as a red build
 9. On push to `main` (not PR): call the staging Forge deploy hook. On `v*` tag push: update the production Forge site's ref to the tag (Forge API) and call the production deploy hook
 
 ## 🌐 Cloudflare Rules (apex, required at launch)

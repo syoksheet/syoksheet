@@ -225,15 +225,20 @@ Answered before implementing, per the build-step gate.
 **Files (12a):** create `bruno/` with nine tag folders, `bruno.json`, three environment files, `bruno/.env.example`, one `GET /up` request with assertions; modify `.gitignore` for `bruno/.env`.
 **Files (12b):** create `database/seeders/BrunoSeeder.php`.
 
-**Behaviour:** `bru run bruno --env local` passes against DDEV. The seeder creates deterministic fixtures; in Phase 1 that is an empty but callable seeder, since no models exist beyond `User`.
+**Behaviour:** `bru run --env local`, from inside `bruno/`, passes against DDEV. The seeder creates deterministic fixtures; in Phase 1 that is an empty but callable seeder, since no models exist beyond `User`.
 
-**Who writes:** 12a claude (bulk `.bru` transcription against a documented format), 12b user (a Laravel seeder, and the shape it establishes recurs every phase).
+**Who writes:** 12a claude (bulk `.bru` transcription against a documented format), 12b claude, handed over by the user.
+
+> **Deviations.** Three, all found by running it:
+> 1. Bruno CLI 4 only starts at a collection root, so the documented `bru run bruno --env local` fails. Corrected everywhere to `cd bruno && bru run --env local`.
+> 2. `/up` content-negotiates. Bruno sends `Accept: application/json` and gets `{"status":"up"}`, so the request asserts that rather than the framework-rendered HTML a browser sees.
+> 3. `BrunoSeeder` gained a production guard, which was not in the plan. It exists to create accounts with known credentials, and CI runs it with `--force`, the same flag that skips Laravel's own production prompt.
 
 **Read first:** `docs/api/README.md` § Bruno Collection for the four rules, especially that production is never an environment and secrets are read via `{{process.env.X}}`.
 
-- [ ] Implement
-- [ ] `ddev exec npx @usebruno/cli run bruno --env local` passes
-- [ ] `ddev php artisan db:seed --class=BrunoSeeder` runs clean
+- [x] Implement
+- [x] `ddev exec sh -c 'cd bruno && npx @usebruno/cli run --env local'` passes
+- [x] `ddev php artisan db:seed --class=BrunoSeeder` runs clean
 
 ### Task 13: GitHub Actions CI workflow
 
