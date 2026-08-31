@@ -3,7 +3,7 @@
 use Laravel\Ai\AiServiceProvider;
 
 /**
- * Scaffold-level checks only. No agent exists yet and no provider call is made until
+ * Wiring checks for the Laravel AI SDK. Scaffold-level only. No agent exists yet and no provider call is made until
  * the taxonomy and job-mapping work lands, so what is worth pinning here is the wiring:
  * the SDK is installed, it points at Anthropic, and nothing else is configured.
  */

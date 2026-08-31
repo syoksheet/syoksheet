@@ -6,6 +6,7 @@ Canonical list of all scheduled Artisan commands. Feature specs link here for fr
 
 | Command | Frequency | What |
 |---------|-----------|------|
+| `horizon:snapshot` | Every 5 min | Queue metrics for the Horizon dashboard. Without it the metrics page stays blank |
 | `verification:expire-requests` | Daily | Expire pending verification requests older than 30 days |
 | `dns:check-pending` | Every 4 h | Retry pending DNS checks (max 18 attempts) |
 | `dns:reverify` | Daily | 6-month re-verification + grace period checks |

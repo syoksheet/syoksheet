@@ -48,11 +48,15 @@ it('marks a successful apex page cacheable', function () {
         ->assertOk()
         ->headers->get('Cache-Control');
 
+    // Literal values on purpose. Reading them back from config would only prove the
+    // header was built from config, and would pass just as happily if someone set
+    // max-age to a day. These are the documented policy, so changing them should mean
+    // changing the docs and this test together.
     expect($header)
         ->toContain('public')
-        ->toContain('max-age='.config('domains.cache.max_age'))
-        ->toContain('stale-while-revalidate='.config('domains.cache.stale_while_revalidate'))
-        ->toContain('stale-if-error='.config('domains.cache.stale_if_error'));
+        ->toContain('max-age=60')
+        ->toContain('stale-while-revalidate=300')
+        ->toContain('stale-if-error=86400');
 });
 
 /**

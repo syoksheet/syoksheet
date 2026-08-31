@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\Domain;
+use Illuminate\Support\Facades\App;
 use Inertia\Testing\AssertableInertia;
 
 dataset('inertia domains', [
@@ -25,9 +26,18 @@ it('renders each domain through its own root view', function (Domain $domain, st
         ->assertViewIs($rootView);
 })->with('inertia domains');
 
-it('shares the locale with every page', function (Domain $domain) {
+/**
+ * Sets a locale the app does not default to, because that is the only way this test can
+ * fail. Asserting against app()->getLocale() would compare the answer to itself, and
+ * would have passed just as happily against the earlier bug where the prop came from
+ * $request->getLocale(): Symfony's request locale is its own default, 'en', and never
+ * follows App::setLocale().
+ */
+it('shares the application locale with every page', function (Domain $domain) {
+    App::setLocale('fr');
+
     $this->get('https://'.$domain->host().'/')
-        ->assertInertia(fn (AssertableInertia $page) => $page->where('locale', app()->getLocale()));
+        ->assertInertia(fn (AssertableInertia $page) => $page->where('locale', 'fr'));
 })->with([
     'app' => Domain::App,
     'admin' => Domain::Admin,

@@ -46,3 +46,13 @@ it('gives every code a distinct snake_case value', function () {
 it('is not reported to sentry', function () {
     expect(config('sentry.ignore_exceptions'))->toContain(BusinessRuleException::class);
 });
+
+/**
+ * The code reaches the log context, so a logged violation names the rule that refused
+ * the request instead of leaving you to match on the message.
+ */
+it('puts the code in the log context', function () {
+    $exception = new BusinessRuleException(ErrorCode::ExportInProgress, 'An export is already running.');
+
+    expect($exception->context())->toBe(['code' => 'export_in_progress']);
+});
