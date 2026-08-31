@@ -15,6 +15,11 @@
   --color-surface: var(--n-0); // cards and panels on the page
   --color-scrim: rgb(10 10 11 / 45%); // behind modals and drawers
 
+  // A recessed neutral fill for chips that carry no status: file-type labels, counts,
+  // an "unverified" badge. Same value as the disabled surface, different meaning, so
+  // they get different names.
+  --color-surface-sunken: var(--n-100);
+
   // Text
   --color-text: #141416; // headings and body, the default
   --color-text-secondary: var(--n-600); // supporting copy, descriptions
