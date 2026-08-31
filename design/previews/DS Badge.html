@@ -14,26 +14,26 @@
     --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
     --amber-50:#fbf3e3;--amber-100:#f4e4be;--amber-500:#d39a2a;--amber-700:#8a5e12;
     --clay-50:#fbefea;--clay-100:#f4d8cd;--clay-500:#cb5638;--clay-600:#b2412a;--clay-700:#8f3120;
-    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
-    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
-    --radius-sm:5px;--radius:8px;--radius-lg:12px;--radius-xl:18px;
+    --color-canvas:#fff;--color-surface:#fff;--color-border:var(--n-200);--color-border-strong:var(--n-300);--color-border-subtle:var(--n-150);
+    --color-text:#141416;--color-text-secondary:var(--n-600);--color-text-muted:var(--n-500);--color-danger-border:var(--clay-100);--color-danger-subtle:var(--clay-50);--color-danger-text:var(--clay-700);--color-info-border:var(--teal-100);--color-info-subtle:var(--teal-50);--color-info-text:var(--teal-700);--color-verified-border:var(--verify-100);--color-verified-subtle:var(--verify-50);--color-verified-text:var(--verify-700);--color-warning-border:var(--amber-100);--color-warning-subtle:var(--amber-50);--color-warning-text:var(--amber-700);
+    --radius-sm:5px;--radius-md:8px;--radius-lg:12px;--radius-xl:18px;
     --shadow-xs:0 1px 2px rgba(10,10,11,.05);
-    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+    --font-sans:'Geist',system-ui,sans-serif;--font-mono:'Geist Mono',ui-monospace,monospace;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{background:#fff;color:var(--text);font-family:var(--fs);font-size:15px;-webkit-font-smoothing:antialiased;padding:28px;display:flex;flex-direction:column;gap:22px;}
-  .cap{font-family:var(--fm);font-size:11px;color:var(--text-3);}
+  body{background:#fff;color:var(--color-text);font-family:var(--font-sans);font-size:15px;-webkit-font-smoothing:antialiased;padding:28px;display:flex;flex-direction:column;gap:22px;}
+  .cap{font-family:var(--font-mono);font-size:11px;color:var(--color-text-muted);}
   .row{display:flex;flex-wrap:wrap;gap:14px;align-items:center;}
   .demo{display:flex;flex-direction:column;gap:12px;align-items:flex-start;}
-  .badge{display:inline-flex;align-items:center;gap:6px;padding:3px 11px 3px 9px;font-family:var(--fm);font-size:11px;font-weight:500;letter-spacing:0.02em;line-height:1.5;border-radius:999px;border:1px solid transparent;}
+  .badge{display:inline-flex;align-items:center;gap:6px;padding:3px 11px 3px 9px;font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.02em;line-height:1.5;border-radius:999px;border:1px solid transparent;}
   .badge svg{width:11px;height:11px;stroke:currentColor;stroke-width:2.25;fill:none;stroke-linecap:round;stroke-linejoin:round;}
-  .badge-verified{background:var(--verify-50);color:var(--verify-700);border-color:var(--verify-100);font-weight:600;padding-left:6px;}
+  .badge-verified{background:var(--color-verified-subtle);color:var(--color-verified-text);border-color:var(--color-verified-border);font-weight:600;padding-left:6px;}
   .badge-verified .vm{width:13px;height:13px;background:var(--verify-600);color:#fff;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;}
   .badge-verified .vm svg{width:7px;height:7px;stroke:#fff;stroke-width:4;}
-  .badge-pending{background:var(--amber-50);color:var(--amber-700);border-color:var(--amber-100);}
+  .badge-pending{background:var(--color-warning-subtle);color:var(--color-warning-text);border-color:var(--color-warning-border);}
   .badge-unverified{background:var(--n-100);color:var(--n-600);border-color:var(--n-200);}
-  .badge-info{background:var(--teal-50);color:var(--teal-700);border-color:var(--teal-100);}
-  .badge-error{background:var(--clay-50);color:var(--clay-700);border-color:var(--clay-100);}
+  .badge-info{background:var(--color-info-subtle);color:var(--color-info-text);border-color:var(--color-info-border);}
+  .badge-error{background:var(--color-danger-subtle);color:var(--color-danger-text);border-color:var(--color-danger-border);}
   .badge-count{background:var(--clay-600);color:#fff;font-weight:600;padding:1px 7px;min-width:20px;justify-content:center;}
 </style>
 </head>

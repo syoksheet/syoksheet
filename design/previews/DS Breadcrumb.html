@@ -15,30 +15,30 @@
     --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
     --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
     --clay-50:#fbefea;--clay-100:#f4d8cd;--clay-600:#b2412a;--clay-700:#8f3120;
-    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
-    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
-    --radius-sm:5px;--radius:8px;--radius-lg:12px;--shadow-xs:0 1px 2px rgba(10,10,11,.05);
-    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+    --color-canvas:#fff;--color-surface:#fff;--color-border:var(--n-200);--color-border-strong:var(--n-300);--color-border-subtle:var(--n-150);
+    --color-text:#141416;--color-text-secondary:var(--n-600);--color-text-muted:var(--n-500);
+    --radius-sm:5px;--radius-md:8px;--radius-lg:12px;--shadow-xs:0 1px 2px rgba(10,10,11,.05);
+    --font-sans:'Geist',system-ui,sans-serif;--font-mono:'Geist Mono',ui-monospace,monospace;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{background:#fff;color:var(--text);font-family:var(--fs);font-size:15px;-webkit-font-smoothing:antialiased;padding:28px;display:flex;flex-direction:column;gap:22px;}
+  body{background:#fff;color:var(--color-text);font-family:var(--font-sans);font-size:15px;-webkit-font-smoothing:antialiased;padding:28px;display:flex;flex-direction:column;gap:22px;}
   a{color:inherit;text-decoration:none;}
-  .cap{font-family:var(--fm);font-size:11px;color:var(--text-3);margin-bottom:12px;display:block;}
+  .cap{font-family:var(--font-mono);font-size:11px;color:var(--color-text-muted);margin-bottom:12px;display:block;}
   .stack{display:flex;flex-direction:column;gap:16px;align-items:flex-start;}
-  .bc{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-3);min-width:0;flex-wrap:wrap;}
+  .bc{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--color-text-muted);min-width:0;flex-wrap:wrap;}
   /* Single-line variant: use inside an app topbar. Never wraps; middle crumbs ellipsize. */
   .bc.oneline{flex-wrap:nowrap;white-space:nowrap;overflow:hidden;}
   .bc.oneline>*{flex-shrink:0;}
   .bc.oneline .shrink{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-  .bc .ell{color:var(--text-3);letter-spacing:.06em;}
-  .frame{border:1px dashed var(--border-2);border-radius:var(--radius);padding:12px 14px;background:var(--n-50);}
-  .frame .w{font-family:var(--fm);font-size:10px;color:var(--text-3);display:block;margin-bottom:8px;}
-  .bc a{color:var(--text-3);}
-  .bc a:hover{color:var(--text);}
+  .bc .ell{color:var(--color-text-muted);letter-spacing:.06em;}
+  .frame{border:1px dashed var(--color-border-strong);border-radius:var(--radius-md);padding:12px 14px;background:var(--n-50);}
+  .frame .w{font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);display:block;margin-bottom:8px;}
+  .bc a{color:var(--color-text-muted);}
+  .bc a:hover{color:var(--color-text);}
   .bc .sep{opacity:.5;}
-  .bc .cur{color:var(--text);font-weight:500;}
+  .bc .cur{color:var(--color-text);font-weight:500;}
   .bc .logo{width:15px;height:15px;border-radius:4px;background:linear-gradient(135deg,#18181b,#3f3f46);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;}
-  .bc .cur-wrap{display:inline-flex;align-items:center;gap:6px;color:var(--text);font-weight:500;min-width:0;}
+  .bc .cur-wrap{display:inline-flex;align-items:center;gap:6px;color:var(--color-text);font-weight:500;min-width:0;}
   .bc .cur-wrap .logo{flex-shrink:0;}
 </style>
 </head>
@@ -57,10 +57,10 @@
     <span class="cap">overflow · single line, never wraps · middle crumb ellipsizes, current crumb stays whole</span>
     <div class="stack" style="align-items:stretch;">
       <div class="frame" style="max-width:520px;"><span class="w">520px — all crumbs fit</span>
-        <nav class="bc oneline"><a href="#">Organisations</a><span class="sep">/</span><a href="#" class="cur-wrap shrink" style="color:var(--text-3);font-weight:400;"><span class="logo">A</span> Acme Corp</a><span class="sep">/</span><span class="cur">Membership</span></nav>
+        <nav class="bc oneline"><a href="#">Organisations</a><span class="sep">/</span><a href="#" class="cur-wrap shrink" style="color:var(--color-text-muted);font-weight:400;"><span class="logo">A</span> Acme Corp</a><span class="sep">/</span><span class="cur">Membership</span></nav>
       </div>
       <div class="frame" style="max-width:290px;"><span class="w">290px — middle crumb truncates</span>
-        <nav class="bc oneline"><a href="#">Organisations</a><span class="sep">/</span><a href="#" class="cur-wrap shrink" style="color:var(--text-3);font-weight:400;"><span class="logo">A</span> Acme Corporation International</a><span class="sep">/</span><span class="cur">Membership</span></nav>
+        <nav class="bc oneline"><a href="#">Organisations</a><span class="sep">/</span><a href="#" class="cur-wrap shrink" style="color:var(--color-text-muted);font-weight:400;"><span class="logo">A</span> Acme Corporation International</a><span class="sep">/</span><span class="cur">Membership</span></nav>
       </div>
       <div class="frame" style="max-width:210px;"><span class="w">&lt;240px — middle crumbs collapse to an ellipsis (menu on click)</span>
         <nav class="bc oneline"><a href="#">Organisations</a><span class="sep">/</span><a href="#" class="ell">…</a><span class="sep">/</span><span class="cur">Membership</span></nav>
@@ -70,8 +70,8 @@
 
   <div>
     <span class="cap">rules</span>
-    <div class="stack" style="font-size:13px;color:var(--text-2);gap:6px;line-height:1.5;">
-      <div>· In a topbar the breadcrumb is one line. It never wraps — set <code style="font-family:var(--fm);font-size:12px;">min-width:0</code> on it and on its flex parent.</div>
+    <div class="stack" style="font-size:13px;color:var(--color-text-secondary);gap:6px;line-height:1.5;">
+      <div>· In a topbar the breadcrumb is one line. It never wraps — set <code style="font-family:var(--font-mono);font-size:12px;">min-width:0</code> on it and on its flex parent.</div>
       <div>· Truncate the middle crumbs first, never the current page and never the root.</div>
       <div>· An avatar or logo inside a crumb sits inline on the same baseline and never shrinks; only its label ellipsizes.</div>
       <div>· Below ~240px of available width, collapse all middle crumbs into a single … that opens a menu.</div>

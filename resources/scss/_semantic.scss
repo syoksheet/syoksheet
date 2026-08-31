@@ -31,9 +31,18 @@
   --color-action-subtle: var(--teal-50);
   --color-on-action: var(--n-0);
 
-  // Focus. Brighter than the action colour on purpose, so the ring reads against a
-  // teal button. Used as: outline 2px solid, 2px offset.
+  // Focus comes in two treatments, and which one depends on the control.
+  //
+  // Pressable things (buttons, checkboxes, radios, toggles) take an outline:
+  //   outline: 2px solid var(--color-focus); outline-offset: 2px;
+  //
+  // Bordered fields (inputs, textareas, search) recolour their border and add a glow:
+  //   border-color: var(--color-focus); box-shadow: 0 0 0 3px var(--color-focus-ring);
+  //
+  // teal-500 rather than the teal-600 action colour, so the ring stays visible against
+  // a teal button.
   --color-focus: var(--teal-500);
+  --color-focus-ring: rgb(0 64 64 / 22%);
 
   // Status. Info is brand teal and success is forest: they are close, so tone always
   // comes with an icon or label as well, never colour alone.
@@ -49,10 +58,25 @@
   --color-danger-subtle: var(--clay-50);
   --color-on-danger: var(--n-0);
 
+  // The tinted pattern: badges, tags and alerts are a pale background, dark text and a
+  // light border from the same ramp, rather than a solid fill. Without names for the
+  // text and border halves you end up reaching for var(--clay-700) in a component,
+  // which is exactly what the semantic layer exists to stop.
+  --color-info-text: var(--teal-700);
+  --color-info-border: var(--teal-100);
+  --color-success-text: var(--verify-700);
+  --color-success-border: var(--verify-100);
+  --color-warning-text: var(--amber-700);
+  --color-warning-border: var(--amber-100);
+  --color-danger-text: var(--clay-700);
+  --color-danger-border: var(--clay-100);
+
   // Verification. Same value as success, different meaning: this one is an identity
   // element (the mark, verified badges), not a status message.
   --color-verified: var(--verify-600);
   --color-verified-subtle: var(--verify-50);
+  --color-verified-text: var(--verify-700);
+  --color-verified-border: var(--verify-100);
 
   // Disabled. Deliberately below AA contrast, which is the one exception to the
   // "everything meets AA" rule: WCAG 1.4.3 exempts inactive controls, and disabled

@@ -11,39 +11,39 @@
     --n-0:#fff;--n-50:#fafafa;--n-100:#f4f4f5;--n-150:#ededef;--n-200:#e5e5e8;--n-300:#d4d4d8;
     --n-400:#a1a1aa;--n-500:#71717a;--n-600:#52525b;--n-700:#3f3f46;--n-900:#161618;--n-950:#0a0a0b;
     --teal-50:#e9f3f2;--teal-100:#c9e4e2;--teal-500:#0d6360;--teal-600:#004040;--teal-700:#003131;
-    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
+    --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-500:#1f8a64;--verify-600:#157a5b;--verify-700:#0f5e46;
     --amber-50:#fbf3e3;--amber-100:#f4e4be;--amber-700:#8a5e12;
     --clay-50:#fbefea;--clay-100:#f4d8cd;--clay-500:#cb5638;--clay-600:#b2412a;--clay-700:#8f3120;
-    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
-    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
-    --radius-sm:5px;--radius:8px;--radius-lg:12px;--radius-xl:18px;
+    --color-canvas:#fff;--color-surface:#fff;--color-border:var(--n-200);--color-border-strong:var(--n-300);--color-border-subtle:var(--n-150);
+    --color-text:#141416;--color-text-secondary:var(--n-600);--color-text-muted:var(--n-500);
+    --radius-sm:5px;--radius-md:8px;--radius-lg:12px;--radius-xl:18px;
     --shadow-xs:0 1px 2px rgba(10,10,11,.05);
-    --ring:rgba(0,64,64,.22);
-    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+    --color-focus-ring:rgba(0,64,64,.22);
+    --font-sans:'Geist',system-ui,sans-serif;--font-mono:'Geist Mono',ui-monospace,monospace;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{background:#fff;color:var(--text);font-family:var(--fs);font-size:15px;-webkit-font-smoothing:antialiased;padding:28px;display:flex;flex-direction:column;gap:22px;}
-  .cap{font-family:var(--fm);font-size:11px;color:var(--text-3);}
+  body{background:#fff;color:var(--color-text);font-family:var(--font-sans);font-size:15px;-webkit-font-smoothing:antialiased;padding:28px;display:flex;flex-direction:column;gap:22px;}
+  .cap{font-family:var(--font-mono);font-size:11px;color:var(--color-text-muted);}
   .demo{display:flex;flex-direction:column;gap:8px;}
   .field{display:flex;flex-direction:column;gap:7px;max-width:360px;}
-  .field-label{font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;justify-content:space-between;}
+  .field-label{font-size:13px;font-weight:600;color:var(--color-text);display:flex;align-items:center;justify-content:space-between;}
   .field-label .req{color:var(--clay-600);margin-left:2px;}
-  .field-label .opt{font-family:var(--fm);font-size:10.5px;font-weight:500;text-transform:uppercase;letter-spacing:0.04em;color:var(--text-3);}
-  .field-hint{font-size:12px;color:var(--text-3);line-height:1.5;}
-  .input{width:100%;height:40px;padding:0 13px;font-family:var(--fs);font-size:14px;color:var(--text);background:var(--surface);border:1px solid var(--border-2);border-radius:var(--radius);box-shadow:var(--shadow-xs);transition:all .14s ease;}
+  .field-label .opt{font-family:var(--font-mono);font-size:10.5px;font-weight:500;text-transform:uppercase;letter-spacing:0.04em;color:var(--color-text-muted);}
+  .field-hint{font-size:12px;color:var(--color-text-muted);line-height:1.5;}
+  .input{width:100%;height:40px;padding:0 13px;font-family:var(--font-sans);font-size:14px;color:var(--color-text);background:var(--color-surface);border:1px solid var(--color-border-strong);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);transition:all .14s ease;}
   .input::placeholder{color:var(--n-400);}
   .input:hover{border-color:var(--n-400);}
-  .input:focus{outline:none;border-color:var(--teal-500);box-shadow:0 0 0 3px var(--ring);}
+  .input:focus{outline:none;border-color:var(--teal-500);box-shadow:0 0 0 3px var(--color-focus-ring);}
   .input.err{border-color:var(--clay-500);box-shadow:0 0 0 3px rgba(203,86,56,.12);}
   .input.ok{border-color:var(--verify-500);}
-  .input[disabled]{background:var(--n-50);color:var(--text-3);cursor:not-allowed;}
+  .input[disabled]{background:var(--n-50);color:var(--color-text-muted);cursor:not-allowed;}
   .field-err{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--clay-600);font-weight:500;}
   .field-err svg{width:12px;height:12px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
   .field-ok{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--verify-700);font-weight:500;}
   .field-ok svg{width:12px;height:12px;stroke:currentColor;stroke-width:2.25;fill:none;stroke-linecap:round;stroke-linejoin:round;}
-  .input-group{display:flex;align-items:stretch;border:1px solid var(--border-2);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow-xs);overflow:hidden;}
-  .input-group:focus-within{border-color:var(--teal-500);box-shadow:0 0 0 3px var(--ring);}
-  .input-group .prefix{display:inline-flex;align-items:center;padding:0 4px 0 12px;font-family:var(--fm);font-size:13px;color:var(--text-3);background:var(--n-50);border-right:1px solid var(--border);white-space:nowrap;}
+  .input-group{display:flex;align-items:stretch;border:1px solid var(--color-border-strong);border-radius:var(--radius-md);background:var(--color-surface);box-shadow:var(--shadow-xs);overflow:hidden;}
+  .input-group:focus-within{border-color:var(--teal-500);box-shadow:0 0 0 3px var(--color-focus-ring);}
+  .input-group .prefix{display:inline-flex;align-items:center;padding:0 4px 0 12px;font-family:var(--font-mono);font-size:13px;color:var(--color-text-muted);background:var(--n-50);border-right:1px solid var(--color-border);white-space:nowrap;}
   .input-group .input{border:none;box-shadow:none;border-radius:0;background:transparent;}
   .input-group .input:focus{box-shadow:none;}
 </style>
@@ -54,7 +54,7 @@
     <span class="cap">default · label + hint</span>
   </div>
   <div class="demo">
-    <div class="field"><label class="field-label">Organisation</label><input class="input" type="text" value="Acme Corp" style="border-color:var(--teal-500);box-shadow:0 0 0 3px var(--ring);" /></div>
+    <div class="field"><label class="field-label">Organisation</label><input class="input" type="text" value="Acme Corp" style="border-color:var(--teal-500);box-shadow:0 0 0 3px var(--color-focus-ring);" /></div>
     <span class="cap">focus</span>
   </div>
   <div class="demo">

@@ -14,22 +14,22 @@
     --verify-50:#ecf4ef;--verify-100:#d0e7da;--verify-600:#157a5b;--verify-700:#0f5e46;
     --amber-50:#fbf3e3;--amber-100:#f4e4be;--amber-700:#8a5e12;
     --clay-50:#fbefea;--clay-100:#f4d8cd;--clay-600:#b2412a;--clay-700:#8f3120;
-    --bg:#fff;--surface:#fff;--border:var(--n-200);--border-2:var(--n-300);--hair:var(--n-150);
-    --text:#141416;--text-2:var(--n-600);--text-3:var(--n-500);
-    --radius-sm:5px;--radius:8px;--radius-lg:12px;--shadow-xs:0 1px 2px rgba(10,10,11,.05);
-    --fs:'Geist',system-ui,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;
+    --color-canvas:#fff;--color-surface:#fff;--color-border:var(--n-200);--color-border-strong:var(--n-300);--color-border-subtle:var(--n-150);
+    --color-text:#141416;--color-text-secondary:var(--n-600);--color-text-muted:var(--n-500);--color-warning-subtle:var(--amber-50);--color-warning-text:var(--amber-700);
+    --radius-sm:5px;--radius-md:8px;--radius-lg:12px;--shadow-xs:0 1px 2px rgba(10,10,11,.05);
+    --font-sans:'Geist',system-ui,sans-serif;--font-mono:'Geist Mono',ui-monospace,monospace;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{background:#fff;color:var(--text);font-family:var(--fs);font-size:15px;-webkit-font-smoothing:antialiased;padding:28px;display:flex;flex-direction:column;gap:22px;}
-  .cap{font-family:var(--fm);font-size:11px;color:var(--text-3);}
+  body{background:#fff;color:var(--color-text);font-family:var(--font-sans);font-size:15px;-webkit-font-smoothing:antialiased;padding:28px;display:flex;flex-direction:column;gap:22px;}
+  .cap{font-family:var(--font-mono);font-size:11px;color:var(--color-text-muted);}
   .demo{display:flex;flex-direction:column;gap:10px;align-items:flex-start;}
-  .seg{display:inline-flex;background:var(--surface);border:1px solid var(--border-2);border-radius:var(--radius);padding:3px;box-shadow:var(--shadow-xs);}
-  .seg button{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;font-family:var(--fs);font-size:13px;font-weight:500;color:var(--text-2);background:transparent;border:none;border-radius:var(--radius-sm);cursor:pointer;white-space:nowrap;transition:all .12s ease;}
-  .seg button:hover{color:var(--text);}
-  .seg button.on{background:var(--n-100);color:var(--text);box-shadow:var(--shadow-xs);}
-  .seg button .ct{font-family:var(--fm);font-size:10.5px;font-weight:500;background:var(--n-100);color:var(--text-3);padding:1px 5px;border-radius:999px;}
-  .seg button.on .ct{background:var(--surface);color:var(--text-2);border:1px solid var(--border);}
-  .seg button .ct.warn{background:var(--amber-50);color:var(--amber-700);}
+  .seg{display:inline-flex;background:var(--color-surface);border:1px solid var(--color-border-strong);border-radius:var(--radius-md);padding:3px;box-shadow:var(--shadow-xs);}
+  .seg button{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;font-family:var(--font-sans);font-size:13px;font-weight:500;color:var(--color-text-secondary);background:transparent;border:none;border-radius:var(--radius-sm);cursor:pointer;white-space:nowrap;transition:all .12s ease;}
+  .seg button:hover{color:var(--color-text);}
+  .seg button.on{background:var(--n-100);color:var(--color-text);box-shadow:var(--shadow-xs);}
+  .seg button .ct{font-family:var(--font-mono);font-size:10.5px;font-weight:500;background:var(--n-100);color:var(--color-text-muted);padding:1px 5px;border-radius:999px;}
+  .seg button.on .ct{background:var(--color-surface);color:var(--color-text-secondary);border:1px solid var(--color-border);}
+  .seg button .ct.warn{background:var(--color-warning-subtle);color:var(--color-warning-text);}
   .seg button svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
 </style>
 </head>
