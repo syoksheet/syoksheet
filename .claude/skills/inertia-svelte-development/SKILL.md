@@ -36,7 +36,7 @@ Use `search-docs` for detailed Inertia v3 Svelte patterns and documentation.
 
 ### Page Components Location
 
-Svelte page components live under `resources/ts/pages/{app,admin,public}/`, one directory per domain, because each domain builds its own bundle. Not `resources/js/Pages`.
+Svelte page components should be placed in the `resources/js/Pages` directory.
 
 ### Page Component Structure
 

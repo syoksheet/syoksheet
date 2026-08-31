@@ -9,9 +9,10 @@
     "sail": false,
     "skills": [
         "infer-conventions",
+        "ai-sdk-development",
         "laravel-best-practices",
+        "testing-best-practices",
         "configuring-horizon",
-        "pest-testing",
         "inertia-svelte-development"
     ]
 }
