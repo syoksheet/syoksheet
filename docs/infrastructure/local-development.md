@@ -11,7 +11,6 @@ ddev config --project-type=laravel --docroot=public --php-version=8.4 \
   --additional-hostnames=api.syoksheet,app.syoksheet,admin.syoksheet \
   --nodejs-version=24
 ddev add-on get ddev/ddev-redis
-ddev add-on get ddev/ddev-minio
 ddev start
 ```
 
@@ -39,7 +38,7 @@ HTTPS is used locally so cookie behaviour across the four subdomains matches pro
 brew install mkcert nss && mkcert -install && ddev restart
 ```
 
-DDEV always provisions its Postgres instance with a database named `db`, and that name cannot be configured. The application expects `syoksheet`, so `.ddev/scripts/create-databases.sh`, run by a `post-start` hook, creates it along with `syoksheet_audit` and the two testing databases on every start. Buckets are created the same way by `create-buckets.sh`, which runs in the minio container because `mc` lives there. Nothing is done by hand: a manually created database would not survive `ddev delete`, and a fresh clone would come up broken. The hook guards on `pg_database` because Postgres has no `CREATE DATABASE IF NOT EXISTS`, and needs no `GRANT`, since the `db` role is a superuser and owns what it creates.
+DDEV always provisions its Postgres instance with a database named `db`, and that name cannot be configured. The application expects `syoksheet`, so `.ddev/scripts/create-databases.sh`, run by a `post-start` hook, creates it along with `syoksheet_audit` and the two testing databases on every start. Buckets are created the same way by `create-buckets.sh`, which runs in the rustfs-cli container because the AWS CLI lives there. Nothing is done by hand: a manually created database would not survive `ddev delete`, and a fresh clone would come up broken. The hook guards on `pg_database` because Postgres has no `CREATE DATABASE IF NOT EXISTS`, and needs no `GRANT`, since the `db` role is a superuser and owns what it creates.
 
 ## 📦 Services
 
@@ -49,7 +48,8 @@ DDEV always provisions its Postgres instance with a database named `db`, and tha
 | db | PostgreSQL 18 | Holds all four databases, created by the `post-start` hook. DDEV's own `db` database is left unused |
 | redis | Redis 7 | Sessions, cache, queue |
 | buggregator | Mail, dumps, logs, HTTP inspection | Replaces Mailpit. Speaks the Sentry protocol |
-| minio | S3-compatible object storage | Stands in for Cloudflare R2. Buckets created by the `post-start` hook. S3 API on 10101, console on 9090 |
+| rustfs | S3-compatible object storage | Stands in for Cloudflare R2. S3 API on 9000, console on 9001 |
+| rustfs-cli | AWS CLI | Runs the bucket `post-start` hook. The RustFS image ships no S3 client, so the tool needs its own container. Idle otherwise |
 | redis-insight | Redis browser UI | `ddev redis-insight`, or `https://syoksheet.ddev.site:5540`. Depends on the redis add-on. Local convenience only, never deployed |
 | xhgui | Profiling | Started on demand with `ddev xhgui` |
 | mailpit | DDEV built-in mail catcher | Unused. Mail goes to Buggregator, but DDEV always provides this and it cannot be removed |
@@ -127,25 +127,27 @@ Never use Resend locally. Beyond the 3,000/month quota with its 100/day cap, dev
 
 ## 🗃️ Object Storage
 
-MinIO stands in for R2 using the same S3 driver, so only the endpoint and credentials differ. This matters because the `local` disk does **not** support `Storage::temporaryUrl()`, and signed URLs are required by PDF export (24-hour expiry) and GDPR data exports (48-hour expiry).
+RustFS stands in for R2 using the same S3 driver, so only the endpoint and credentials differ. This matters because the `local` disk does **not** support `Storage::temporaryUrl()`, and signed URLs are required by PDF export (24-hour expiry) and GDPR data exports (48-hour expiry).
 
-MinIO proves the code path; it does not replicate R2's quirks (no ACLs, `AWS_DEFAULT_REGION=auto`, its own CORS behaviour). Staging points at real R2 buckets for that reason.
+RustFS proves the code path; it does not replicate R2's quirks (R2 has no object ACLs at all, and its CORS and error semantics are its own). Staging points at real R2 buckets for that reason.
 
 | Setting | Value |
 |---------|-------|
-| Console | `https://syoksheet.ddev.site:9090` |
-| S3 endpoint, from the web container | `http://minio:10101` |
-| S3 endpoint, from the host browser | `https://syoksheet.ddev.site:10101` |
-| Access key / secret | `ddevminio` / `ddevminio` |
+| Console | `https://syoksheet.ddev.site:9001` |
+| S3 endpoint, from the web container | `http://rustfs:9000` |
+| S3 endpoint, from the host browser | `https://syoksheet.ddev.site:9000` |
+| Same over plain HTTP | `http://syoksheet.ddev.site:8998`, console on `8999` |
+| Access key / secret | `rustfsadmin` / `rustfsadmin` |
 | Public bucket | `syoksheet-public-local` |
 | Private bucket | `syoksheet-private-local` |
 
 Local buckets carry `-local` for the same reason production carries `-production`: the name is always `syoksheet-<purpose>-<environment>` with no default case, so a misconfigured environment fails on a bucket that does not exist rather than quietly reaching one that does. The `backups`, `audit-archive` and `artifacts` buckets have no local counterpart, since nothing local runs those jobs.
 
-> [!WARNING]
-> The S3 API listens on **10101**, not the conventional 9000. The add-on's compose file passes `--address :10101` and reserves 9090 for the console. `ddev describe` still lists `minio:9000` because the image exposes it, but nothing serves there, so an endpoint left at 9000 hangs instead of erroring.
+`.ddev/docker-compose.rustfs.yaml` is committed rather than installed from an add-on, so a fresh clone needs no `ddev add-on get` for it. Why this service was chosen over the alternatives is recorded in syoksheet-docs → product/decisions.md.
 
 Both buckets are created by a `post-start` hook in `.ddev/config.yaml`, never by hand in the console. `ddev delete` reclaims every volume in the project's Compose group, add-on volumes included, so a hand-made bucket does not survive and a fresh clone would come up with storage that fails on first write. Same reasoning as the `syoksheet` database hook above. The hook is allowed to fail the start, because `.ddev/config.yaml` sets `fail_on_hook_fail: true`; without it a failed hook still reports a successful `ddev start`.
+
+The same script provisions CI, pointed at the published port through `RUSTFS_ENDPOINT`, so there is one set of `s3api` calls rather than two that drift apart.
 
 ## ⌨️ Commands
 

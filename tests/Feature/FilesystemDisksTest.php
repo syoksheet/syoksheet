@@ -15,6 +15,21 @@ it('signs a temporary url for private objects', function () {
     Storage::disk('r2_private')->delete($path);
 });
 
+it('serves a private object through a signed url', function () {
+    $path = 'exports/'.uniqid().'.txt';
+
+    Storage::disk('r2_private')->put($path, 'private');
+
+    $url = Storage::disk('r2_private')->temporaryUrl($path, now()->addMinutes(5));
+
+    $response = Http::get($url);
+
+    expect($response->status())->toBe(200)
+        ->and($response->body())->toBe('private');
+
+    Storage::disk('r2_private')->delete($path);
+});
+
 it('refuses an unsigned request for a private object', function () {
     $path = 'exports/'.uniqid().'.txt';
 

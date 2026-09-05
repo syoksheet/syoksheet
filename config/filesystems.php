@@ -53,7 +53,7 @@ return [
         | has to live somewhere a domain is never bound to.
         |
         | `region` and `use_path_style_endpoint` are constants, not env: R2 always
-        | wants `auto`, and MinIO needs path style, which R2 also accepts.
+        | wants `auto`, and the local stand-in needs path style, which R2 also accepts.
         |
         | `throw` is true on both. A failed avatar upload or a failed export write
         | returning `false` is trivial to ignore at the call site, and the failure

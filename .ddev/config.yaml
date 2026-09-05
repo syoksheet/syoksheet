@@ -27,7 +27,7 @@ corepack_enable: false
 # Toggle it per session with `ddev xdebug` and `ddev xdebug off`.
 xdebug_enabled: false
 
-# One instance holds every database. The audit database (the `log` connection) is a
+# One instance holds every database. The audit database (the `audit` connection) is a
 # separate database, never a schema: Postgres cannot foreign-key across databases,
 # which is what enforces the audit log's raw-ID rule.
 database:
@@ -51,4 +51,4 @@ hooks:
   post-start:
     - exec: bash /mnt/ddev_config/scripts/create-databases.sh
     - exec: bash /mnt/ddev_config/scripts/create-buckets.sh
-      service: minio
+      service: rustfs-cli

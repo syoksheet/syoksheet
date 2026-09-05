@@ -75,7 +75,7 @@ No `SANCTUM_STATEFUL_DOMAINS` or CORS origin list. The UIs are same-origin Inert
 
 Two disks, `r2_public` and `r2_private`, over one credential pair. `FILESYSTEM_DISK` is `r2_private` so an unqualified `Storage::put()` cannot accidentally publish; avatars, org logos and verification marks are written with an explicit `Storage::disk('r2_public')`.
 
-No region or path-style variable exists, deliberately. The S3 driver needs both, but neither varies by environment: R2 always wants `region => 'auto'`, and MinIO needs `use_path_style_endpoint => true`, which R2 also accepts. Both belong hardcoded in the disk definitions rather than in `.env`.
+No region or path-style variable exists, deliberately. The S3 driver needs both, but neither varies by environment: R2 always wants `region => 'auto'`, and the local stand-in needs `use_path_style_endpoint => true`, which R2 also accepts. Both belong hardcoded in the disk definitions rather than in `.env`.
 
 The backup, audit-archive and build-artifact buckets deliberately have no variables here. None is reached through Laravel's filesystem layer: the first two belong to shell commands run by the scheduler, the third to CI and the deploy script, and each carries its own credential scoped to its own bucket.
 

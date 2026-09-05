@@ -70,7 +70,7 @@ Trigger: push/PR to `main` or `develop`, and `v*` tag pushes.
 
 1. Checkout, set up PHP 8.4 + Node 24
 2. `composer install` + `npm ci`
-3. PostgreSQL + Redis service containers
+3. PostgreSQL, Redis and RustFS service containers, with the buckets provisioned by the same `create-buckets.sh` DDEV runs
 4. Laravel Pint (style) + Larastan (static analysis)
 5. Frontend checks: `svelte-check`, ESLint
 6. Pest (`php artisan test`)
