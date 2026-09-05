@@ -8,11 +8,13 @@ it('signs a temporary url for private objects', function () {
 
     Storage::disk('r2_private')->put($path, 'private');
 
-    $url = Storage::disk('r2_private')->temporaryUrl($path, now()->addMinutes(5));
+    try {
+        $url = Storage::disk('r2_private')->temporaryUrl($path, now()->addMinutes(5));
 
-    expect($url)->toContain('X-Amz-Signature')->toContain($path);
-
-    Storage::disk('r2_private')->delete($path);
+        expect($url)->toContain('X-Amz-Signature')->toContain($path);
+    } finally {
+        Storage::disk('r2_private')->delete($path);
+    }
 });
 
 it('serves a private object through a signed url', function () {
@@ -20,14 +22,16 @@ it('serves a private object through a signed url', function () {
 
     Storage::disk('r2_private')->put($path, 'private');
 
-    $url = Storage::disk('r2_private')->temporaryUrl($path, now()->addMinutes(5));
+    try {
+        $url = Storage::disk('r2_private')->temporaryUrl($path, now()->addMinutes(5));
 
-    $response = Http::get($url);
+        $response = Http::get($url);
 
-    expect($response->status())->toBe(200)
-        ->and($response->body())->toBe('private');
-
-    Storage::disk('r2_private')->delete($path);
+        expect($response->status())->toBe(200)
+            ->and($response->body())->toBe('private');
+    } finally {
+        Storage::disk('r2_private')->delete($path);
+    }
 });
 
 it('refuses an unsigned request for a private object', function () {
@@ -35,12 +39,14 @@ it('refuses an unsigned request for a private object', function () {
 
     Storage::disk('r2_private')->put($path, 'private');
 
-    $bucket = config('filesystems.disks.r2_private.bucket');
-    $endpoint = config('filesystems.disks.r2_private.endpoint');
+    try {
+        $bucket = config('filesystems.disks.r2_private.bucket');
+        $endpoint = config('filesystems.disks.r2_private.endpoint');
 
-    expect(Http::get("{$endpoint}/{$bucket}/{$path}")->status())->toBe(403);
-
-    Storage::disk('r2_private')->delete($path);
+        expect(Http::get("{$endpoint}/{$bucket}/{$path}")->status())->toBe(403);
+    } finally {
+        Storage::disk('r2_private')->delete($path);
+    }
 });
 
 it('serves public objects without credentials', function () {
@@ -48,15 +54,17 @@ it('serves public objects without credentials', function () {
 
     Storage::disk('r2_public')->put($path, 'public');
 
-    $bucket = config('filesystems.disks.r2_public.bucket');
-    $endpoint = config('filesystems.disks.r2_public.endpoint');
+    try {
+        $bucket = config('filesystems.disks.r2_public.bucket');
+        $endpoint = config('filesystems.disks.r2_public.endpoint');
 
-    $response = Http::get("{$endpoint}/{$bucket}/{$path}");
+        $response = Http::get("{$endpoint}/{$bucket}/{$path}");
 
-    expect($response->status())->toBe(200)
-        ->and($response->body())->toBe('public');
-
-    Storage::disk('r2_public')->delete($path);
+        expect($response->status())->toBe(200)
+            ->and($response->body())->toBe('public');
+    } finally {
+        Storage::disk('r2_public')->delete($path);
+    }
 });
 
 it('builds public urls from the configured public domain', function () {
