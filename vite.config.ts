@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
+import path from 'path';
 import inertia from '@inertiajs/vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 
@@ -29,6 +30,13 @@ export default defineConfig({
       },
     }),
   ],
+
+  resolve: {
+    alias: {
+      $components: path.resolve(import.meta.dirname, 'resources/ts/components'),
+      '@': path.resolve(import.meta.dirname, 'resources/ts'),
+    },
+  },
 
   /*
    * Bundle everything into the SSR output so the server needs no node_modules. Node is

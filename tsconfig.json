@@ -22,6 +22,7 @@
     "types": ["vite/client"],
     "baseUrl": ".",
     "paths": {
+      "$components/*": ["resources/ts/components/*"],
       "@/*": ["resources/ts/*"]
     }
   },
