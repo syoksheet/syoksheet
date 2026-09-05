@@ -10,17 +10,20 @@ services:
       RUSTFS_SECRET_KEY: rustfsadmin
       RUSTFS_VOLUMES: /data
       RUSTFS_ADDRESS: ":9000"
+      RUSTFS_CONSOLE_ADDRESS: ":9001"
+      RUSTFS_CONSOLE_ENABLE: "true"
       # Every project hostname, deliberately: this is reached by port, not by a
       # hostname prefix, so the list expansion that trips prefixed services is fine here.
       VIRTUAL_HOST: $DDEV_HOSTNAME
-      HTTP_EXPOSE: "8998:9000"
-      HTTPS_EXPOSE: "9000:9000"
+      HTTP_EXPOSE: "8998:9000,8999:9001"
+      HTTPS_EXPOSE: "9000:9000,9001:9001"
     volumes:
       - "rustfs:/data"
       - ".:/mnt/ddev_config"
       - ddev-global-cache:/mnt/ddev-global-cache
     expose:
       - "9000"
+      - "9001"
     # Lets DDEV gate on readiness, so the post-start hook cannot race the daemon.
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://127.0.0.1:9000/health"]
@@ -37,7 +40,7 @@ services:
         User: rustfsadmin
         Pass: rustfsadmin
         API: ${DDEV_PRIMARY_URL_WITHOUT_PORT}:9000
-        Buckets: ddev exec -s rustfs-cli aws --endpoint-url http://rustfs:9000 s3 ls
+        Console: ${DDEV_PRIMARY_URL_WITHOUT_PORT}:9001/rustfs/console/
 
   # Runs the bucket post-start hook. The RustFS image ships no S3 client, so the tool
   # needs its own container. Idle otherwise.

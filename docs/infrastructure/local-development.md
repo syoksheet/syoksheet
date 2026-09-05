@@ -48,7 +48,7 @@ DDEV always provisions its Postgres instance with a database named `db`, and tha
 | db | PostgreSQL 18 | Holds all four databases, created by the `post-start` hook. DDEV's own `db` database is left unused |
 | redis | Redis 7 | Sessions, cache, queue |
 | buggregator | Mail, dumps, logs, HTTP inspection | Replaces Mailpit. Speaks the Sentry protocol |
-| rustfs | S3-compatible object storage | Stands in for Cloudflare R2. S3 API on 9000, no web console |
+| rustfs | S3-compatible object storage | Stands in for Cloudflare R2. S3 API on 9000, console on 9001 |
 | rustfs-cli | AWS CLI | Runs the bucket `post-start` hook. The RustFS image ships no S3 client, so the tool needs its own container. Idle otherwise |
 | redis-insight | Redis browser UI | `ddev redis-insight`, or `https://syoksheet.ddev.site:5540`. Depends on the redis add-on. Local convenience only, never deployed |
 | xhgui | Profiling | Started on demand with `ddev xhgui` |
@@ -129,16 +129,19 @@ Never use Resend locally. Beyond the 3,000/month quota with its 100/day cap, dev
 
 RustFS stands in for R2 using the same S3 driver, so only the endpoint and credentials differ. This matters because the `local` disk does **not** support `Storage::temporaryUrl()`, and signed URLs are required by PDF export (24-hour expiry) and GDPR data exports (48-hour expiry).
 
-There is no web console: the RustFS one is not functional in this release, so buckets are inspected with the AWS CLI in the rustfs-cli container. RustFS proves the code path; it does not replicate R2's quirks (R2 has no object ACLs at all, and its CORS and error semantics are its own). Staging points at real R2 buckets for that reason.
+RustFS proves the code path; it does not replicate R2's quirks (R2 has no object ACLs at all, and its CORS and error semantics are its own). Staging points at real R2 buckets for that reason.
 
 | Setting | Value |
 |---------|-------|
 | S3 endpoint, from the web container | `http://rustfs:9000` |
+| Console | `https://syoksheet.ddev.site:9001/rustfs/console/` |
 | S3 endpoint, from the host browser | `https://syoksheet.ddev.site:9000` |
-| Same over plain HTTP | `http://syoksheet.ddev.site:8998` |
+| Same over plain HTTP | `http://syoksheet.ddev.site:8998`, console on `8999` |
 | Access key / secret | `rustfsadmin` / `rustfsadmin` |
 | Public bucket | `syoksheet-public-local` |
 | Private bucket | `syoksheet-private-local` |
+
+The console path matters: `/rustfs/console/` on port 9001. The root of both ports is the S3 API, which answers an anonymous request with `AccessDenied`, so a bare `:9001` looks broken when it is not. The port also returns 503 with `x-rustfs-readiness-pending: iam` for a second or two after start, before IAM finishes initialising.
 
 Local buckets carry `-local` for the same reason production carries `-production`: the name is always `syoksheet-<purpose>-<environment>` with no default case, so a misconfigured environment fails on a bucket that does not exist rather than quietly reaching one that does. The `backups`, `audit-archive` and `artifacts` buckets have no local counterpart, since nothing local runs those jobs.
 
