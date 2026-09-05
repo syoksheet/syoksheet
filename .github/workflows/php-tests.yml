@@ -53,7 +53,6 @@ jobs:
           RUSTFS_SECRET_KEY: rustfsadmin
           RUSTFS_VOLUMES: /data
           RUSTFS_ADDRESS: ':9000'
-          RUSTFS_CONSOLE_ENABLE: 'false'
         ports: ['9000:9000']
         options: >-
           --health-cmd "curl -fsS http://127.0.0.1:9000/health"
