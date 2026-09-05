@@ -33,13 +33,21 @@ Four things the specs do not decide. Per the build loop these get settled with t
 
 `package.json` has no `bits-ui`. Every spec in this phase assumes it. Dependencies are not changed without approval, and `.npmrc` pins exact versions, so this needs both a decision and a chosen version.
 
-### H2: There is no App Shell spec, and the "layout contract" does not exist
+### H2: resolved
+
+The contract existed in `design/previews/DS App Shell.html` and was never mirrored into `design/docs/`. Both it and `DS Logo.html` are now spec pages, and the breakpoints and sidebar ramp are tokens in `_breakpoints.scss` and `_semantic.scss`. Three specs that still described a 64px icon rail were corrected. Original finding kept below.
+
+### H2 (resolved): there was no App Shell spec page
 
 The phase description requires "app shell + sidebar per the layout contract". `App Shell` and `Logo` have preview cards in `design/previews/` but **no spec page in `design/docs/`**, and the phrase "layout contract" appears nowhere in either repo outside that one sentence. Two of the phase's deliverables therefore have no specification.
 
 Either the contract exists somewhere not yet mirrored, or it needs writing before the shell is built.
 
-### H3: `design/docs/DS PrimeNG.html` is dead history
+### H3: resolved
+
+`DS PrimeNG.html` is deleted and `DS Bits UI.html` replaces it, mapping every spec page to its primitive, naming what has none, and listing what later phases will want. Original finding kept below for the record.
+
+### H3 (resolved): `design/docs/DS PrimeNG.html` was dead history
 
 Its headings are "PrimeNG mapping", "Setup", "Token mapping", "Component mapping". PrimeNG is an Angular library; this project is Svelte with Bits UI. The file is a leftover from a superseded stack and will actively mislead.
 
@@ -91,7 +99,9 @@ Ordered by dependency. Each wave is verifiable on its own.
 
 **Who writes:** user.
 
-**Read first:** each component's spec, plus the Bits UI docs for the matching primitive.
+**Read first:** each component's spec, plus the Bits UI docs for the matching primitive, and the two field rules in `.ai/rules/ts.md`.
+
+**Decided:** a field takes its error as a prop, `error={$form.errors.username}`, and never reads an Inertia form from context. It generates its own id with `$props.id()` and wires `label for`, `aria-describedby` and `aria-invalid` internally. Hint and error are mutually exclusive in the spec, so type them as a discriminated union rather than trusting a convention.
 
 - [ ] Keyboard-only operation works for every control
 - [ ] `npm run check` and `npm run lint` clean
@@ -104,7 +114,7 @@ Ordered by dependency. Each wave is verifiable on its own.
 
 **Who writes:** user.
 
-**Trap:** Toast usually wants a store, and a store at module scope is exactly the SSR hazard `.ai/rules/ts.md` describes. Lint cannot see it inside `<script module>`. Decide where that state lives before writing it.
+**Decided:** the toast queue is created in a root component and passed down with `setContext`/`getContext`, never at module scope. The SSR process keeps a module alive across every render, so a module-level store is shared by every visitor. Lint cannot catch this inside `<script module>`, which is why it is a recorded rule rather than a comment.
 
 - [ ] Focus returns correctly on close for each overlay
 - [ ] `npm run check` and `npm run lint` clean
