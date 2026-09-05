@@ -60,7 +60,7 @@ Learning the lookup matters more than any single answer.
 | Technical spec | This repo's `docs/` | Direct |
 | DDEV, Compose | ddev.readthedocs.io, docs.docker.com/compose | Direct |
 | GitHub Actions | docs.github.com/actions | Direct |
-| OpenTofu | opentofu.org/docs plus the Cloudflare provider registry | Direct, from Phase 2 |
+| OpenTofu | opentofu.org/docs plus the Cloudflare provider registry | Direct, from Phase 4 |
 
 > [!WARNING]
 > Tutorials teach conventions this project forbids. Laravel tutorials show inline controller validation where this project requires Form Requests, `$this->authorize()` where this project requires `Gate::authorize()` because Laravel 13's base controller is empty, and string constants where this project requires PHP enums. Treat external material as "how the framework works" and the rules files as "how we do it here". When they disagree, the repo wins.

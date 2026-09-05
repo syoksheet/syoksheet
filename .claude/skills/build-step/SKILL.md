@@ -239,7 +239,7 @@ Catch yourself thinking any of these and stop. The thought is the signal, not th
 
 ## Current repo state
 
-Facts that affect the gates. **Phases 0 and 1 are closed. Phase 2 (staging) is next in sequence; Phase 3 (design system) is the free alternative if staging is being deferred.** Re-verify against the codebase rather than trusting this list.
+Facts that affect the gates. **Phases 0 and 1 are closed. Phase 2 (design system) is next.** Staging is Phase 4, deliberately after auth, so it is not paid for while idle. Re-verify against the codebase rather than trusting this list.
 
 - **Larastan is configured**: `phpstan.neon.dist` at level 9, `phpVersion: 80400`. The static-analysis gate is live and currently clean.
 - **`.ai/rules` exists**: `index.md` maps globs to `general.md`. Read it before editing anything under `.ddev/**`, `.claude/**` or `CLAUDE.md`, and add to it with `record-rule`.

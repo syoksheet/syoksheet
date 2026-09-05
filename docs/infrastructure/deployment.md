@@ -104,12 +104,12 @@ The weekly schedule matters: advisories get published against code that has not 
 
 | Value | Kind | Needed from | Why |
 |-------|------|-------------|-----|
-| `FORGE_DEPLOY_HOOK_STAGING` | Secret | Phase 2 | Triggers the staging deploy on push to `main` |
+| `FORGE_DEPLOY_HOOK_STAGING` | Secret | Phase 4 | Triggers the staging deploy on push to `main` |
 | `FORGE_DEPLOY_HOOK_PRODUCTION` | Secret | Phase 19 | Triggers the production deploy on a `v*` tag |
 | `FORGE_API_TOKEN` | Secret | Phase 19 | Points the production site at the release tag |
-| `R2_ACCESS_KEY_ID` / `R2_SECRET_ACCESS_KEY` / `R2_ENDPOINT` | Secret | Phase 2 | Uploads the SHA-keyed build artifact. The deploy script aborts without it |
-| `CF_ACCESS_CLIENT_ID` / `CF_ACCESS_CLIENT_SECRET` | Secret | Phase 2 | Cloudflare Access service token, so CI can reach staging |
-| `SENTRY_AUTH_TOKEN`, org and project | Secret | Phase 3 | Uploads source maps at build time |
+| `R2_ACCESS_KEY_ID` / `R2_SECRET_ACCESS_KEY` / `R2_ENDPOINT` | Secret | Phase 4 | Uploads the SHA-keyed build artifact. The deploy script aborts without it |
+| `CF_ACCESS_CLIENT_ID` / `CF_ACCESS_CLIENT_SECRET` | Secret | Phase 4 | Cloudflare Access service token, so CI can reach staging |
+| `SENTRY_AUTH_TOKEN`, org and project | Secret | Phase 4 | Uploads source maps at build time |
 | Bruno seeder credentials | **Plain CI variable, not a secret** | Phase 1 | `BrunoSeeder` creates them deterministically in a throwaway CI database that lives for one job. Treating them as secrets would imply they protect something |
 
 Phase 1's workflow needs none of the secrets: lint, static analysis, types, tests, build and a Bruno run against a locally served app are all self-contained.
