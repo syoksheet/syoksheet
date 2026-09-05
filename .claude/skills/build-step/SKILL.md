@@ -239,12 +239,12 @@ Catch yourself thinking any of these and stop. The thought is the signal, not th
 
 ## Current repo state
 
-Facts that affect the gates. **Phase 0 closed 2026-08-30; Phase 1 has not started.** Re-verify against the codebase rather than trusting this list.
+Facts that affect the gates. **Phases 0 and 1 are closed. Phase 2 (staging) is next in sequence; Phase 3 (design system) is the free alternative if staging is being deferred.** Re-verify against the codebase rather than trusting this list.
 
 - **Larastan is configured**: `phpstan.neon.dist` at level 9, `phpVersion: 80400`. The static-analysis gate is live and currently clean.
 - **`.ai/rules` exists**: `index.md` maps globs to `general.md`. Read it before editing anything under `.ddev/**`, `.claude/**` or `CLAUDE.md`, and add to it with `record-rule`.
 - **The local environment matches `docs/infrastructure/local-development.md`.** PostgreSQL 18 on both instances, the `syoksheet` database created by a `post-start` hook, `redis.conf` at production parity with its `#ddev-generated` marker deliberately removed, RustFS with `syoksheet-public-local` and `syoksheet-private-local` created by the same hook, Buggregator replacing Mailpit, mkcert trusting all four hostnames. `fail_on_hook_fail: true`, so a failed hook fails the start.
 - **Horizon and Sentry are installed.** `laravel/horizon` and `sentry/sentry-laravel` are in `require`, with `config/horizon.php` and `config/sentry.php` published and configured. `@sentry/svelte` is in `package.json`, not yet wired into any entry point.
-- **`bruno/` exists** with per-tag folders; `BrunoSeeder` is still a Phase 1 deliverable.
-- The application is otherwise a near-bare Laravel skeleton: `routes/web.php` and `console.php` only, no models, three default migrations, the `audit` connection configured, no `session` or `queue` Redis connections, and `resources/scss/app.scss` plus `resources/ts/app.ts` as stubs.
+- **`bruno/` exists** with per-tag folders, and `BrunoSeeder` is in `database/seeders/`.
+- Phase 1 shipped: the `audit` connection and its migrations path with role grants, the Redis DB split, `Route::domain()` across four hosts with five route files, the Inertia bootstrap and `resources/ts/` entry points, SCSS tokens, six CI workflows, `BusinessRuleException`, `migrate:all`. Still bare beyond that: no models, three default migrations, the `audit` connection configured, no `session` or `queue` Redis connections, and `resources/scss/app.scss` plus `resources/ts/app.ts` as stubs.
 - **Four Phase 0 items were deliberately carried into Phase 1**, listed in that plan's "Noticed, deferred" table: Horizon's missing `staging` environment, the real supervisors, and per-surface host configuration.
