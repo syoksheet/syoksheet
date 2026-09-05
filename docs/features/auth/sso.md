@@ -1,6 +1,8 @@
 # SSO
 
-Self-built OIDC SSO for Business organisations. It is the **org-context gate**, not a platform login method. Users authenticate to syoksheet personally; the org's IdP gates org space. Enforcement is automatic when enabled (no soft toggle). OIDC only. SAML is not planned. Product behaviour in syoksheet-docs → features/authentication.md. Token exchange and validation go through a certified OIDC client library, never hand-rolled.
+**Deferred beyond v1.** Business tier billing must exist before there is anyone to gate, and building this against a real customer's Entra or Okta tenant beats guessing against a local Keycloak. What v1 must ship is the seam: org-scoped routes already routed through `EnsureOrgSsoSession`, implemented as step 1 below and nothing more, so adding OIDC later touches no routes. `sso_configs` and `org_members.sso_subject` are additive and ship with the feature.
+
+Self-built OIDC SSO for Business organisations. It is the **org-context gate**, not a platform login method. Users authenticate to syoksheet personally; the org's IdP gates org space. Enforcement is automatic when enabled (no soft toggle). OIDC only. SAML is not planned. Product behaviour in syoksheet-docs → features/authentication.md. Token exchange and validation go through a maintained Socialite OIDC driver, never hand-rolled: it must provide discovery, JWKS-based ID token validation with key rotation, nonce and PKCE, and must accept per-org configuration at runtime via `Socialite::buildProvider()`, since each org supplies its own client ID, secret and discovery URL. The specific package is chosen when the feature is built, comparing adoption and release history at that time.
 
 ## 🔐 The Gate
 

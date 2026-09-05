@@ -1,10 +1,10 @@
 # Auth: Endpoints & Implementation
 
-Core authentication: registration, login, logout, email verification, and password reset. Custom controllers (no Fortify), session/token auth by Sanctum, Google OAuth by Socialite.
+Core authentication: registration, login, logout, email verification, and password reset. Custom controllers, session/token auth by Sanctum, Google OAuth by Socialite. Fortify is used for passkeys only (see [passkeys.md](passkeys.md)) and never for these flows, because they all assume an `email` column that this schema does not have.
 
 ## 🏗️ Email Architecture
 
-There is no `email` column on `users`: all emails live in `user_emails` (`primary`/`backup`/`work`). A custom `UserEmailProvider` (`app/Auth/UserEmailProvider.php`) extends `EloquentUserProvider` to resolve users through `user_emails` where `type = primary`, covering login, password reset, and Sanctum token lookup.
+There is no `email` column on `users`: all emails live in `user_emails` (`primary`/`recovery`/`work`). A custom `UserEmailProvider` (`app/Auth/UserEmailProvider.php`) extends `EloquentUserProvider` to resolve users through `user_emails` where `type = primary`, covering login, password reset, and Sanctum token lookup.
 
 ## 🔌 Endpoints
 
@@ -15,7 +15,7 @@ Controllers live in `app/Http/Controllers/Auth/User/`.
 | `POST /api/auth/register` | `RegisterController` | name, email, password + confirmation (`Password::default()`, min 8). Creates `User` + `UserEmail` (type=primary, unverified) in one transaction, fires `Registered` → verification email. 201. Duplicate email → 422. |
 | `POST /api/auth/login` | `LoginController` | Credentials resolved via `UserEmailProvider`. Sanctum session. 204 on success. |
 | `POST /api/auth/logout` | `LoginController` | Ends the session. 204. |
-| `POST /api/auth/forgot-password` | `PasswordResetController@sendLink` | Accepts primary **or** backup email. Always 200 with a generic message, no email enumeration. Token valid 60 minutes. |
+| `POST /api/auth/forgot-password` | `PasswordResetController@sendLink` | Accepts the primary address; also accepts the **recovery** address when the primary inbox is unreachable. The link is sent to whichever was submitted. Always 200 with a generic message, no email enumeration. Token valid 60 minutes. |
 | `POST /api/auth/reset-password` | `PasswordResetController@reset` | token, email, password + confirmation via `Password::reset()`. Fires `PasswordReset`. 200, or 422 on failure. |
 | `POST /api/auth/email/verify` | `EmailVerificationController` | Resend verification. Always 202 (silently skips if already verified). |
 | `GET /api/email/verify/{id}/{hash}` | `EmailVerificationController@verify` | Named `verification.verify`. Verifies the SHA-1 hash against the primary email, marks verified, fires `Verified`, redirects to `config('app.frontend_url')`. |
@@ -37,6 +37,7 @@ Controllers live in `app/Http/Controllers/Auth/User/`.
 | Register | 10/min |
 | Password reset request | 3/hour |
 | Verification email resend | 3/hour |
+| Brag verification requests | 20/day per user. An abuse limit protecting sending reputation, never a tier limit (`code: verification_rate_limited`) |
 
 ## 🔒 Guard Isolation
 
@@ -44,7 +45,7 @@ All `/api/v1/` routes run `auth:sanctum` → `EnsureUser`; an `Admin` token on a
 
 ## 📧 Emails
 
-Registration → verification email; password reset → reset link; 2FA enabled/disabled → security confirmation. All from noreply@syoksheet.com.
+Registration → verification email; password reset → reset link; passkey registered/deleted → security confirmation. All from noreply@syoksheet.com.
 
 ## 📋 Audit Events
 

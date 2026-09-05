@@ -17,17 +17,17 @@ Full access continues during the entire grace period. A successful payment at an
 
 ## ⬇️ Downgrade Application
 
-On any transition to `free` (cancellation at period end, grace expiry, or seat loss):
+On any transition to `free` (cancellation at period end, or grace expiry):
 
 **Users**, over-limit brags get `hidden_at` set, most recent kept visible by default; the user can reselect via `PATCH /api/v1/me/brags/visibility-selection` (see [../brags/endpoints.md](../brags/endpoints.md)). Pro-only features switch off: custom slug falls back to username, analytics dashboard access ends (data retained 90 days), PDF export and API tokens disabled (existing tokens revoked).
 
-**Orgs**: nothing is removed. While over any free limit (members, teams, active postings, queue), the org cannot **add** to that resource; existing members, teams, and published postings stay. Wall pins are cleared, branding stops rendering (config retained), analytics access ends (data retained 90 days), Push API tokens revoked, SSO disabled (config retained), webhook endpoints disabled (config retained).
+**Orgs**: nothing is removed. Members, teams and the verification queue are uncapped on every tier, so the only free-tier ceiling is active job postings: the org cannot publish beyond it, and existing postings are unaffected. Paid features (talent search, Push API, analytics, branding, SSO) simply stop resolving. Existing members, teams, and published postings stay. Wall pins are cleared, branding stops rendering (config retained), analytics access ends (data retained 90 days), Push API tokens revoked, SSO disabled (config retained), webhook endpoints disabled (config retained).
 
 Re-upgrading reverses everything: `hidden_at` cleared, features re-enabled, aggregates intact.
 
-## 🪑 Seat-Loss Downgrade
+## 📎 Attachments on Downgrade
 
-A member leaving a Business org loses seat benefits immediately; if over the free brag limit with no personal Pro, the user downgrade rules above apply to them.
+Attachments are a Pro feature. On downgrade, no new attachments can be added and attachments on **unverified** brags are hidden. Attachments on **verified** brags stay visible permanently: a verifier vouched for the claim while that evidence was on display, and withdrawing it later would hollow out a verification a third party gave in good faith.
 
 ## 📋 Audit Events
 

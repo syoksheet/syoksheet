@@ -13,7 +13,7 @@ Brag CRUD with tier limits and field locking. Product behaviour (fields, place f
 | `PATCH /api/v1/me/brags/{brag}` | Update: locked fields rejected while `is_locked` (see below) |
 | `DELETE /api/v1/me/brags/{brag}` | Soft delete; cascades children |
 | `POST /api/v1/me/brags/{brag}/unlock` | Removes ALL verifications, unlocks fields; `on_verification` visibility reverts to `private`. Always audited (`brag.unlocked`) |
-| `POST /api/v1/me/brags/{brag}/attachments` / `DELETE .../attachments/{attachment}` | Upload to `syoksheet-private-{env}` / remove (tier limits on Free) |
+| `POST /api/v1/me/brags/{brag}/attachments` / `DELETE .../attachments/{attachment}` | Upload to `syoksheet-private-{env}` / remove. **Pro only**: Free has no attachments (`code: attachment_requires_pro`) |
 | `GET /api/v1/me/brags/{brag}/history` | The brag's contextual activity: audit log filtered by subject |
 
 ## 🔒 Field Locking
@@ -29,7 +29,7 @@ Always editable: `position_text`, `visibility`, `is_confidential`, `industry_id`
 
 ## 📏 Enforcement
 
-- Tier limit check counts non-deleted brags; a Business seat (active membership in a Business org) lifts it.
+- Tier limit check counts non-deleted brags. Organisation plans never lift a member's personal limits: personal and org billing are fully independent.
 - Downgrade hiding: over-limit brags get `hidden_at` set (most recent kept visible by default; reselect via the endpoint above); hidden brags are excluded from walls and analytics, fully restored on upgrade. See [../billing/lifecycle.md](../billing/lifecycle.md).
 - Visibility `on_verification` → treated as private until the first verification lands, then public.
 

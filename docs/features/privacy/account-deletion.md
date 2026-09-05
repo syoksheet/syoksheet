@@ -17,7 +17,7 @@ While suspended: login rejected except for the cancellation flow; profile exclud
 
 - `personal_access_tokens`: all deleted
 - `social_accounts`: deleted
-- `password`, `two_factor_secret`, `two_factor_recovery_codes`: nulled
+- `password`: nulled. Passkey credentials: deleted
 - Avatar. Object deleted from `syoksheet-public-{env}`, `avatar_url` nulled
 - `notifications`: deleted
 - `org_members` rows: removed

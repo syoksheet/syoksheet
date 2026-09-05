@@ -31,10 +31,10 @@ When the org has SSO enabled, all org-scoped routes additionally pass the `Ensur
 | Route | Permission | Behaviour |
 |-------|-----------|-----------|
 | `GET /api/v1/organizations/{org}/members` | member | List members with teams |
-| `POST /api/v1/organizations/{org}/invitations` | `members.manage` | Invite by email (team@): creates `org_invitations` row, 30-day token |
+| `POST /api/v1/organizations/{org}/invitations` | `members.manage` | Invite by email (team@): creates `org_invitations` row, 30-day token. `member_type` is `member` (default) or `guest`; a guest invitation requires `expires_at` and skips the domain-match check |
 | `GET /api/v1/organizations/{org}/invitations` | `members.manage` | List with status |
 | `DELETE /api/v1/organizations/{org}/invitations/{invitation}` | `members.manage` | Revoke pending |
-| `POST /api/invitations/{token}` / `.../decline` | invitee (auth or signup flow) | Accept (requires a verified matching work email → creates membership) or decline |
+| `POST /api/invitations/{token}` / `.../decline` | invitee (auth or signup flow) | Accept or decline. A `member` invitation requires a verified work email matching the org domain; a `guest` invitation requires none. Invitees without an account create one during acceptance, and the invited address becomes their primary. Accept creates the membership. Decline |
 | `POST /api/v1/organizations/{org}/join-requests` | any user | Apply: requires a verified work email matching the org domain or an `org_domains` entry |
 | `PATCH /api/v1/organizations/{org}/join-requests/{request}` | `members.manage` | Approve / reject |
 | `DELETE /api/v1/organizations/{org}/members/{member}` | `members.manage` | Remove member |

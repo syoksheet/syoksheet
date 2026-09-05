@@ -15,6 +15,8 @@ All `internal` visibility.
 | `user.password_changed` | User | User | No extra properties |
 | `user.password_reset_requested` | System | User | No extra properties |
 | `user.email_changed` | User | User | `old_email`, `new_email` in `properties` |
+| `user.passkey_registered` | User | User | `passkey_name` in `properties` |
+| `user.passkey_deleted` | User | User | `passkey_name` in `properties` |
 | `user.oauth_connected` | User | User | `provider` in `properties` |
 | `user.oauth_disconnected` | User | User | No extra properties |
 | `user.impersonated` | Admin | User | `admin_id` in `properties` |
@@ -33,7 +35,7 @@ All `internal` visibility.
 | `brag.deleted` | User | Brag | Full before state |
 | `brag.visibility_changed` | User | Brag | `old_visibility`, `new_visibility` |
 | `brag.verification_requested` | User | Brag | `organization_id` set for org type |
-| `brag.verification_approved` | User | Brag | `organization_id` set for org type; also `management` |
+| `brag.verification_approved` | User | Brag | `organization_id` set for org type; also `management`. Never recorded for a self-approval, which is rejected |
 | `brag.verification_rejected` | User | Brag | `organization_id` set for org type; also `management` |
 | `brag.unlocked` | User | Brag | Removes all verifications, always logged |
 | `brag.collaborator_invited` | User | Brag | No extra properties |
@@ -51,7 +53,8 @@ All `internal` visibility.
 | `org.dns_verified` | System | Organization | internal, management |
 | `org.dns_verification_failed` | System | Organization | internal |
 | `org.dns_revoked` | System | Organization | internal, management |
-| `org.member_invited` | User | OrgInvitation | management |
+| `org.member_invited` | User | OrgInvitation | management: `member_type` in `properties` |
+| `org.guest_expired` | System | OrgMember | management |
 | `org.member_joined` | User | OrgMember | management |
 | `org.member_removed` | User | OrgMember | management: `removed_by` in `display` |
 | `org.ownership_transferred` | User | Organization | internal, management |

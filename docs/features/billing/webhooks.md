@@ -1,6 +1,6 @@
 # Billing: Endpoints & Webhooks
 
-DodoPayments integration: checkout, subscription sync, and seat billing. Product behaviour (payment flow, downgrade rules) in syoksheet-docs → features/billing.md; pricing in syoksheet-docs → product/pricing.md.
+DodoPayments integration: checkout and subscription sync. Organisation plans are flat, so there is no usage reporting of any kind. Product behaviour (payment flow, downgrade rules) in syoksheet-docs → features/billing.md; pricing in syoksheet-docs → product/pricing.md.
 
 ## 🔌 Endpoints
 
@@ -10,7 +10,7 @@ DodoPayments integration: checkout, subscription sync, and seat billing. Product
 | `GET /api/v1/me/billing` | Current subscription, cycle, period, invoices |
 | `POST /api/v1/me/billing/cancel` | Cancel at period end |
 | `POST /api/v1/organizations/{org}/billing/checkout` | Business checkout (`billing.manage`) |
-| `GET /api/v1/organizations/{org}/billing` | Org subscription + seat count breakdown (`billing.manage`) |
+| `GET /api/v1/organizations/{org}/billing` | Org subscription, plan and cycle (`billing.manage`) |
 | `POST /api/v1/organizations/{org}/billing/cancel` | Cancel at period end (`billing.manage`) |
 | `POST /api/v1/webhooks/dodo` | Webhook receiver: signature-verified, unauthenticated route |
 
@@ -21,12 +21,11 @@ DodoPayments integration: checkout, subscription sync, and seat billing. Product
 3. Queued handler processes by `event_type`: subscription created/updated/cancelled, payment succeeded/failed → sync the `subscriptions` row and the billable's `plan` column; mark `processed_at`.
 4. Payment events fire `billing.*` audit events with `System` causer.
 
-## 🪑 Seat Billing
+## 🏢 Organisation Plans
 
-- Seat count = member count, derived from `org_members`, never stored.
-- Member 6+ joins a Business org → prorated seat charge from the join date, reported to DodoPayments.
-- Member removal → seat count drops; billing adjusts at the next cycle.
-- Seat benefits (brag + pending-verification limits) are evaluated live from active Business memberships, no denormalised flag.
+- Plans are flat per tier (Free, Growth, Business): canonical prices in syoksheet-docs → product/pricing.md.
+- Membership changes never affect the bill. There is no seat count, no proration on join or leave, and nothing to report to DodoPayments.
+- Tier changes take effect immediately and are prorated against the current cycle.
 
 ## ⬇️ Downgrade, Grace & Dunning
 

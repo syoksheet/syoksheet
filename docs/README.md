@@ -17,7 +17,7 @@ Technical documentation for the syoksheet Laravel API. The implementation spec t
 
 ## ⚙️ Feature Specs
 
-- **Auth**: [Endpoints](features/auth/endpoints.md) · [Two-Factor](features/auth/two-factor.md) · [SSO](features/auth/sso.md)
+- **Auth**: [Endpoints](features/auth/endpoints.md) · [Passkeys](features/auth/passkeys.md) · [SSO](features/auth/sso.md)
 - **Users**: [Profile](features/users/profile.md) · [Emails](features/users/emails.md) · [Tokens](features/users/tokens.md) · [Notifications](features/users/notifications.md) · [PDF Export](features/users/pdf-export.md)
 - **Organizations**: [Endpoints](features/organizations/endpoints.md) · [DNS Verification](features/organizations/dns-verification.md) · [Outbound Webhooks](features/organizations/webhooks.md)
 - **Brags**: [Endpoints](features/brags/endpoints.md) · [Verification](features/brags/verification.md) · [Collaborators](features/brags/collaborators.md)

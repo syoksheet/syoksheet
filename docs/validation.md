@@ -39,17 +39,14 @@ Rule violations return 422 with a stable `code` alongside the message, so fronte
 | Code | Raised by |
 |------|-----------|
 | `brag_limit_reached` | Brag creation over tier limit |
-| `pending_verification_limit_reached` | Verification request over tier limit |
-| `attachment_limit_reached` | Attachment over tier limit |
-| `queue_capacity_reached` | Org verification queue full |
+| `verification_rate_limited` | Verification requests over the daily abuse limit, never a tier limit |
+| `attachment_requires_pro` | Attachments are a Pro feature; Free has none |
 | `job_posting_limit_reached` | Publish over tier limit |
-| `member_limit_reached` / `team_limit_reached` | Org additions while over free limits |
 | `fields_locked` | Editing locked brag fields |
 | `owned_orgs_exist` | Account deletion while owning orgs |
 | `export_cooldown` / `export_in_progress` | Data/PDF export rules |
 | `consents_required` | Open-to-work enable without JobMatching + AiProcessing |
 | `reserved_name` | Username/slug on the reserved list |
-| `work_domain_primary` | Making an address on a DNS-verified org domain the primary email |
 
 New business rules add their code here and to the OpenAPI `BusinessRuleError` component.
 

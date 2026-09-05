@@ -38,13 +38,17 @@ One row per user per organisation. `is_owner` is the special system designation:
 | id | bigint PK | Internal key, never exposed |
 | organization_id | uuid FK → organizations | CASCADE |
 | user_id | uuid FK → users | CASCADE |
-| user_email_id | bigint FK → user_emails | Work email used to join |
+| user_email_id | bigint FK → user_emails | Work email used to join. Null for guests, who have no address on the domain |
+| member_type | varchar(10) | `member` or `guest`. Guests are invitation only and skip the domain-match requirement |
+| expires_at | timestamptz | Nullable. Required for guests, never set for members. Access ends on this date |
 | is_owner | boolean | Default false. Exactly one true per org. Full control, can transfer. |
 | sso_subject | varchar(255) | Nullable, the IdP's stable subject ID, bound on first successful SSO; matched by subject thereafter |
 | joined_at | timestamptz | Required |
 | created_at, updated_at | timestamptz | Managed by Eloquent |
 
 **Unique:** `(organization_id, user_id)`
+
+**Guests** carry `member_type = guest`, a required `expires_at`, and a null `user_email_id`. They can hold any team permission except `org.manage`, `members.manage` and `billing.manage`, which are the escalation paths. They are exempt from the SSO gate and must hold a registered passkey.
 
 ## 🏷️ org_teams
 
@@ -97,6 +101,8 @@ Invites sent by the org to an email address; the inverse of join requests.
 | id | bigint PK | Internal key, never exposed |
 | organization_id | uuid FK → organizations | CASCADE |
 | email | varchar(255) | Invitee: need not be a user yet |
+| member_type | varchar(10) | `member` or `guest`. Guests skip the domain-match check on acceptance |
+| guest_expires_at | timestamptz | Nullable. Required when `member_type = guest`; copied to `org_members.expires_at` on acceptance |
 | invited_by | uuid FK → users | Required |
 | token | varchar(255) | Unique: accept link |
 | status | varchar(20) | `pending`, `accepted`, `declined`, `expired` |

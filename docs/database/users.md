@@ -23,9 +23,7 @@ There is **no `email` column**: all emails live in `user_emails`.
 | social_links | jsonb | Nullable |
 | password | varchar(255) | Nullable (null for Google-only accounts) |
 | email_verified_at | timestamptz | Nullable |
-| two_factor_secret | text | Nullable, encrypted |
-| two_factor_recovery_codes | text | Nullable, encrypted |
-| two_factor_confirmed_at | timestamptz | Nullable |
+
 | locale | varchar(15) | Default `en`. BCP 47; see [localization.md](../localization.md) |
 | plan | varchar(20) | Default `free` (`free`, `pro`) |
 | is_open_to_work | boolean | Default false: requires JobMatching + AiProcessing consents to enable |
@@ -44,12 +42,12 @@ There is **no `email` column**: all emails live in `user_emails`.
 | id | bigint PK | Internal key, never exposed |
 | user_id | uuid FK → users | CASCADE |
 | email | varchar(255) | Unique across the platform |
-| type | varchar(20) | `primary`, `backup`, `work` |
+| type | varchar(20) | `primary`, `recovery`, `work` |
 | is_verified | boolean | Default false |
 | verified_at | timestamptz | Nullable |
 | created_at, updated_at | timestamptz | Managed by Eloquent |
 
-One `primary` and at most one `backup` per user; unlimited `work` emails.
+One `primary` and at most one `recovery` per user; unlimited `work` emails, one per org joined.
 
 ## 🔗 social_accounts
 
@@ -65,6 +63,23 @@ One `primary` and at most one `backup` per user; unlimited `work` emails.
 ## 🔑 password_reset_tokens
 
 Standard Laravel: email (PK), token, created_at.
+
+## 🔑 passkeys
+
+WebAuthn credentials, one row per registered device. Managed by Fortify over `laravel/passkeys`; the schema is the package's own and is documented here only so the domain model is complete.
+
+| Column | Type | Notes |
+|--------|------|-------|
+| id | bigint PK | Internal key, never exposed |
+| user_id | uuid FK → users | CASCADE |
+| name | varchar(255) | User-supplied, e.g. "MacBook Pro" |
+| credential_id | text | Unique. The authenticator's credential identifier |
+| public_key | text | The credential's public key |
+| sign_count | bigint | Replay protection counter |
+| last_used_at | timestamptz | Nullable |
+| created_at, updated_at | timestamptz | Managed by Eloquent |
+
+A user may hold several. Deleted on account erasure. There are no TOTP columns anywhere: passkeys replaced two-factor entirely.
 
 ## 🔔 notifications
 
