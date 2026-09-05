@@ -191,186 +191,39 @@
 
   <main class="doc">
     <div class="content">
-
       <header class="ph">
-        <div class="crumb">Components / Button</div>
-        <h1>Button</h1>
-        <p>Buttons trigger an action or a change of view. They are the most frequent point of interaction in syoksheet, so their hierarchy must always be unambiguous.</p>
-        <div class="status">
-          <span class="pill" style="background:#fbf3e3;border-color:#f4e4be;color:#8a5e12;">Beta</span>
-          
-          <span class="pill">6 variants · 3 sizes</span>
-        </div>
+        <div class="crumb">Implementation / Bits UI mapping</div>
+        <h1>Bits UI mapping</h1>
+        <p>Which headless primitive backs which spec page, what has no primitive and is built here, and what Bits UI offers that later phases will want. The spec pages describe behaviour; this page says what implements it.</p>
+        <div class="status"><span class="pill">Svelte 5</span><span class="pill">bits-ui</span></div>
       </header>
 
-      <!-- ANATOMY -->
       <section class="s">
-        <h2>Anatomy</h2>
-        <p class="lead">Every button is a single flex row: an optional leading icon, a required text label, and (rarely) a trailing icon. Labels are always present — syoksheet has no icon-only buttons except the dedicated icon-button control.</p>
-        <div class="ex">
-          <div class="stage" style="justify-content:center;padding:48px;">
-            <button class="btn btn-primary btn-lg" style="font-size:16px;height:50px;padding:0 26px;"><svg class="i" viewBox="0 0 24 24" style="width:17px;height:17px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> New brag</button>
-          </div>
-          <div class="cap">A button is a single flex row — container, optional leading icon, and label.</div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;">
-          <div style="display:flex;gap:11px;align-items:flex-start;">
-            <span style="flex-shrink:0;width:22px;height:22px;border-radius:999px;background:var(--teal-600);color:#fff;font-family:var(--font-mono);font-size:11px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;">1</span>
-            <div style="font-size:13.5px;"><b style="display:block;color:var(--color-text);">Container</b><span style="color:var(--color-text-secondary);font-size:12.5px;line-height:1.5;">Flex row, fixed height, 8px radius.</span></div>
-          </div>
-          <div style="display:flex;gap:11px;align-items:flex-start;">
-            <span style="flex-shrink:0;width:22px;height:22px;border-radius:999px;background:var(--teal-600);color:#fff;font-family:var(--font-mono);font-size:11px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;">2</span>
-            <div style="font-size:13.5px;"><b style="display:block;color:var(--color-text);">Leading icon</b><span style="color:var(--color-text-secondary);font-size:12.5px;line-height:1.5;">Optional. 15px line icon, 8px gap to label.</span></div>
-          </div>
-          <div style="display:flex;gap:11px;align-items:flex-start;">
-            <span style="flex-shrink:0;width:22px;height:22px;border-radius:999px;background:var(--teal-600);color:#fff;font-family:var(--font-mono);font-size:11px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;">3</span>
-            <div style="font-size:13.5px;"><b style="display:block;color:var(--color-text);">Label</b><span style="color:var(--color-text-secondary);font-size:12.5px;line-height:1.5;">Required. Geist 14 / 600, verb-first, sentence case.</span></div>
-          </div>
-          <div style="display:flex;gap:11px;align-items:flex-start;">
-            <span style="flex-shrink:0;width:22px;height:22px;border-radius:999px;background:var(--teal-600);color:#fff;font-family:var(--font-mono);font-size:11px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;">4</span>
-            <div style="font-size:13.5px;"><b style="display:block;color:var(--color-text);">Padding</b><span style="color:var(--color-text-secondary);font-size:12.5px;line-height:1.5;">16px horizontal (default); never below 12px.</span></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- VARIANTS -->
-      <section class="s">
-        <h2>Variants</h2>
-        <p class="lead">Six variants form one clear hierarchy. There is never more than one primary button on a surface; everything else steps down from it.</p>
-        <div class="ex">
-          <div class="stage">
-            <button class="btn btn-primary">Primary</button>
-            <button class="btn btn-secondary">Secondary</button>
-            <button class="btn btn-ghost">Ghost</button>
-            <button class="btn btn-verify"><svg class="i" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Verify</button>
-            <button class="btn btn-destructive">Destructive</button>
-            <button class="btn btn-danger">Danger (solid)</button>
-          </div>
-          <div class="cap">Hierarchy: primary → secondary → ghost. Verify &amp; danger are semantic, not hierarchical.</div>
-        </div>
-
-        <table class="spec">
-          <thead><tr><th>Variant</th><th>Use for</th><th>Fill</th><th>Token</th></tr></thead>
-          <tbody>
-            <tr><td><b>Primary</b></td><td>The one main action per view</td><td><span class="swatch" style="background:#004040"></span>Solid teal</td><td><code>--teal-600</code></td></tr>
-            <tr><td><b>Secondary</b></td><td>Supporting actions next to primary</td><td><span class="swatch" style="background:#fff"></span>White + border</td><td><code>--color-border-strong</code></td></tr>
-            <tr><td><b>Ghost</b></td><td>Tertiary / low-emphasis (Cancel)</td><td>Transparent</td><td><code>--color-text-secondary</code></td></tr>
-            <tr><td><b>Verify</b></td><td>Approving / confirming a verification only</td><td><span class="swatch" style="background:#157a5b"></span>Solid forest</td><td><code>--verify-600</code></td></tr>
-            <tr><td><b>Destructive</b></td><td>Reversible-but-risky (outline)</td><td><span class="swatch" style="background:#fff"></span>White + clay text</td><td><code>--clay-600</code></td></tr>
-            <tr><td><b>Danger</b></td><td>Final irreversible confirm (in modals)</td><td><span class="swatch" style="background:#b2412a"></span>Solid clay</td><td><code>--clay-600</code></td></tr>
-          </tbody>
-        </table>
-        <div class="note">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-          <span><b>Verify is not the primary colour.</b> Forest green is reserved for verification actions. Never use the verify button for a generic confirm — use primary teal.</span>
-        </div>
-      </section>
-
-      <!-- SIZES -->
-      <section class="s">
-        <h2>Sizes</h2>
-        <p class="lead">Three sizes. Default (38px) covers almost everything; small (31px) for dense toolbars and table rows; large (46px) for marketing and primary funnels only.</p>
-        <div class="ex">
-          <div class="stage" style="align-items:flex-end;">
-            <button class="btn btn-primary btn-lg">Large · 46px</button>
-            <button class="btn btn-primary">Default · 38px</button>
-            <button class="btn btn-primary btn-sm">Small · 31px</button>
-          </div>
-          <div class="cap">Minimum hit target is 36px tall; on touch surfaces use default or large.</div>
-        </div>
-        <table class="spec">
-          <thead><tr><th>Size</th><th>Height</th><th>Padding-x</th><th>Font</th><th>Radius</th></tr></thead>
-          <tbody>
-            <tr><td>Small</td><td><code>31px</code></td><td><code>12px</code></td><td>13 / 600</td><td><code>5px</code></td></tr>
-            <tr><td>Default</td><td><code>38px</code></td><td><code>16px</code></td><td>14 / 600</td><td><code>8px</code></td></tr>
-            <tr><td>Large</td><td><code>46px</code></td><td><code>22px</code></td><td>15 / 600</td><td><code>8px</code></td></tr>
-          </tbody>
-        </table>
-      </section>
-
-      <!-- STATES -->
-      <section class="s">
-        <h2>States</h2>
-        <p class="lead">Every button ships five states. State is signalled by fill/elevation change plus the focus ring — never by colour alone.</p>
-        <div class="states">
-          <div class="state"><span class="nm">default</span><button class="btn btn-primary" style="align-self:flex-start;">Request verification</button><span class="desc">Resting. Solid teal, no shadow.</span></div>
-          <div class="state"><span class="nm">hover</span><button class="btn btn-primary" style="align-self:flex-start;background:var(--teal-700);">Request verification</button><span class="desc">Darkens one step (<code>--teal-700</code>).</span></div>
-          <div class="state"><span class="nm">focus-visible</span><button class="btn btn-primary" style="align-self:flex-start;outline:2px solid var(--teal-500);outline-offset:2px;">Request verification</button><span class="desc">2px ring, 2px offset. Keyboard only.</span></div>
-          <div class="state"><span class="nm">loading</span><button class="btn btn-primary" style="align-self:flex-start;"><span class="spin"></span> Saving…</button><span class="desc">Spinner replaces leading icon; label becomes present-progressive; button stays disabled.</span></div>
-          <div class="state"><span class="nm">disabled</span><button class="btn btn-primary" style="align-self:flex-start;" disabled>Request verification</button><span class="desc">50% opacity, no pointer. Pair with a tooltip explaining why.</span></div>
-        </div>
-      </section>
-
-      <!-- PLACEMENT -->
-      <section class="s">
-        <h2>Placement &amp; order</h2>
-        <p class="lead">In any footer, toolbar, or modal, buttons are right-aligned with the primary action right-most. Status text sits on the far left.</p>
-        <div class="ex">
-          <div class="stage col" style="background:var(--color-surface);padding:0;">
-            <div style="width:100%;display:flex;align-items:center;gap:8px;padding:14px 18px;background:var(--n-50);border-radius:var(--radius-lg);border:1px solid var(--color-border);">
-              <span style="margin-right:auto;font-family:var(--font-mono);font-size:11.5px;color:var(--color-text-muted);">Saved · 2 mins ago</span>
-              <button class="btn btn-ghost btn-sm">Cancel</button>
-              <button class="btn btn-secondary btn-sm">Save draft</button>
-              <button class="btn btn-primary btn-sm">Save &amp; publish</button>
-            </div>
-          </div>
-          <div class="cap">Left → right: status · tertiary (ghost) · secondary · primary.</div>
-        </div>
+        <h2>Setup</h2>
+        <p class="lead">One dependency, pinned exactly like every other package here. Bits UI ships behaviour and accessibility and almost no styles, which is the reason it was chosen: every pixel stays ours.</p>
+        <div class="ex"><div class="stage" style="padding:20px;"><code>ddev exec npm install bits-ui</code></div><div class="cap">Import per component: <code>import { Dialog } from 'bits-ui'</code></div></div>
         <ul class="rules">
-          <li><b>One primary per surface.</b> If two actions feel equally important, one is secondary.</li>
-          <li><b>Cancel is always ghost</b> and sits to the left of the confirming action.</li>
-          <li><b>Destructive confirmations</b> put the danger button right-most, with Cancel to its left.</li>
+          <li><b>Style only with semantic tokens.</b> A component never reaches for a primitive such as <code>--n-600</code>.</li>
+          <li><b>Never restyle a shared component locally.</b> If a screen needs a different look, the spec changes.</li>
+          <li><b>Do not reimplement behaviour a primitive already has.</b> Focus traps, roving focus, dismissal and positioning are the whole reason for the dependency.</li>
         </ul>
       </section>
 
-      <!-- DO / DONT -->
       <section class="s">
-        <h2>Do &amp; don't</h2>
-        <div class="dd">
-          <div class="dd-card do">
-            <div class="hd"><span class="m"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Do</div>
-            <div class="demo"><button class="btn btn-primary">Save</button><button class="btn btn-secondary">Cancel</button></div>
-            <p>One primary, one secondary. Clear which action is the main one.</p>
-          </div>
-          <div class="dd-card dont">
-            <div class="hd"><span class="m"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Don't</div>
-            <div class="demo"><button class="btn btn-primary">Save</button><button class="btn btn-primary">Cancel</button></div>
-            <p>Two primaries compete. The user can't tell which is safe.</p>
-          </div>
-          <div class="dd-card do">
-            <div class="hd"><span class="m"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Do</div>
-            <div class="demo"><button class="btn btn-verify"><svg class="i" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Approve</button></div>
-            <p>Use the forest verify button only for verification approvals.</p>
-          </div>
-          <div class="dd-card dont">
-            <div class="hd"><span class="m"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Don't</div>
-            <div class="demo"><button class="btn btn-verify">Save changes</button></div>
-            <p>Don't use verify-green for non-verification actions — it dilutes the trust signal.</p>
-          </div>
-        </div>
+        <h2>Backed by a primitive</h2>
+        <table class="t"><thead><tr><th>Spec page</th><th>Bits UI</th><th>Notes</th></tr></thead><tbody><tr><td>Button</td><td><code>Button</code></td><td>Renders a button or an anchor. Our variants and sizes are ours.</td></tr><tr><td>Menu</td><td><code>DropdownMenu</code></td><td><code>ContextMenu</code> and <code>Menubar</code> exist if ever needed.</td></tr><tr><td>Checkbox &amp; radio</td><td><code>Checkbox</code>, <code>RadioGroup</code></td><td>Two primitives behind one spec page.</td></tr><tr><td>Segmented control</td><td><code>ToggleGroup</code></td><td>Single-select mode. Not <code>Toggle</code>, which is one pressed button.</td></tr><tr><td>Select</td><td><code>Select</code></td><td>Use <code>Combobox</code> instead where the list is searchable, such as the taxonomy pickers.</td></tr><tr><td>Toggle &amp; switch</td><td><code>Switch</code></td><td>Bits UI also ships <code>Toggle</code>; that is a pressed button, not this.</td></tr><tr><td>Avatar</td><td><code>Avatar</code></td><td>Handles the image load and fallback states.</td></tr><tr><td>Modal &amp; dialog</td><td><code>Dialog</code>, <code>AlertDialog</code></td><td><code>AlertDialog</code> for destructive confirmations. It is not our Alert.</td></tr><tr><td>Progress &amp; meter</td><td><code>Progress</code>, <code>Meter</code></td><td>Progress for tasks under way, Meter for a static value.</td></tr><tr><td>Tooltip</td><td><code>Tooltip</code></td><td>Positioning, delay and dismissal come free.</td></tr><tr><td>Tabs</td><td><code>Tabs</code></td><td>Roving focus and the correct ARIA wiring.</td></tr><tr><td>Input &amp; form field</td><td><code>Label</code> only</td><td>Bits UI ships no text input. The control is a native <code>&lt;input&gt;</code>; the field wrapper, help text and error state are ours.</td></tr></tbody></table>
       </section>
 
-      <!-- CONTENT -->
       <section class="s">
-        <h2>Content</h2>
-        <ul class="rules">
-          <li><b>Lead with a verb.</b> "Request verification", "Add brag", "Leave organisation" — never "Submit" or "OK".</li>
-          <li><b>Sentence case</b>, no terminal punctuation. One to three words.</li>
-          <li><b>Name the object</b> for destructive or consequential actions: "Disband organisation", not "Disband".</li>
-          <li><b>Match the heading.</b> A "Leave Acme Corp?" dialog's confirm button reads "Leave Acme Corp".</li>
-        </ul>
+        <h2>Built in house</h2>
+        <p class="lead">Bits UI has no primitive for these, or we chose not to use one. Toast and file upload are the two that surprise people.</p>
+        <table class="t"><thead><tr><th>Spec page</th><th>Why</th></tr></thead><tbody><tr><td>Toast</td><td>Nothing in Bits UI covers it. Region, stacking, timers and the reduced-motion path are all ours, and the queue state is the SSR module-scope hazard in <code>.ai/rules/ts.md</code>.</td></tr><tr><td>File upload</td><td>No primitive. A native <code>&lt;input type="file"&gt;</code> plus our own drag target and progress.</td></tr><tr><td>Table, Data table</td><td>Built in house by decision, not by absence. No TanStack Table and no TanStack package for anything else. <code>Pagination</code> is available for the pager.</td></tr><tr><td>Alert</td><td>Inline feedback, so presentational. <code>AlertDialog</code> is a modal and is not this.</td></tr><tr><td>Badge, Tag, Card, Skeleton, Empty state, Verification mark</td><td>Presentational. No behaviour to borrow.</td></tr><tr><td>Breadcrumb</td><td>A <code>nav</code> and an ordered list. The truncation ramp is in <a href="DS App Shell.html">App shell</a>.</td></tr><tr><td>Sidebar nav, App shell</td><td>Layout. <code>NavigationMenu</code> is for menubars and does not fit.</td></tr></tbody></table>
       </section>
 
-      <!-- ACCESSIBILITY -->
-      <section class="s" style="border-bottom:none;">
-        <h2>Accessibility</h2>
-        <ul class="rules">
-          <li>Use a real <code>&lt;button&gt;</code> (or <code>&lt;a&gt;</code> for navigation). Never a bare <code>&lt;div&gt;</code>.</li>
-          <li>Visible <b>focus ring</b> (2px <code>--teal-500</code>, 2px offset) on <code>:focus-visible</code>.</li>
-          <li>Contrast: white-on-teal and white-on-clay both meet WCAG AA (≥4.5:1). Disabled is exempt.</li>
-          <li>Loading buttons set <code>aria-busy="true"</code> and stay disabled to prevent double submits.</li>
-          <li>Icon-only controls require an <code>aria-label</code>; this button component always has a visible label.</li>
-        </ul>
+      <section class="s">
+        <h2>Available, not used yet</h2>
+        <p class="lead">Worth knowing before anyone builds one of these by hand in a later phase.</p>
+        <table class="t"><thead><tr><th>Primitive</th><th>Where it will land</th></tr></thead><tbody><tr><td><code>Calendar</code>, <code>DatePicker</code>, <code>DateField</code></td><td>Brag start and end dates, Phase 12.</td></tr><tr><td><code>Combobox</code>, <code>Command</code></td><td>Taxonomy search over occupations and skills, Phase 10.</td></tr><tr><td><code>Pagination</code></td><td>The data table pager, Phase 2b.</td></tr><tr><td><code>Popover</code>, <code>Collapsible</code>, <code>Accordion</code></td><td>Filter panels and disclosure sections.</td></tr><tr><td><code>ScrollArea</code>, <code>Separator</code>, <code>Slider</code>, <code>PinInput</code>, <code>RatingGroup</code>, <code>Toolbar</code>, <code>AspectRatio</code>, <code>LinkPreview</code></td><td>Available, unused today.</td></tr></tbody></table>
       </section>
 
     </div>

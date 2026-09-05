@@ -5,19 +5,25 @@
 //
 // Mobile-first, so use min-width and let the larger screens add to the base.
 //
-// The 980px figure comes from the spacing spec, where the sidebar collapses to its
-// rail. Note the design cards' own CSS uses 820px and 900px: those belong to the
-// preview pages' layout, not the product's.
+// Values come from design/docs/DS App Shell.html, which is the layout contract. The
+// sidebar steps between fixed widths at these four points and never collapses to a
+// rail or a drawer. An earlier reading of DS Spacing.html put a single 980px step here
+// with a 64px icon rail; that layout was superseded and the spacing spec now agrees.
+//
+// The design cards' own CSS uses 820px and 900px: those belong to the preview pages'
+// layout, not the product's.
 
 @use 'sass:map';
 
 $breakpoints: (
-  // single column below this, and gutters drop to 20px
+  // page gutters go 20px to 40px; below this the breadcrumb shows the current page only
   'sm': 640px,
-  // the sidebar expands from its 64px rail to 252px
-  'md': 980px,
-  // 1080px content plus two 40px gutters: the layout stops growing
-  'lg': 1160px
+  // sidebar reaches 200px; the breadcrumb stops ellipsizing its middle crumb
+  'md': 840px,
+  // sidebar reaches 230px; every topbar action gets its label back
+  'lg': 1120px,
+  // sidebar reaches its full 260px and the layout stops growing
+  'xl': 1440px
 );
 
 @mixin at-least($name) {

@@ -1,3 +1,5 @@
+@use 'breakpoints' as bp;
+
 // What things are for. Components use these and nothing else.
 //
 // The rule: a component never references a primitive (--n-*, --teal-*, --clay-* and
@@ -122,13 +124,15 @@
   --ease-move: cubic-bezier(0.32, 0.72, 0, 1);
   --ease-fade: ease;
 
-  // Layout. A fixed sidebar plus a centred content column.
-  --layout-sidebar: 252px;
-  --layout-sidebar-rail: 64px; // below the md breakpoint
+  // Layout. A stepped sidebar plus a content column that is the only thing that flexes.
+  // The sidebar never collapses to a rail or a drawer: it switches between these fixed
+  // widths at the breakpoints and is always flex-shrink: 0. Both the sidebar and the
+  // page gutter are stepped in the media queries below, so a component reads one token
+  // and never a breakpoint. These are the base values, below the first breakpoint.
+  --layout-sidebar: 180px; // below md
   --layout-content: 760px; // forms and reading
   --layout-content-wide: 1080px; // tables and dense grids
-  --layout-gutter: 40px;
-  --layout-gutter-narrow: 20px;
+  --layout-gutter: 20px; // below sm
 
   // Icons. One outline family, currentColor, this stroke width everywhere.
   --icon-stroke: 1.75;
@@ -136,4 +140,31 @@
   // Families. The @font-face rules live in _typography.scss.
   --font-sans: 'Geist', system-ui, sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, monospace;
+}
+
+// Anything that changes with the viewport steps here rather than in a component, so a
+// component reads one token and never branches on a breakpoint. Sidebar widths come
+// from design/docs/DS App Shell.html, gutters from DS Spacing.html.
+@include bp.at-least('sm') {
+  :root {
+    --layout-gutter: 40px;
+  }
+}
+
+@include bp.at-least('md') {
+  :root {
+    --layout-sidebar: 200px;
+  }
+}
+
+@include bp.at-least('lg') {
+  :root {
+    --layout-sidebar: 230px;
+  }
+}
+
+@include bp.at-least('xl') {
+  :root {
+    --layout-sidebar: 260px;
+  }
 }

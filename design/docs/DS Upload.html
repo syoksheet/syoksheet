@@ -109,8 +109,10 @@
       <span><b>syoksheet</b><span>Design System</span></span>
     </a>
     <div class="grp">Foundations</div>
+    <a class="n" href="DS App Shell.html">App shell</a>
     <a class="n" href="DS Colour.html">Colour</a>
     <a class="n" href="DS Iconography.html">Iconography &amp; motion</a>
+    <a class="n" href="DS Logo.html">Logo</a>
     <a class="n" href="DS Spacing.html">Spacing &amp; layout</a>
     <a class="n" href="DS Typography.html">Typography</a>
     <div class="grp">Actions</div>
@@ -143,6 +145,8 @@
     <a class="n" href="DS Breadcrumb.html">Breadcrumb</a>
     <a class="n" href="DS Sidebar Nav.html">Sidebar nav</a>
     <a class="n" href="DS Tabs.html">Tabs</a>
+    <div class="grp">Implementation</div>
+    <a class="n" href="DS Bits UI.html">Bits UI mapping</a>
   </nav>
 
   <main class="doc">
@@ -162,12 +166,14 @@
             <label class="dz">
               <div class="ico"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
               <div class="t">Drop files here, or <span class="lnk">browse</span></div>
-              <div class="sub">PDF, PNG, JPG, certificates · up to 25 MB each</div>
+              <div class="sub">PDF, PNG, JPG, WebP · up to 10 MB each</div>
             </label>
             <div class="frow">
               <span class="fi pdf">PDF</span>
               <div class="fm"><div class="nm">cutover-runbook.pdf</div><div class="sub">1.4 MB · 24 pages · scanned</div></div>
-              <button class="x"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg></button>
+              <button class="x"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><p class="lead"><b>The file goes through the application, not straight to storage.</b> The component posts a normal multipart request; the server validates and writes to R2. There is no presigned URL and no direct-to-bucket upload, so a failed validation never leaves a file behind. See syoksheet-docs, product/decisions.md.</p>
+        <p class="lead"><b>Sizes and accepted types are not set here.</b> <code>docs/validation.md</code> is the normative source, enforced in Form Requests: avatar 2 MB, org logo 1 MB, org cover 5 MB, brag attachment 10 MB. The figures shown in this page's mockups mirror it and must be updated with it. Attachments are a Pro feature; Free accounts have none.</p>
+        <path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg></button>
             </div>
             <div class="frow">
               <span class="fi cert">CER</span>
@@ -188,7 +194,7 @@
             <tr><td>Drag-over</td><td>Teal dashed border + teal-50 fill</td></tr>
             <tr><td>Uploading</td><td>File row with inline progress bar + cancel</td></tr>
             <tr><td>Complete</td><td>File row with type icon, size, meta, remove</td></tr>
-            <tr><td>Error</td><td>Clay meta text ("Too large · 30 MB") + retry</td></tr>
+            <tr><td>Error</td><td>Clay meta text ("Too large · 14 MB") + retry</td></tr>
           </tbody>
         </table>
         <div class="note">
