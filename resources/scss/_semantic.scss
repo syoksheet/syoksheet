@@ -134,6 +134,14 @@
   --layout-content-wide: 1080px; // tables and dense grids
   --layout-gutter: 20px; // below sm
 
+  // Avatar fallback palette. Decorative only: the swatch is hashed from an id so the
+  // same person is always the same color, and it never carries meaning.
+  --color-avatar-1: var(--teal-600);
+  --color-avatar-2: var(--teal-500);
+  --color-avatar-3: var(--clay-600);
+  --color-avatar-4: var(--verify-700);
+  --color-avatar-5: var(--amber-700);
+
   // Icons. One outline family, currentColor, this stroke width everywhere.
   --icon-stroke: 1.75;
 
