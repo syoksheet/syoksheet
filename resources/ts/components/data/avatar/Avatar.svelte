@@ -27,11 +27,12 @@
       .join(''),
   );
 
-  // Hashed so the same person always gets the same color. Decorative, never meaningful.
   const swatch = $derived.by(() => {
-    const key = colorKey ?? name;
+    const source = colorKey ?? name;
     let hash = 0;
-    for (let i = 0; i < key.length; i++) hash = (hash * 31 + key.charCodeAt(i)) | 0;
+    for (const character of source) {
+      hash = (hash * 31 + character.charCodeAt(0)) | 0;
+    }
     return (Math.abs(hash) % PALETTE_SIZE) + 1;
   });
 

@@ -20,10 +20,15 @@
 
   const STORAGE_PREFIX = 'announcement:';
 
-  // Starts hidden and is revealed once storage has been read, so a dismissed bar
-  // never flashes on first paint. Storage is unavailable in the SSR render and can
-  // throw in a private window, so every access is guarded.
-  let ready = $state(false);
+  /*
+   * Rendered by default, including on the server, and hidden on mount for anyone who
+   * dismissed it. The reverse (hidden until storage confirms otherwise) means the bar
+   * is absent from the server render and appears on hydration, shifting the whole page
+   * down for every visitor to spare a flash for the few who dismissed it.
+   *
+   * Storage does not exist during SSR and throws in some private windows, so every
+   * access is guarded and the bar simply stays visible when it is unavailable.
+   */
   let dismissed = $state(false);
 
   $effect(() => {
@@ -32,7 +37,6 @@
     } catch {
       dismissed = false;
     }
-    ready = true;
   });
 
   function dismiss() {
@@ -45,12 +49,12 @@
   }
 </script>
 
-{#if ready && !dismissed}
+{#if !dismissed}
   <div class="announcement">
     <div class="inner">
       {#if tag}<span class="tag">{tag}</span>{/if}
       <a class="message" {href}>
-        {@render children()}
+        <span class="label">{@render children()}</span>
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <line x1="5" y1="12" x2="19" y2="12" />
           <polyline points="12 5 19 12 12 19" />
@@ -70,6 +74,7 @@
 {/if}
 
 <style lang="scss">
+  @use '../../../../scss/typography' as type;
   @use '../../../../scss/breakpoints' as bp;
 
   .announcement {
@@ -97,7 +102,10 @@
     }
   }
 
+  // Hidden on the narrowest screens, where the message itself needs every pixel it can
+  // get before it starts truncating.
   .tag {
+    display: none;
     flex-shrink: 0;
     padding-block: 2px;
     padding-inline: 7px;
@@ -105,20 +113,37 @@
     border-radius: 999px;
     color: var(--color-on-inverse-muted);
     font-family: var(--font-mono);
-    font-size: 10.5px;
-    letter-spacing: 0.08em;
     text-transform: uppercase;
+
+    @include type.type-chip;
+
+    letter-spacing: 0.08em;
+
+    @include bp.at-least('sm') {
+      display: inline-block;
+    }
   }
 
+  // The bar is one line at every width: a message long enough to wrap would push the
+  // page down on a phone, so it truncates and the arrow stays put as the affordance.
   .message {
     display: inline-flex;
     gap: var(--space-2);
     align-items: center;
+    min-inline-size: 0;
     color: var(--color-on-inverse);
-    font-size: 13px;
+    text-decoration: none;
+
+    @include type.type-body;
+
     font-weight: 500;
     letter-spacing: -0.005em;
-    text-decoration: none;
+  }
+
+  .label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .message:hover {
@@ -126,6 +151,7 @@
   }
 
   .message svg {
+    flex-shrink: 0;
     inline-size: 13px;
     block-size: 13px;
     fill: none;

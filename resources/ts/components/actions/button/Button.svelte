@@ -3,12 +3,15 @@
 
   type Variant = 'primary' | 'secondary' | 'ghost' | 'verify' | 'destructive' | 'danger';
   type Size = 'sm' | 'md' | 'lg';
+  type Width = 'auto' | 'full';
 
   interface Props {
-    /** Only one `primary` per surface. `verify` and `danger` are semantic, not hierarchical. */
+    /** Only one `primary` per view. `verify` and `danger` are semantic, not hierarchical. */
     variant?: Variant;
     /** `lg` is for marketing and primary funnels only. */
     size?: Size;
+    /** `full` stretches to the container, for mobile sheets and single-action forms. */
+    width?: Width;
     /** Renders an anchor instead of a button. */
     href?: string;
     type?: 'button' | 'submit';
@@ -23,6 +26,7 @@
   const {
     variant = 'primary',
     size = 'md',
+    width = 'auto',
     href,
     type = 'button',
     disabled = false,
@@ -34,19 +38,23 @@
 </script>
 
 {#snippet inner()}
-  {#if icon}<span class="ico">{@render icon()}</span>{/if}
+  {#if icon}<span class="icon">{@render icon()}</span>{/if}
   <span class="label">{@render children()}</span>
-  {#if trailing}<span class="ico">{@render trailing()}</span>{/if}
+  {#if trailing}<span class="icon">{@render trailing()}</span>{/if}
 {/snippet}
 
 {#if href}
-  <a class="btn {variant} {size}" {href} aria-disabled={disabled || undefined}>{@render inner()}</a>
+  <a class="button {variant} {size} {width}" {href} aria-disabled={disabled || undefined}>
+    {@render inner()}
+  </a>
 {:else}
-  <button class="btn {variant} {size}" {type} {disabled} {onclick}>{@render inner()}</button>
+  <button class="button {variant} {size} {width}" {type} {disabled} {onclick}
+    >{@render inner()}</button
+  >
 {/if}
 
 <style lang="scss">
-  .btn {
+  .button {
     display: inline-flex;
     gap: var(--space-2);
     align-items: center;
@@ -60,27 +68,30 @@
     transition: background var(--duration-fast) var(--ease-fade);
   }
 
-  .btn:disabled,
-  .btn[aria-disabled='true'] {
+  .full {
+    inline-size: 100%;
+  }
+
+  .button:disabled,
+  .button[aria-disabled='true'] {
     background: var(--color-surface-disabled);
     border-color: var(--color-border-disabled);
     color: var(--color-text-disabled);
     cursor: not-allowed;
   }
 
-  .btn:focus-visible {
+  .button:focus-visible {
     outline: 2px solid var(--color-focus);
     outline-offset: 2px;
   }
 
-  .ico {
+  .icon {
     display: inline-flex;
     flex-shrink: 0;
     inline-size: 15px;
     block-size: 15px;
   }
 
-  // Heights and horizontal padding are fixed by the spec. Padding never drops below 12px.
   .sm {
     block-size: 31px;
     padding-inline: var(--space-3);

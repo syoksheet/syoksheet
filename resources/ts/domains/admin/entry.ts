@@ -1,8 +1,10 @@
 import { createInertiaApp } from '@inertiajs/svelte';
 
 /*
- * `pages` is the @inertiajs/vite shorthand. The plugin turns it into an
- * import.meta.glob for that one folder, which is what keeps the three bundles apart.
+ * The plugin turns `pages` into an import.meta.glob over this domain's folder alone,
+ * which is what keeps the three bundles apart. The `.page.svelte` extension narrows
+ * that glob to page files, so a component sitting beside its page is not globbed into
+ * a chunk of its own.
  *
  * No `setup` here on purpose. The default already checks data-server-rendered and
  * hydrates or mounts, and it builds the Svelte context that a hand-written setup would
@@ -13,5 +15,5 @@ import { createInertiaApp } from '@inertiajs/svelte';
 // PhpStorm resolves the wrong createInertiaApp overload here. tsc and svelte-check both pass.
 // noinspection TypeScriptValidateTypes
 void createInertiaApp({
-  pages: './pages/public',
+  pages: { path: './pages', extension: '.page.svelte' },
 });

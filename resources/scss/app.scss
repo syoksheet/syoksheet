@@ -3,8 +3,12 @@
 // Token layers, in order:
 //   _primitives  raw palette, referenced only by _semantic
 //   _semantic    what things are for, the only layer components may use
-//   _typography  the eight type styles as mixins
+//   _typography  the app type styles as mixins
+//   _typography-marketing  the apex scale, larger and fluid
 //   _breakpoints SCSS only, because media queries cannot read custom properties
+//
+// _base is the only layer that styles elements. It must come after the token layers,
+// since it reads them.
 //
 // All styling is bespoke SCSS on Bits UI primitives. No styled component library.
 
@@ -12,4 +16,6 @@
 @use 'primitives';
 @use 'semantic';
 @use 'typography';
+@use 'typography-marketing';
 @use 'breakpoints';
+@use 'base';

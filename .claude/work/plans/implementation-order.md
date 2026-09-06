@@ -77,7 +77,7 @@ repeated.
 | Phase 6 | The erasure role's column-scoped `UPDATE` grant, beside each table's migration | `docs/database/audit.md` |
 | Phase 6 | Audit tables and the activitylog configuration | `docs/features/audit/events.md` |
 | Phase 10 | The two AI use cases. Phase 1 installed and configured the SDK only | `docs/ai.md` |
-| Phase 14 | Apex SEO and Open Graph meta, GTM with Consent Mode v2. Placeholders ship today | Comments in `resources/views/domains/public.blade.php` and `pages/public/Home.svelte` |
+| Phase 14 | Apex SEO and Open Graph meta, GTM with Consent Mode v2. Placeholders ship today | Comments in `resources/views/domains/public.blade.php` and `resources/ts/domains/public/pages/home/Index.page.svelte` |
 | Phase 14 | Cloudflare cache rules for the apex, including the `X-Inertia` bypass | `docs/infrastructure/deployment.md` § Cloudflare Rules |
 | Phase 14 | `Route::pattern` constraints on apex wildcards before any is added | `.claude/work/specs/ssr-and-domain-rendering.md` |
 

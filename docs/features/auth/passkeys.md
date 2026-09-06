@@ -13,7 +13,7 @@ Only the `passkeys` feature is enabled. Registration, login, email verification 
 ```
 
 > [!WARNING]
-> `relying_party_id` must be pinned to `syoksheet.com`, the registrable domain, and **not** left as Fortify's default of the host parsed from `APP_URL`. The default binds a passkey to whichever surface registered it, so one created on `app.` fails on `admin.`. Every surface that can authenticate must also appear in `allowed_origins`.
+> `relying_party_id` must be pinned to `syoksheet.com`, the registrable domain, and **not** left as Fortify's default of the host parsed from `APP_URL`. The default binds a passkey to whichever domain registered it, so one created on `app.` fails on `admin.`. Every domain that can authenticate must also appear in `allowed_origins`.
 
 ```php
 'passkeys' => [

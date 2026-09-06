@@ -80,7 +80,19 @@ Rate limiting is a Cloudflare rule, not Laravel middleware. The param allowlist 
 
 **Consequence for routing:** apex GET routes must not start a session. Laravel's `web` group sets `laravel_session`, and a response carrying `Set-Cookie` will not be cached. The apex therefore gets a stateless middleware group, and any apex form post goes to a small session-enabled subgroup.
 
+That subgroup is only half of what a form needs. `HandlePublicInertiaRequests` skips `parent::share()`, and `errors` is one of the things the parent shares from the session, so the subgroup also needs a middleware class of its own that shares `errors`. Without it `useForm` has nothing to read and validation silently looks broken rather than failing.
+
 ## Client-side safety
+
+The mobile menu is the one piece of apex navigation that needs JavaScript. Below `md`
+the header's links collapse into a Bits UI Dialog, so with scripting off, or in the
+window before hydration, the hamburger does nothing. Crawlers are unaffected: the desktop
+links are in the server-rendered HTML and only hidden by CSS. Human visitors are not left
+stranded either, because the footer carries the same destinations and needs no script.
+
+That is the accepted trade. If apex navigation ever grows past a handful of links, the
+fallback stops being adequate and the menu needs a scriptless form.
+
 
 Module scope behaves differently under SSR: the process imports a module once and keeps it alive across every render, so a mutable binding at module scope is shared by every visitor.
 
@@ -95,9 +107,9 @@ The last row is a real residual and applies to `users.website_url`, `social_link
 
 ### Every public page declares its own head
 
-When SSR succeeds, Inertia renders the head the page produced and **skips the root view's fallback entirely**, so a page under `pages/public/` that declares no head block ships to search engines with no title and no description at all. The fallback in `domains/public.blade.php` only ever covers the case where SSR is inactive.
+When SSR succeeds, Inertia renders the head the page produced and **skips the root view's fallback entirely**, so a `.page.svelte` under `domains/public/pages/` that declares no head block ships to search engines with no title and no description at all. The fallback in `domains/public.blade.php` only ever covers the case where SSR is inactive.
 
-Since this is the one domain SSR exists for, it is enforced by a test that walks `resources/ts/pages/public/` and fails on any page without a head block, rather than left to reviewer attention.
+Since this is the one domain SSR exists for, it is enforced by a test that walks `resources/ts/domains/public/pages/` and fails on any `.page.svelte` without a head block, rather than left to reviewer attention.
 
 ## Testing
 
@@ -110,4 +122,4 @@ Those two tests are deliberately separate rather than one test with two assertio
 | Question | Status |
 |----------|--------|
 | The three root views | Decided: three standalone files, no shared partial. `domains/app.blade.php`, `domains/admin.blade.php`, `domains/public.blade.php`. Only the apex carries `<x-inertia::head>`, SEO/OG meta and GTM; it omits CSRF meta so its GET responses stay cacheable |
-| Three Vite entries plus the SSR entry | Decided and implemented. Three client entries declare `pages: './pages/<domain>'`; one SSR entry points at `./pages/public`. `setup` is omitted everywhere: the adapter's default already hydrates when `data-server-rendered` is present and builds the Svelte context a hand-written `setup` would drop |
+| Three Vite entries plus the SSR entry | Decided and implemented. All four entries carry the identical `pages: { path: './pages', extension: '.page.svelte' }`, each resolving against its own domain subtree; the SSR entry sits at `resources/ts/domains/public/ssr.ts`, where `./pages` already means the public folder. `setup` is omitted everywhere: the adapter's default already hydrates when `data-server-rendered` is present and builds the Svelte context a hand-written `setup` would drop |

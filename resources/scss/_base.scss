@@ -1,0 +1,141 @@
+// The only layer that styles elements directly. Everything else in resources/scss is
+// tokens and mixins, so without this the document gets browser defaults: no Geist, no
+// token colors, and an 8px margin around the page.
+//
+// The approach is to strip the user agent's opinions rather than adjust them. UA
+// margins are em-based magic numbers that shift with font size and fight any spacing
+// scale, so spacing becomes a layout decision instead. Prose is the exception and gets
+// its defaults back under `.prose` when the help center and legal pages arrive.
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  // Respect the visitor's browser font-size setting rather than pinning a root size.
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-canvas);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 24px;
+  // Geist reads better with these on, and both are inherited, so they are set once.
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+// The apex only. Marketing pages are read at arm's length on a wide screen, so the
+// base steps up from the product's density. The class is set in domains/public.blade.php.
+body.marketing {
+  font-size: 17px;
+  line-height: 28px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding-inline-start: 0;
+  list-style: none;
+}
+
+// Replaced elements default to `inline`, which leaves a gap under them from the text
+// baseline, and to their intrinsic width, which overflows a narrow container.
+img,
+picture,
+svg,
+video,
+canvas {
+  display: block;
+  max-inline-size: 100%;
+  block-size: auto;
+}
+
+// Form controls do not inherit font from body. Without this they render in the
+// operating system's UI font, which is the usual source of stray non-Geist text.
+button,
+input,
+select,
+textarea {
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+// A visible ring for keyboard users only, so a mouse click does not leave one behind.
+// The values match the focus contract documented in _semantic.scss.
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+// Long unbroken strings (URLs, IDs, hashes) must not force a horizontal scrollbar.
+p,
+li,
+dd,
+h1,
+h2,
+h3 {
+  overflow-wrap: break-word;
+}
+
+// Available to any component, because a control whose only label is an icon needs text
+// for a screen reader and there is no scoped way to say that.
+.visually-hidden {
+  position: absolute;
+  overflow: hidden;
+  clip-path: inset(50%);
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

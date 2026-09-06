@@ -74,7 +74,6 @@
     block-size: var(--space-16);
   }
 
-  // Text gives way first, so this is the only part of the topbar allowed to shrink.
   .lead {
     flex: 1;
     min-inline-size: 0;

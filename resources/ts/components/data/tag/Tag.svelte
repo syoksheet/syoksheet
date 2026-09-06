@@ -27,6 +27,7 @@
 {/if}
 
 <style lang="scss">
+  @use '../../../../scss/typography' as type;
   .tag {
     display: inline-flex;
     gap: 2px;
@@ -35,8 +36,9 @@
     padding-inline: 9px;
     border: 1px solid transparent;
     border-radius: 999px;
-    font-size: 12px;
     white-space: nowrap;
+
+    @include type.type-chip;
   }
 
   button.tag {
@@ -53,7 +55,6 @@
     border-color: var(--color-info-border);
     color: var(--color-info-text);
     font-family: var(--font-sans);
-    font-weight: 500;
   }
 
   .keyword {
@@ -67,7 +68,6 @@
     opacity: 0.6;
   }
 
-  // A filter that is on inverts to solid, so on and off are distinguishable without color alone.
   .tag.active {
     background: var(--color-action);
     border-color: var(--color-action);

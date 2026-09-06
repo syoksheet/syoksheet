@@ -9,4 +9,4 @@ use Inertia\Inertia;
 | the server, because it is the only one that gets crawled.
 */
 
-Route::get('/', fn () => Inertia::render('Home'))->name('public.home');
+Route::get('/', fn () => Inertia::render('home/Index'))->name('public.home');

@@ -13,8 +13,12 @@ return [
     | overriding `paths` on its own would drop `extensions` with it.
     |
     | One path per domain, since each domain builds its own bundle and globs only its
-    | own folder. Page names stay flat inside a domain, so `Inertia::render('Welcome')`
-    | on `app.` finds `pages/app/Welcome`.
+    | own folder. Page names are relative to that folder, so `Inertia::render('welcome/Index')`
+    | on `app.` finds `domains/app/pages/welcome/Index.page.svelte`.
+    |
+    | The extension is `page.svelte`, not `svelte`. FileViewFinder appends it to the
+    | name, so only page files answer this check and a component sitting beside its
+    | page is never mistaken for one. Vite's glob is narrowed to the same extension.
     |
     | The trade-off: `ensure_pages_exist` can only tell you a name exists in one of the
     | three folders, not that it exists in the one serving the request. Prefixing names
@@ -34,15 +38,15 @@ return [
 
         'paths' => [
 
-            resource_path('ts/pages/app'),
-            resource_path('ts/pages/admin'),
-            resource_path('ts/pages/public'),
+            resource_path('ts/domains/app/pages'),
+            resource_path('ts/domains/admin/pages'),
+            resource_path('ts/domains/public/pages'),
 
         ],
 
         'extensions' => [
 
-            'svelte',
+            'page.svelte',
 
         ],
 

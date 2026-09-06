@@ -1,4 +1,4 @@
-// Two families and eight styles. Geist carries everything visible; Geist Mono marks
+// Two families and nine styles. Geist carries everything visible; Geist Mono marks
 // "the record": IDs, timestamps, counts, hashes. Never body copy in mono.
 //
 // The styles are mixins rather than tokens because each one is four values. As
@@ -68,5 +68,20 @@
   font-size: 12px;
   font-weight: 500;
   line-height: 18px;
+  letter-spacing: 0;
+}
+
+// Chips: badges, tags, the announcement's label. They sit below every content style, in
+// a fixed-height pill, and three components had each invented their own size because
+// nothing here covered them.
+//
+// The one mixin that sets no font-family. A chip's family is its meaning, not its
+// styling: mono says the value came from the system (a status, an ID, a count), sans
+// says a person wrote it (a skill, a keyword). The component picks. Nothing catches a
+// component that picks neither: it inherits sans from body and looks right.
+@mixin type-chip {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
   letter-spacing: 0;
 }

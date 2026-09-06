@@ -17,7 +17,7 @@
     {{-- The user app is behind a login, so it should never be indexed. --}}
     <meta name="robots" content="noindex, nofollow">
     <title inertia>{{ config('app.name') }}</title>
-    @vite(['resources/scss/app.scss', 'resources/ts/app.ts'])
+    @vite(['resources/scss/app.scss', 'resources/ts/domains/app/entry.ts'])
     @inertiaHead
 </head>
 <body>

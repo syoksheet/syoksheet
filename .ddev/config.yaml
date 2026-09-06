@@ -35,6 +35,11 @@ database:
   version: "18"
 
 web_environment: []
+web_extra_exposed_ports:
+  - name: vite
+    container_port: 5173
+    http_port: 5172
+    https_port: 5173
 
 # DDEV's laravel project type rewrites DB_* and MAIL_* in `.env` on every start,
 # pointing them at its own database and Mailpit. That silently reverts

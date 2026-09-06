@@ -20,10 +20,6 @@ class HandlePublicInertiaRequests extends Middleware
      * to every visitor. Anything tied to one person would leak to everyone else, so
      * do not add per-visitor props to this method.
      *
-     * When the apex gets its first form, a session-enabled route group is only half of
-     * what it needs. It also needs its own middleware class that shares `errors`, not
-     * this one, or useForm will have nothing to read and validation will look broken.
-     *
      * @return array<string, mixed>
      */
     public function share(Request $request): array

@@ -4,7 +4,6 @@ use App\Enums\Domain;
 use App\Listeners\ReportSsrRenderFailure;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Vite;
 use Inertia\Ssr\SsrErrorType;
 use Inertia\Ssr\SsrRenderFailed;
 use Mockery\MockInterface;
@@ -17,10 +16,6 @@ use Sentry\SentrySdk;
  * HTTP call just because nobody has run a production build here.
  */
 beforeEach(function () {
-    // The gateway posts to the Vite dev server instead when a hot file exists, so a
-    // developer running npm run dev would silently change what these tests exercise.
-    Vite::useHotFile(base_path('tests/no-hot-file'));
-
     config([
         'inertia.ssr.enabled' => true,
         'inertia.ssr.ensure_bundle_exists' => false,
@@ -86,7 +81,7 @@ it('stays quiet when the local renderer is simply not running', function () {
     SentrySdk::getCurrentHub()->bindClient($client);
 
     (new ReportSsrRenderFailure)->handle(new SsrRenderFailed(
-        page: ['component' => 'Home'],
+        page: ['component' => 'home/Index'],
         error: 'Connection refused',
         type: SsrErrorType::Connection,
     ));
@@ -105,7 +100,7 @@ it('reports a local render error even though it suppresses a local connection er
     SentrySdk::getCurrentHub()->bindClient($client);
 
     (new ReportSsrRenderFailure)->handle(new SsrRenderFailed(
-        page: ['component' => 'Home'],
+        page: ['component' => 'home/Index'],
         error: 'Cannot read properties of undefined',
         type: SsrErrorType::Render,
     ));

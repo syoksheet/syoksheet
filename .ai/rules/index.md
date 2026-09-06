@@ -4,10 +4,11 @@ Before planning or editing, find the row whose globs match the file's path and r
 
 | Applies to | Rule file |
 | --- | --- |
-| resources/ts/components/** | .ai/rules/components.md |
+| resources/ts/components/**, resources/ts/domains/** | .ai/rules/components.md |
 | .ddev/**, .claude/**, CLAUDE.md, ** | .ai/rules/general.md |
 | resources/ts/components/layout/** | .ai/rules/layout.md |
 | resources/** | .ai/rules/resources.md |
+| resources/scss/** | .ai/rules/scss.md |
 | .claude/skills/** | .ai/rules/skills.md |
 | tests/** | .ai/rules/tests.md |
 | resources/ts/** | .ai/rules/ts.md |

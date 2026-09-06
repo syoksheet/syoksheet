@@ -8,22 +8,22 @@
     /** A glyph, so meaning survives without color. Required for every variant except `unverified` and `count`. */
     glyph?: Snippet;
     /** Context read only by assistive tech, for example "2 pending verifications" on a count. */
-    srLabel?: string;
+    screenReaderLabel?: string;
     children: Snippet;
   }
 
-  const { variant = 'unverified', glyph, srLabel, children }: Props = $props();
+  const { variant = 'unverified', glyph, screenReaderLabel, children }: Props = $props();
 </script>
 
 <span class="badge {variant}">
   {#if glyph}<span class="glyph">{@render glyph()}</span>{/if}
   {@render children()}
-  {#if srLabel}<span class="sr">{srLabel}</span>{/if}
+  {#if screenReaderLabel}<span class="visually-hidden">{screenReaderLabel}</span>{/if}
 </span>
 
 <style lang="scss">
-  // Mono type is the signal that this is system status, not something interactive.
-  // A badge is never focusable: if it can be acted on it is a button or a tag filter.
+  @use '../../../../scss/typography' as type;
+
   .badge {
     display: inline-flex;
     gap: var(--space-1);
@@ -33,9 +33,9 @@
     border: 1px solid transparent;
     border-radius: 999px;
     font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 500;
     white-space: nowrap;
+
+    @include type.type-chip;
   }
 
   .badge:has(.glyph) {
@@ -46,15 +46,6 @@
     display: inline-flex;
     inline-size: 11px;
     block-size: 11px;
-  }
-
-  .sr {
-    position: absolute;
-    clip-path: inset(50%);
-    inline-size: 1px;
-    block-size: 1px;
-    overflow: hidden;
-    white-space: nowrap;
   }
 
   .verified {

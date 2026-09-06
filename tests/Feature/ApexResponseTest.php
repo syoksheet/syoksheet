@@ -115,11 +115,14 @@ it('renders the head produced by server-side rendering', function () {
  * nothing else here would catch it.
  *
  * Recursive on purpose. Page names are paths, so Inertia::render('jobs/Index') lives at
- * pages/public/jobs/Index.svelte, and Phase 14 nests plenty of them.
+ * domains/public/pages/jobs/Index.page.svelte, and Phase 14 nests plenty of them.
+ *
+ * Only `.page.svelte` files are pages. A component sitting beside its page has no head
+ * of its own and must not be held to this.
  */
 it('gives every public page its own head', function () {
-    $pages = collect(File::allFiles(resource_path('ts/pages/public')))
-        ->filter(fn (SplFileInfo $file): bool => $file->getExtension() === 'svelte')
+    $pages = collect(File::allFiles(resource_path('ts/domains/public/pages')))
+        ->filter(fn (SplFileInfo $file): bool => str_ends_with($file->getFilename(), '.page.svelte'))
         ->all();
 
     expect($pages)->not->toBeEmpty();

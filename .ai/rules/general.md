@@ -36,3 +36,21 @@ US spelling in all prose, docs, comments, UI strings, identifiers, schema and ro
 One exception: a field that stores an external provider's state mirrors that provider's spelling verbatim, so the handler is a passthrough rather than a translation table. `subscriptions.status` holds DodoPayments' `active`, `cancelled`, `past_due`, `paused`, with the double L, and their event type is `subscription.cancelled`. Our own columns beside it stay US, so `canceled_at`. The distinction is ownership, not consistency. Note the enum never reaches a user: UI strings come from translation files, so a customer always sees "Canceled".
 
 Do not run a blind find-and-replace. Three things break: `phpstan analyse` is a CLI command; `aria-labelledby` is an HTML attribute; and `analysis`, `emphasis` and `optimistic` are already US, so stem matching produces false positives. Word-boundary regex also misses `cancelled_at` and `subscription_cancelled`, because `_` is a word character.
+
+## Name things in full words, and never comment a decision that lives elsewhere
+No abbreviated identifiers. Not `n`, `h`, `p`, `x`, `j`, `slot`, `pz`, `nm`. Write `number`, `heading`, `body`, `placeholder`. This applies to CSS class names, object keys and loop variables as much as to variables, methods and classes: `{ heading, body }` reads, `{ h, p }` does not, and `.subheading`, `.column`, `.icon`, `.container` read where `.sub`, `.col`, `.ico`, `.wrap` do not. Prefer `for (const character of source)` to an index counter; a bare `for` counter is the only place a single letter is acceptable.
+
+Do not restate a decision, rule or spec in a comment. "Marketing copy is inline by decision", "every link here resolves", "heights are fixed by the spec", "a badge is never focusable" all belong in `.ai/rules`, `decisions.md` or the design spec, and a second copy in the code drifts from the first.
+
+Comment only what the code cannot say: a non-obvious mechanism, a browser quirk, a workaround with a reason. `min-inline-size: 0` needs a line explaining that flex items default to `auto` and refuse to shrink. `background: currentcolor` on an empty element needs a line saying a mask cuts the shape out of it. Prefer a named constant to a comment about a number.
+
+Prop JSDoc is different and welcome: it is the public API and shows at every call site.
+
+## The four hosts are domains, never "surfaces"
+Apex, `app.`, `admin.` and `api.` are **domains**. Never call them surfaces, in code, comments, docs, plans or chat.
+
+The codebase already settled the word: `App\Enums\Domain`, `config/domains.php`, `config/inertia.php` ("one path per domain"), `Route::domain()`, `DomainConfigTest`. A second word for the same concept splits every grep.
+
+It is also actively ambiguous here: `--color-surface` and `--color-surface-sunken` are background tokens, so "surface" already means something else in this project.
+
+The ordinary English senses stay fine: a "wireframing surface" to sketch on, or "a bug surfaces later" as a verb. Only the four-hosts meaning is banned.

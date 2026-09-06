@@ -30,9 +30,9 @@
         <meta name="description" content="{{ config('app.name') }}">
     </x-inertia::head>
 
-    @vite(['resources/scss/app.scss', 'resources/ts/public.ts'])
+    @vite(['resources/scss/app.scss', 'resources/ts/domains/public/entry.ts'])
 </head>
-<body>
+<body class="marketing">
 @inertia
 </body>
 </html>

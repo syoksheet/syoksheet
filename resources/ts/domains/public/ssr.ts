@@ -11,5 +11,5 @@ import { createInertiaApp } from '@inertiajs/svelte';
 // PhpStorm resolves the wrong createInertiaApp overload here. tsc and svelte-check both pass.
 // noinspection TypeScriptValidateTypes
 void createInertiaApp({
-  pages: './pages/public',
+  pages: { path: './pages', extension: '.page.svelte' },
 });

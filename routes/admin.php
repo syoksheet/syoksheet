@@ -8,4 +8,4 @@ use Inertia\Inertia;
 | user guard both ways. No SSR: it is behind a login and never crawled.
 */
 
-Route::get('/', fn () => Inertia::render('Welcome'))->name('admin.home');
+Route::get('/', fn () => Inertia::render('welcome/Index'))->name('admin.home');

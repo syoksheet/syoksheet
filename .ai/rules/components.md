@@ -1,6 +1,7 @@
 ---
 paths:
   - 'resources/ts/components/**'
+  - 'resources/ts/domains/**'
 ---
 
 # Components
@@ -46,3 +47,35 @@ A component that needs the breakpoint mixin imports it by relative path: `@use '
 Do not replace this with a bare `@use 'breakpoints'` plus a Vite `css.preprocessorOptions.scss.loadPaths` entry. That reads better but resolves only where the tooling is configured: every editor then needs its own equivalent setting, JetBrains through Mark Directory as Resources Root, others through their own, and until someone sets it they see an error on correct code. The relative form resolves by plain filesystem rules everywhere, with no configuration for anyone.
 
 This should stay rare. Layout tokens step themselves in `_semantic.scss`, so a component normally reads a token and writes no media query at all. The announcement bar needs one because it changes alignment rather than a value.
+
+## Content type comes from a mixin; control type does not
+Any component rendering **content text** uses a mixin from `_typography.scss` (app) or `_typography-marketing.scss` (apex), never a raw `font-size`. Badge, Tag and the Announcement do this via `type-chip`.
+
+Two deliberate exceptions, both of which look like drift and are not:
+
+- **Button** sets 13/14/15px directly on `.sm`/`.md`/`.lg`. Control type belongs to the control's own spec and is bound to its height (31/38/46px), not to the content scale. 14px has no content-scale step because it needs none.
+- **Avatar** uses `calc(var(--size) * 0.4)`, because initials scale with the diameter. Any fixed size breaks at some diameter.
+
+`type-chip` is the one mixin that sets no `font-family`. A chip's family carries meaning: mono says the value came from the system (status, ID, count), sans says a person wrote it (skill, keyword). The component picks. Three components had each invented their own chip size before this step existed, which is what a missing tier looks like.
+
+## Positioning a child component: restructure, do not reach in
+
+A component's root element belongs to that component, so a scoped selector in the parent
+cannot touch it. Svelte's own best practices put the options in this order, and so do we:
+
+1. **Restructure so the parent's layout does it.** Almost always possible and always the
+   cheapest. Wanting `margin-block-start: auto` on a child is usually a sign the siblings
+   above it should be one group: wrap them, give the wrapper `flex: 1`, and the child
+   lands where you wanted with no CSS crossing the boundary. The homepage's step cards do
+   this with `.step-copy`.
+2. **A CSS custom property**, when the child is genuinely meant to be configurable. This
+   is theming, not positioning.
+3. **A `class` prop the child spreads onto its root**, only for a component whose whole
+   job is to be placed by its caller.
+4. **`:global()`** is for third-party markup we do not render. Never for our own
+   components: see the Bits UI rule above, which exists to avoid exactly this.
+
+Reaching in also fails quietly in a specific way worth knowing: `li > :last-child` and
+friends compile with the scoping hash on the rightmost selector, and a child component's
+root does not carry the parent's hash. The rule matches nothing and Svelte reports it as
+an unused selector rather than an error.

@@ -8,4 +8,4 @@ use Inertia\Inertia;
 | a write returns a redirect, so nothing here carries an `/api` prefix.
 */
 
-Route::get('/', fn () => Inertia::render('Welcome'))->name('app.home');
+Route::get('/', fn () => Inertia::render('welcome/Index'))->name('app.home');
