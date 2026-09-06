@@ -1,17 +1,17 @@
 # Collaborators: Endpoints & Implementation
 
-Collaborator invites, consent, and removal. Product behaviour in syoksheet-docs → features/collaborators.md.
+Collaborator invites, consent, and removal. Product behavior in syoksheet-docs → features/collaborators.md.
 
 ## 🔌 Owner Endpoints
 
-| Route | Behaviour |
+| Route | Behavior |
 |-------|-----------|
 | `POST /api/v1/me/brags/{brag}/collaborators` | Invite: existing user (`{ user_id }` or `{ email }` matching an account) or non-user (`{ name, email, message? }`). Rejected if the invitee holds an active verification request for the brag |
 | `DELETE /api/v1/me/brags/{brag}/collaborators/{collaborator}` | Owner removes: collaborator notified |
 
 ## 🔌 Collaborator Endpoints
 
-| Route | Behaviour |
+| Route | Behavior |
 |-------|-----------|
 | `GET /api/collaborate/{token}` | Non-user invite view: full brag, accept/decline, no account needed |
 | `POST /api/collaborate/{token}` / `.../decline` | Non-user respond |

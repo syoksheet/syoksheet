@@ -32,7 +32,7 @@ ddev start
 > [!WARNING]
 > `.ddev/config.yaml` sets `disable_settings_management: true`, and it must stay set. DDEV's `laravel` project type otherwise rewrites `DB_*` and `MAIL_*` in `.env` on **every start**, pointing them at its own `db` database and its built-in Mailpit. The symptom is a value you fixed reverting silently after an unrelated restart: `DB_DATABASE` back to `db`, so migrations land in DDEV's throwaway database, and `MAIL_HOST` back to `127.0.0.1`, so mail never reaches Buggregator. `.env` is ours to manage, seeded from `.env.example`.
 
-HTTPS is used locally so cookie behaviour across the four subdomains matches production. One-time host setup:
+HTTPS is used locally so cookie behavior across the four subdomains matches production. One-time host setup:
 
 ```bash
 brew install mkcert nss && mkcert -install && ddev restart
@@ -141,7 +141,7 @@ RustFS proves the code path; it does not replicate R2's quirks (R2 has no object
 | Public bucket | `syoksheet-public-local` |
 | Private bucket | `syoksheet-private-local` |
 
-The console path matters: `/rustfs/console/` on port 9001. The root of both ports is the S3 API, which answers an anonymous request with `AccessDenied`, so a bare `:9001` looks broken when it is not. The port also returns 503 with `x-rustfs-readiness-pending: iam` for a second or two after start, before IAM finishes initialising.
+The console path matters: `/rustfs/console/` on port 9001. The root of both ports is the S3 API, which answers an anonymous request with `AccessDenied`, so a bare `:9001` looks broken when it is not. The port also returns 503 with `x-rustfs-readiness-pending: iam` for a second or two after start, before IAM finishes initializing.
 
 Local buckets carry `-local` for the same reason production carries `-production`: the name is always `syoksheet-<purpose>-<environment>` with no default case, so a misconfigured environment fails on a bucket that does not exist rather than quietly reaching one that does. The `backups`, `audit-archive` and `artifacts` buckets have no local counterpart, since nothing local runs those jobs.
 
@@ -170,14 +170,14 @@ The same script provisions CI, pointed at the published port through `RUSTFS_END
 | List buckets | `ddev exec -s rustfs-cli aws --endpoint-url http://rustfs:9000 s3 ls` |
 | Logs | `ddev php artisan pail` |
 | Queue, day to day | `ddev php artisan queue:listen` |
-| Queue, verifying behaviour | `ddev php artisan horizon` |
+| Queue, verifying behavior | `ddev php artisan horizon` |
 | Profiling UI | `ddev xhgui` |
 | Anything else | `ddev exec ...` |
 
 > [!NOTE]
 > `pint --dirty` fails locally because `.git` is not mounted into the container. Pass the changed paths explicitly. `redis-cli` is not installed in the web container, so Redis is inspected with `docker exec` against the `redis` container instead. In tinker the bare `Redis` name resolves to the phpredis extension's global class, not the facade: use the fully qualified `Illuminate\Support\Facades\Redis` or the container will report an undefined method.
 
-Horizon is a **production dependency** (`require`, not `require-dev`) so that local and production share one queue configuration. The `audit` queue's retry-forever behaviour is a Horizon supervisor setting, and hand-typed `queue:work` flags would exercise something different from what ships.
+Horizon is a **production dependency** (`require`, not `require-dev`) so that local and production share one queue configuration. The `audit` queue's retry-forever behavior is a Horizon supervisor setting, and hand-typed `queue:work` flags would exercise something different from what ships.
 
 Workers are started manually, never as DDEV daemons: a background worker keeps running old code after every edit. `queue:listen` reloads per job, which suits iteration; `horizon` exercises the real supervisor configuration. The scheduler runs no daemon either. Invoke scheduled commands directly, and use `schedule:work` only when testing the schedule itself.
 

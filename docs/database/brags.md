@@ -102,7 +102,7 @@ People credited on a brag, optionally linked to a user account.
 | verifier_name | varchar(255) | For personal |
 | verifier_email | varchar(255) | For personal |
 | token | varchar(255) | Unique, one-time link |
-| status | varchar(20) | `pending`, `completed`, `rejected`, `expired`, `cancelled` |
+| status | varchar(20) | `pending`, `completed`, `rejected`, `expired`, `canceled` |
 | expires_at | timestamptz | 30 days from creation |
 | completed_at | timestamptz | Nullable |
 | created_at, updated_at | timestamptz | Managed by Eloquent |

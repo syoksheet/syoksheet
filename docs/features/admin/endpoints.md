@@ -20,7 +20,7 @@ Separate `Admin` model on the `admins` table. Two auth paths: the admin session 
 
 ### Auth & Profile
 
-| Route | Behaviour |
+| Route | Behavior |
 |-------|-----------|
 | `POST /api/admin/auth/login` | Admin session login (Inertia web route on `admin.*`) |
 | `POST /api/admin/auth/logout` | Clears session (cookie) or revokes token (bearer) → 204 |
@@ -30,7 +30,7 @@ Separate `Admin` model on the `admins` table. Two auth paths: the admin session 
 
 ### Admin Accounts (Super Admin)
 
-| Route | Behaviour |
+| Route | Behavior |
 |-------|-----------|
 | `GET /api/admin/v1/admins` | List |
 | `POST /api/admin/v1/admins` | Create `{ name, email, password, role }` |
@@ -38,7 +38,7 @@ Separate `Admin` model on the `admins` table. Two auth paths: the admin session 
 
 ### Users
 
-| Route | Permission | Behaviour |
+| Route | Permission | Behavior |
 |-------|-----------|-----------|
 | `GET /api/admin/v1/users` | `users.view` | Search/list (`?search=`), paginated |
 | `GET /api/admin/v1/users/{user}` | `users.view` | Profile: logged as `admin.user_data_viewed` |
@@ -47,7 +47,7 @@ Separate `Admin` model on the `admins` table. Two auth paths: the admin session 
 
 ### Content & Verification
 
-| Route | Permission | Behaviour |
+| Route | Permission | Behavior |
 |-------|-----------|-----------|
 | `GET /api/admin/v1/brags` | `brags.view` | List/search |
 | `DELETE /api/admin/v1/brags/{brag}` | `brags.delete` | Force delete (`brag.admin_removed`, reason + full before state) → 204 |
@@ -56,9 +56,9 @@ Separate `Admin` model on the `admins` table. Two auth paths: the admin session 
 | `GET /api/admin/v1/jobs` | `jobs.moderate` | List/search job postings |
 | `DELETE /api/admin/v1/jobs/{job}` | `jobs.moderate` | Force remove (`admin.job_removed`, reason + before state) → 204 |
 
-### Organisations & Billing
+### Organizations & Billing
 
-| Route | Permission | Behaviour |
+| Route | Permission | Behavior |
 |-------|-----------|-----------|
 | `GET /api/admin/v1/organizations` | `organizations.view` | List |
 | `PATCH /api/admin/v1/organizations/{org}` | `organizations.manage` / `organizations.suspend` | `{ is_dns_verified?, suspended? }`: suspension sets `suspended_at`, org 404s publicly |
@@ -67,7 +67,7 @@ Separate `Admin` model on the `admins` table. Two auth paths: the admin session 
 
 ### Compliance
 
-| Route | Permission | Behaviour |
+| Route | Permission | Behavior |
 |-------|-----------|-----------|
 | `GET /api/admin/v1/audit-log` | `audit_log.view` | All events, filterable by domain, event, causer, subject, date |
 | `GET /api/admin/v1/audit-log/export` | `audit_log.export` | CSV |
@@ -76,7 +76,7 @@ Separate `Admin` model on the `admins` table. Two auth paths: the admin session 
 
 ### Taxonomy
 
-| Route | Permission | Behaviour |
+| Route | Permission | Behavior |
 |-------|-----------|-----------|
 | `GET /api/admin/v1/taxonomy/review-queue` | `taxonomy.manage` | Pending dedup merges |
 | `PATCH /api/admin/v1/taxonomy/review-queue/{item}` | `taxonomy.manage` | `{ action: approve\|reject\|skip }` |

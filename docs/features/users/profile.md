@@ -4,7 +4,7 @@ The authenticated user's own profile.
 
 ## 🔌 Endpoints
 
-| Route | Behaviour |
+| Route | Behavior |
 |-------|-----------|
 | `GET /api/v1/me` | The authenticated user (User resource) |
 | `PATCH /api/v1/me` | Update profile: name, username, bio, current_role, current_company, country_id/state_id/city_id, website_url, social_links, locale |

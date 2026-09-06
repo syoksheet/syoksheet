@@ -6,7 +6,7 @@ Business orgs subscribe endpoint URLs to platform events; syoksheet signs and de
 
 All require `org.manage` + Business; the SSO gate applies.
 
-| Route | Behaviour |
+| Route | Behavior |
 |-------|-----------|
 | `GET /api/v1/organizations/{org}/webhooks` | List endpoints with status + failure counts |
 | `POST /api/v1/organizations/{org}/webhooks` | Create `{ url, events[] }`: https only; signing secret generated, shown **once** |

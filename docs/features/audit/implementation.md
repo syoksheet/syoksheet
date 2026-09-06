@@ -30,7 +30,7 @@ Every record: `log_name` (domain), `event` (dot notation), causer (`User`/`Admin
 **Changed-fields policy**
 
 - Standard events → `properties` holds only changed fields (before + after).
-- Destructive events (delete, anonymise) → full before state; there is no after.
+- Destructive events (delete, anonymize) → full before state; there is no after.
 - Auth events → IP + user agent always captured.
 - System events → causer null, IP/user agent null.
 

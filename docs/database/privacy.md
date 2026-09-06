@@ -44,13 +44,13 @@ Tracks a deletion request through the 30-day cooling off and three-tier erasure.
 |--------|------|-------|
 | id | bigint PK | Internal key, never exposed |
 | user_id | uuid FK → users | CASCADE |
-| status | varchar(30) | `cooling_off`, `tier1_complete`, `tier2_complete`, `completed`, `cancelled` |
+| status | varchar(30) | `cooling_off`, `tier1_complete`, `tier2_complete`, `completed`, `canceled` |
 | requested_at | timestamptz | Required |
 | cooling_off_ends_at | timestamptz | `requested_at` + 30 days |
 | tier1_completed_at | timestamptz | Nullable |
 | tier2_completed_at | timestamptz | Nullable |
 | completed_at | timestamptz | Nullable |
-| cancelled_at | timestamptz | Nullable |
+| canceled_at | timestamptz | Nullable |
 | created_at, updated_at | timestamptz | Managed by Eloquent |
 
 The full erasure pipeline (what each tier deletes or anonymises) is specified in [features/privacy/account-deletion.md](../features/privacy/account-deletion.md).

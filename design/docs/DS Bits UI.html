@@ -150,7 +150,7 @@
     </a>
     <div class="grp">Foundations</div>
     <a class="n" href="DS App Shell.html">App shell</a>
-    <a class="n" href="DS Colour.html">Colour</a>
+    <a class="n" href="DS Color.html">Color</a>
     <a class="n" href="DS Iconography.html">Iconography &amp; motion</a>
     <a class="n" href="DS Logo.html">Logo</a>
     <a class="n" href="DS Spacing.html">Spacing &amp; layout</a>
@@ -194,18 +194,18 @@
       <header class="ph">
         <div class="crumb">Implementation / Bits UI mapping</div>
         <h1>Bits UI mapping</h1>
-        <p>Which headless primitive backs which spec page, what has no primitive and is built here, and what Bits UI offers that later phases will want. The spec pages describe behaviour; this page says what implements it.</p>
+        <p>Which headless primitive backs which spec page, what has no primitive and is built here, and what Bits UI offers that later phases will want. The spec pages describe behavior; this page says what implements it.</p>
         <div class="status"><span class="pill">Svelte 5</span><span class="pill">bits-ui</span></div>
       </header>
 
       <section class="s">
         <h2>Setup</h2>
-        <p class="lead">One dependency, pinned exactly like every other package here. Bits UI ships behaviour and accessibility and almost no styles, which is the reason it was chosen: every pixel stays ours.</p>
+        <p class="lead">One dependency, pinned exactly like every other package here. Bits UI ships behavior and accessibility and almost no styles, which is the reason it was chosen: every pixel stays ours.</p>
         <div class="ex"><div class="stage" style="padding:20px;"><code>ddev exec npm install bits-ui</code></div><div class="cap">Import per component: <code>import { Dialog } from 'bits-ui'</code></div></div>
         <ul class="rules">
           <li><b>Style only with semantic tokens.</b> A component never reaches for a primitive such as <code>--n-600</code>.</li>
           <li><b>Never restyle a shared component locally.</b> If a screen needs a different look, the spec changes.</li>
-          <li><b>Do not reimplement behaviour a primitive already has.</b> Focus traps, roving focus, dismissal and positioning are the whole reason for the dependency.</li>
+          <li><b>Do not reimplement behavior a primitive already has.</b> Focus traps, roving focus, dismissal and positioning are the whole reason for the dependency.</li>
         </ul>
       </section>
 
@@ -217,7 +217,7 @@
       <section class="s">
         <h2>Built in house</h2>
         <p class="lead">Bits UI has no primitive for these, or we chose not to use one. Toast and file upload are the two that surprise people.</p>
-        <table class="t"><thead><tr><th>Spec page</th><th>Why</th></tr></thead><tbody><tr><td>Toast</td><td>Nothing in Bits UI covers it. Region, stacking, timers and the reduced-motion path are all ours, and the queue state is the SSR module-scope hazard in <code>.ai/rules/ts.md</code>.</td></tr><tr><td>File upload</td><td>No primitive. A native <code>&lt;input type="file"&gt;</code> plus our own drag target and progress.</td></tr><tr><td>Table, Data table</td><td>Built in house by decision, not by absence. No TanStack Table and no TanStack package for anything else. <code>Pagination</code> is available for the pager.</td></tr><tr><td>Alert</td><td>Inline feedback, so presentational. <code>AlertDialog</code> is a modal and is not this.</td></tr><tr><td>Badge, Tag, Card, Skeleton, Empty state, Verification mark</td><td>Presentational. No behaviour to borrow.</td></tr><tr><td>Breadcrumb</td><td>A <code>nav</code> and an ordered list. The truncation ramp is in <a href="DS App Shell.html">App shell</a>.</td></tr><tr><td>Sidebar nav, App shell</td><td>Layout. <code>NavigationMenu</code> is for menubars and does not fit.</td></tr></tbody></table>
+        <table class="t"><thead><tr><th>Spec page</th><th>Why</th></tr></thead><tbody><tr><td>Toast</td><td>Nothing in Bits UI covers it. Region, stacking, timers and the reduced-motion path are all ours, and the queue state is the SSR module-scope hazard in <code>.ai/rules/ts.md</code>.</td></tr><tr><td>File upload</td><td>No primitive. A native <code>&lt;input type="file"&gt;</code> plus our own drag target and progress.</td></tr><tr><td>Table, Data table</td><td>Built in house by decision, not by absence. No TanStack Table and no TanStack package for anything else. <code>Pagination</code> is available for the pager.</td></tr><tr><td>Alert</td><td>Inline feedback, so presentational. <code>AlertDialog</code> is a modal and is not this.</td></tr><tr><td>Badge, Tag, Card, Skeleton, Empty state, Verification mark</td><td>Presentational. No behavior to borrow.</td></tr><tr><td>Breadcrumb</td><td>A <code>nav</code> and an ordered list. The truncation ramp is in <a href="DS App Shell.html">App shell</a>.</td></tr><tr><td>Sidebar nav, App shell</td><td>Layout. <code>NavigationMenu</code> is for menubars and does not fit.</td></tr></tbody></table>
       </section>
 
       <section class="s">

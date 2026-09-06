@@ -14,7 +14,7 @@ Canonical list of all scheduled Artisan commands. Feature specs link here for fr
 | `org:finalize-departures` | Daily | Remove members after the 7-day departure notice |
 | `org:expire-transfers` | Daily | Expire pending ownership transfers after 7 days |
 | `gdpr:process-deletions` | Daily | Tier 1 hard deletes for accounts past cooling off |
-| `gdpr:anonymise-accounts` | Daily | Tier 2 anonymisation for `tier1_complete` accounts |
+| `gdpr:anonymize-accounts` | Daily | Tier 2 anonymization for `tier1_complete` accounts |
 | `security:check-incidents` | Hourly | 48 h / 24 h reminders on unresolved High/Critical incidents (72-hour GDPR deadline) |
 | `taxonomy:sync` | Monthly | Re-sync ESCO + O*NET, crosswalk dedup, queue AI-assisted review |
 | `notifications:cleanup` | Daily | Prune notifications older than 90 days |

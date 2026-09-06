@@ -150,7 +150,7 @@
     </a>
     <div class="grp">Foundations</div>
     <a class="n" href="DS App Shell.html">App shell</a>
-    <a class="n" href="DS Colour.html">Colour</a>
+    <a class="n" href="DS Color.html">Color</a>
     <a class="n" href="DS Iconography.html">Iconography &amp; motion</a>
     <a class="n" href="DS Logo.html">Logo</a>
     <a class="n" href="DS Spacing.html">Spacing &amp; layout</a>
@@ -204,7 +204,7 @@
         <ul class="rules">
           <li><b>The shell never scrolls horizontally.</b> Nothing in it may set a fixed min-width wider than the viewport. Put <code>min-width: 0</code> on the content column and on every flex child that holds text.</li>
           <li><b>Text shrinks before controls.</b> The breadcrumb truncates, then actions drop their labels, then actions fold into an overflow menu. An action is never clipped off-screen.</li>
-          <li><b>One action stays labelled below <code>lg</code></b>, the page's primary. Everything else is icon plus tooltip.</li>
+          <li><b>One action stays labeled below <code>lg</code></b>, the page's primary. Everything else is icon plus tooltip.</li>
           <li><b>The sidebar never collapses to a rail or a drawer.</b> It steps between fixed widths and is always <code>flex-shrink: 0</code>.</li>
           <li><b>Horizontal scrolling is allowed only inside a bounded region</b>, such as a wide data table's own wrapper. Never on <code>body</code>.</li>
         </ul>
@@ -216,9 +216,9 @@
         <table class="t">
           <thead><tr><th>Viewport</th><th>Breakpoint</th><th><code>--layout-sidebar</code></th><th>Breadcrumb</th><th>Topbar actions</th></tr></thead>
           <tbody>
-            <tr><td>&ge; 1440px</td><td><code>xl</code></td><td>260px</td><td>full path</td><td>all labelled</td></tr>
-            <tr><td>1120&ndash;1439px</td><td><code>lg</code></td><td>230px</td><td>full path</td><td>all labelled</td></tr>
-            <tr><td>840&ndash;1119px</td><td><code>md</code></td><td>200px</td><td>middle crumb ellipsizes</td><td>primary labelled, rest icon-only</td></tr>
+            <tr><td>&ge; 1440px</td><td><code>xl</code></td><td>260px</td><td>full path</td><td>all labeled</td></tr>
+            <tr><td>1120&ndash;1439px</td><td><code>lg</code></td><td>230px</td><td>full path</td><td>all labeled</td></tr>
+            <tr><td>840&ndash;1119px</td><td><code>md</code></td><td>200px</td><td>middle crumb ellipsizes</td><td>primary labeled, rest icon-only</td></tr>
             <tr><td>640&ndash;839px</td><td><code>sm</code></td><td>180px</td><td>middle crumbs collapse to &hellip;</td><td>search plus overflow menu</td></tr>
             <tr><td>&lt; 640px</td><td>base</td><td>180px</td><td>current page only</td><td>overflow menu</td></tr>
           </tbody>
@@ -227,7 +227,7 @@
 
       <section class="s">
         <h2>Content column</h2>
-        <p class="lead">Centred, with <code>--layout-gutter</code> either side. That token steps itself, 20px below <code>sm</code> and 40px above, so nothing reads a breakpoint to lay out a page. It maxes at <code>--layout-content</code> (760px) for forms and reading, and <code>--layout-content-wide</code> (1080px) for tables and dense grids.</p>
+        <p class="lead">Centered, with <code>--layout-gutter</code> either side. That token steps itself, 20px below <code>sm</code> and 40px above, so nothing reads a breakpoint to lay out a page. It maxes at <code>--layout-content</code> (760px) for forms and reading, and <code>--layout-content-wide</code> (1080px) for tables and dense grids.</p>
       </section>
 
       <section class="s">

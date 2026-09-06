@@ -1,13 +1,13 @@
 # Account Deletion: Implementation
 
-The GDPR Article 17 erasure pipeline: suspension, cooling off, and three-tier erasure. Product behaviour in syoksheet-docs → features/privacy.md.
+The GDPR Article 17 erasure pipeline: suspension, cooling off, and three-tier erasure. Product behavior in syoksheet-docs → features/privacy.md.
 
 ## 🔌 Endpoints
 
-| Route | Behaviour |
+| Route | Behavior |
 |-------|-----------|
 | `POST /api/v1/me/account/delete` | Request deletion: 422 while the user owns any org. On success: all sessions revoked, tokens deleted, account suspended, request row created (`status: cooling_off`, `cooling_off_ends_at = now + 30 days`), confirmation email sent |
-| `POST /api/v1/me/account/delete/cancel` | During cooling off only: restores the account fully (`status: cancelled`) |
+| `POST /api/v1/me/account/delete/cancel` | During cooling off only: restores the account fully (`status: canceled`) |
 
 While suspended: login rejected except for the cancellation flow; profile excluded from walls, search, and public endpoints.
 
@@ -26,34 +26,34 @@ While suspended: login rejected except for the cancellation flow; profile exclud
 
 Status → `tier1_complete`. **Irreversible from here.**
 
-## ⚙️ Tier 2: Anonymisation
+## ⚙️ Tier 2: Anonymization
 
-`gdpr:anonymise-accounts` (daily) processes `tier1_complete` records within 30 days:
+`gdpr:anonymize-accounts` (daily) processes `tier1_complete` records within 30 days:
 
 | Data | Action |
 |------|--------|
 | `users.name` | → `[Deleted User]` |
 | `users` bio, current_role, current_company, website_url, social_links, country/state/city | → null |
-| `user_emails` | Anonymised or removed (structure retained if referenced by verification records) |
+| `user_emails` | Anonymized or removed (structure retained if referenced by verification records) |
 | Published brags | title → `[Deleted]`, description → `[Content removed]`, place_text → `[Location removed]`; tags, links, attachments deleted |
 | `consent_records.user_id` | → null (records retained) |
 | `audit_logs` (audit DB) | `causer_id` → null; personal fields in `properties`/`display` → `[Deleted User]` |
 
 Status → `tier2_complete` → `completed`; completion email sent. **Every new field containing personal data must be handled here.**
 
-## ⚙️ Tier 3: Retained Anonymised (permanent)
+## ⚙️ Tier 3: Retained Anonymized (permanent)
 
 | Record | Retained as |
 |--------|-------------|
 | `verifications` | "[Deleted User] verified…", the org's verification history |
 | `verification_requests` | Anonymous reference |
-| Audit log structure | Event records, identity anonymised |
+| Audit log structure | Event records, identity anonymized |
 
 ## 🔑 Audit Database Permissions
 
-Tier 2 anonymisation modifies existing audit rows, which the audit database's application user cannot do: it holds `INSERT` and `SELECT` only, so that neither a bug nor a compromised app server can rewrite history.
+Tier 2 anonymization modifies existing audit rows, which the audit database's application user cannot do: it holds `INSERT` and `SELECT` only, so that neither a bug nor a compromised app server can rewrite history.
 
-`gdpr:anonymise-accounts` therefore connects as a **separate erasure user** holding `UPDATE` on the anonymisable columns and nothing else. Configure it as its own connection; do not widen the application user's grants.
+`gdpr:anonymize-accounts` therefore connects as a **separate erasure user** holding `UPDATE` on the anonymisable columns and nothing else. Configure it as its own connection; do not widen the application user's grants.
 
 See [../../database/audit.md](../../database/audit.md) for the full grant table.
 
@@ -69,15 +69,15 @@ An erasure request cannot reach a backup. A dump is an immutable snapshot, and r
 This must be stated in the privacy policy: erasure completes on live systems immediately, and residual copies in backups are removed within 30 days.
 
 > [!WARNING]
-> Dumps are complete copies of personal data and are **never anonymised**, an anonymised backup restores nothing. They are encrypted before upload, written by a dedicated credential held only by the backup job, and never downloaded to a personal machine except deliberately and briefly.
+> Dumps are complete copies of personal data and are **never anonymized**, an anonymized backup restores nothing. They are encrypted before upload, written by a dedicated credential held only by the backup job, and never downloaded to a personal machine except deliberately and briefly.
 
 ## 📧 Emails
 
-Requested (confirmation + deadline + cancel link), cancelled (restoration), completed (final confirmation): all noreply@.
+Requested (confirmation + deadline + cancel link), canceled (restoration), completed (final confirmation): all noreply@.
 
 ## 📋 Audit Events
 
-`account_deletion.requested/cancelled/tier1_applied/tier2_applied/completed`. See [../audit/events.md](../audit/events.md).
+`account_deletion.requested/canceled/tier1_applied/tier2_applied/completed`. See [../audit/events.md](../audit/events.md).
 
 ## 🗄️ Tables
 

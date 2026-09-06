@@ -1,6 +1,6 @@
 # syoksheet
 
-The syoksheet application: a professional achievement platform where users document accomplishments, get them verified by peers and DNS-verified organisations, and verified skills power job matching.
+The syoksheet application: a professional achievement platform where users document accomplishments, get them verified by peers and DNS-verified organizations, and verified skills power job matching.
 
 One Laravel application serving four subdomains via domain routing: `api.` (the external API), `app.` and `admin.` (Inertia + Svelte UIs), and `www.` (server-rendered marketing and public pages).
 

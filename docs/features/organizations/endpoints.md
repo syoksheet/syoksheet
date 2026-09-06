@@ -1,10 +1,10 @@
 # Organizations: Endpoints & Implementation
 
-Org CRUD, teams, membership, join requests, departures, and ownership transfers. Product behaviour (states, team model, membership rules) lives in syoksheet-docs → features/organizations.md.
+Org CRUD, teams, membership, join requests, departures, and ownership transfers. Product behavior (states, team model, membership rules) lives in syoksheet-docs → features/organizations.md.
 
 ## 🔌 Org Endpoints
 
-| Route | Permission | Behaviour |
+| Route | Permission | Behavior |
 |-------|-----------|-----------|
 | `POST /api/v1/organizations` | any user | Create org: name, domain, primary email (verified email on that domain), contact_email, industry_id required. Creator becomes owner + Admin team member; default teams seeded |
 | `GET /api/v1/organizations/{org}` | member | Org details |
@@ -13,7 +13,7 @@ Org CRUD, teams, membership, join requests, departures, and ownership transfers.
 
 ## 🏷️ Teams
 
-| Route | Permission | Behaviour |
+| Route | Permission | Behavior |
 |-------|-----------|-----------|
 | `GET /api/v1/organizations/{org}/teams` | member | List teams with permissions |
 | `POST /api/v1/organizations/{org}/teams` | owner or `teams.manage` | Create custom team (tier limit: Free 2, Business unlimited) |
@@ -28,7 +28,7 @@ When the org has SSO enabled, all org-scoped routes additionally pass the `Ensur
 
 ## 👥 Membership
 
-| Route | Permission | Behaviour |
+| Route | Permission | Behavior |
 |-------|-----------|-----------|
 | `GET /api/v1/organizations/{org}/members` | member | List members with teams |
 | `POST /api/v1/organizations/{org}/invitations` | `members.manage` | Invite by email (team@): creates `org_invitations` row, 30-day token. `member_type` is `member` (default) or `guest`; a guest invitation requires `expires_at` and skips the domain-match check |
@@ -46,7 +46,7 @@ When the org has SSO enabled, all org-scoped routes additionally pass the `Ensur
 
 ## 🔄 Ownership Transfers
 
-| Route | Permission | Behaviour |
+| Route | Permission | Behavior |
 |-------|-----------|-----------|
 | `POST /api/v1/organizations/{org}/ownership-transfers` | owner | Propose to any member; one pending per org; 7-day expiry |
 | `PATCH /api/v1/organizations/{org}/ownership-transfers/{transfer}` | proposed member | Accept (owner flag moves; previous owner joins Admin team) or decline |
@@ -56,7 +56,7 @@ When the org has SSO enabled, all org-scoped routes additionally pass the `Ensur
 
 ## 🎨 Branding (Business)
 
-| Route | Permission | Behaviour |
+| Route | Permission | Behavior |
 |-------|-----------|-----------|
 | `PUT /api/v1/organizations/{org}/branding` | `branding.manage` | `{ accent_color?: "#hex" }` |
 | `POST /api/v1/organizations/{org}/branding/cover` / `DELETE` | `branding.manage` | Cover image upload → `syoksheet-public-{env}` (limits per [validation.md](../../validation.md)) |
@@ -65,13 +65,13 @@ Rendered on the public wall header and org-typed verifier pages. On downgrade th
 
 ## 📌 Wall Pins (Business)
 
-| Route | Permission | Behaviour |
+| Route | Permission | Behavior |
 |-------|-----------|-----------|
 | `PUT /api/v1/organizations/{org}/wall-pins` | `wall.manage` | Replace the pin set `{ pins: [{ brag_id, position }] }`: pinned brags must be wall-eligible; count limit per syoksheet-docs → product/pricing.md |
 
 ## 📋 Org Audit View
 
-| Route | Permission | Behaviour |
+| Route | Permission | Behavior |
 |-------|-----------|-----------|
 | `GET /api/v1/organizations/{org}/audit-log` | Management (owner + Admin team) | `management`-visibility events for the org; filter by date range + event type |
 | `GET /api/v1/organizations/{org}/audit-log/export` | Management | CSV export |

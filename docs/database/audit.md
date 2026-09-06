@@ -14,7 +14,7 @@ Append-only is enforced by Postgres permissions, not by application convention, 
 | User | Grants | Used by |
 |------|--------|---------|
 | Application | `INSERT`, `SELECT` | `AuditLogJob` and every read path. **No `UPDATE`, no `DELETE`, ever** |
-| Erasure | `UPDATE` on the anonymisable columns only | `gdpr:anonymise-accounts`, and nothing else |
+| Erasure | `UPDATE` on the anonymisable columns only | `gdpr:anonymize-accounts`, and nothing else |
 
 > [!WARNING]
 > The second user exists because append-only and GDPR erasure genuinely conflict: erasure must modify existing rows (null the `causer_id`, strip personal fields from `properties` and `display`), which the application user cannot do. Granting `UPDATE` to the application user instead would dissolve the guarantee entirely. Splitting the identity keeps "the app cannot rewrite history" true while permitting the one modification the law requires, and makes the erasure path auditable in its own right, since it acts as a distinct database identity.
@@ -42,7 +42,7 @@ Every significant platform event, written via `spatie/laravel-activitylog` confi
 
 **Indexes:** `(log_name, event)`, `(causer_type, causer_id)`, `(subject_type, subject_id)`, organization_id, created_at
 
-**On account erasure:** `causer_id` set null, personal fields in `properties` and `display` anonymised: performed by the **erasure user**, never the application user. Records are never deleted.
+**On account erasure:** `causer_id` set null, personal fields in `properties` and `display` anonymized: performed by the **erasure user**, never the application user. Records are never deleted.
 
 ## 🚨 security_incidents
 
@@ -55,7 +55,7 @@ GDPR breach register: minimal compliance record only; operational incident manag
 | description | text | Required |
 | severity | varchar(20) | `low`, `medium`, `high`, `critical` |
 | status | varchar(20) | `open`, `investigating`, `resolved` |
-| incident_type | varchar(100) | e.g. `data_breach`, `unauthorised_access` |
+| incident_type | varchar(100) | e.g. `data_breach`, `unauthorized_access` |
 | discovered_at | timestamptz | Starts the 72-hour GDPR notification clock |
 | resolved_at | timestamptz | Nullable |
 | notification_sent_at | timestamptz | Nullable: when affected users/orgs were notified |
@@ -65,7 +65,7 @@ GDPR breach register: minimal compliance record only; operational incident manag
 
 ## 🔗 security_incident_affected_records
 
-Links incidents to affected users and organisations; drives notification targeting. Affected counts are always derived at query time, never stored.
+Links incidents to affected users and organizations; drives notification targeting. Affected counts are always derived at query time, never stored.
 
 | Column | Type | Notes |
 |--------|------|-------|

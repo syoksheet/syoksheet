@@ -6,7 +6,7 @@ Pro users create named, permanent bearer tokens for third-party integrations. To
 
 Password confirmation (`POST /api/v1/me/confirm-password`) is required before create and revoke.
 
-| Route | Behaviour |
+| Route | Behavior |
 |-------|-----------|
 | `GET /api/v1/me/tokens` | List tokens: id, name, last_used_at, created_at |
 | `POST /api/v1/me/tokens` | Create `{ name }` → plain-text token returned **once**, never stored |

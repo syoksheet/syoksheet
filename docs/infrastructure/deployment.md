@@ -85,7 +85,7 @@ Not code, and not optional. The apex is the only cached domain and these rules a
 
 | Rule | Why |
 |------|-----|
-| Bypass cache for any request carrying `X-Inertia` | An Inertia visit returns JSON from the same URL as the HTML page. Cloudflare only honours `Vary` for `Accept-Encoding`, so without this the edge can serve JSON to someone asking for the page, or cached HTML to an Inertia visit |
+| Bypass cache for any request carrying `X-Inertia` | An Inertia visit returns JSON from the same URL as the HTML page. Cloudflare only honors `Vary` for `Accept-Encoding`, so without this the edge can serve JSON to someone asking for the page, or cached HTML to an Inertia visit |
 | Cache key: path + locale + an allowlist of query params | Unknown params must be stripped, otherwise `?x=1`, `?x=2` and so on each cost a render and the cache can be busted indefinitely |
 | Rate limiting per IP, generous | Cache hits never reach the origin, so this only ever sees misses. The ceiling has to stay high enough never to throttle a search crawler |
 

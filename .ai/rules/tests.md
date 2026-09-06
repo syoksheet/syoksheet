@@ -6,7 +6,7 @@ paths:
 # Tests
 
 ## Name tests for behavior, never for a document
-Test names, and code comments generally, describe what the system does. They never reference a spec, doc page or "documented" behaviour.
+Test names, and code comments generally, describe what the system does. They never reference a spec, doc page or "documented" behavior.
 
 Bad: `it('resolves each redis connection to its documented database')`, `it('declares the queue names the architecture spec fixes')`.
 Good: `it('resolves each redis connection to its own database')`, `it('declares exactly the audit, notifications and default queues')`.

@@ -4,7 +4,7 @@ In-app notifications for users and admins, stored in the single morph `notificat
 
 ## 🔌 User Endpoints
 
-| Route | Behaviour |
+| Route | Behavior |
 |-------|-----------|
 | `GET /api/v1/me/notifications` | Paginated list |
 | `GET /api/v1/me/notifications/unread-count` | `{ count }` for the bell badge |
@@ -18,7 +18,7 @@ Identical shape under `/api/admin/v1/me/notifications` (+ `unread-count`, `read-
 
 ## ⚙️ Preferences
 
-| Route | Behaviour |
+| Route | Behavior |
 |-------|-----------|
 | `GET /api/v1/me/notification-preferences` | Current per-category email toggles (defaults: all on) |
 | `PUT /api/v1/me/notification-preferences` | `{ verification?: {email: bool}, collaboration?: {...}, organization?: {...}, jobs?: {...} }` |

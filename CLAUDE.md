@@ -213,7 +213,7 @@ This repo is **the syoksheet application**: one Laravel app serving `api.*`, `ap
 
 - Svelte 5 + TypeScript under `resources/ts/`: strict `tsconfig`, ESLint, `svelte-check`. **TypeScript only: no `.js` source files** (sole exception: `svelte.config.js`, required by name by the Svelte tooling). Never React, never Livewire.
 - Components build on headless primitives (Bits UI), styled **only** with the design system's tokens and spec CSS, never a styled component library, never local restyles of shared components. **Tables are built in-house**, no TanStack Table, no TanStack packages at all; table state (sort, filter, paginate, select) lives in our own Svelte 5 runes-based composable against the `DS Table` / `DS Data Table` specs.
-- The design system lives in `design/`: `docs/` = full component specs (behaviour, a11y), `previews/` = the cards mirrored to the Claude Design "syoksheet Design System" project: keep repo and project in sync via DesignSync when either changes. Screen designs live in the Claude Design studio project "syoksheet".
+- The design system lives in `design/`: `docs/` = full component specs (behavior, a11y), `previews/` = the cards mirrored to the Claude Design "syoksheet Design System" project: keep repo and project in sync via DesignSync when either changes. Screen designs live in the Claude Design studio project "syoksheet".
 - The verification mark's forest green is never the primary teal. Shared components are presentational, no API calls or product logic inside them.
 - All UI strings go through translation files (English at launch), no hardcoded user-facing text.
 - Apex (marketing) pages: SEO/OG meta on every public page; GTM with Consent Mode v2 per syoksheet-docs → marketing/analytics-stack.md; the rendered privacy policy / ToS pages live here (log versions in syoksheet-docs/legal/policy-versions.md before shipping changes).
@@ -245,8 +245,8 @@ All build work in this repo, whether or not the phase is named, follows `.claude
 
 ## Planning & Documentation
 
-- This repo's `docs/` holds the technical spec (database schema, endpoints, jobs, events, validation, infrastructure). Product behaviour lives in `syoksheet-docs`. See the shared context above.
-- Before starting any build work, read the relevant `syoksheet-docs` feature doc for product behaviour, plus this repo's `docs/features/` implementation spec and `docs/database/` schema.
+- This repo's `docs/` holds the technical spec (database schema, endpoints, jobs, events, validation, infrastructure). Product behavior lives in `syoksheet-docs`. See the shared context above.
+- Before starting any build work, read the relevant `syoksheet-docs` feature doc for product behavior, plus this repo's `docs/features/` implementation spec and `docs/database/` schema.
 - Save design specs (from brainstorming) to `.claude/work/specs/` and implementation plans to `.claude/work/plans/`. Wait for user approval before proceeding with implementation.
 - Follow conventions defined in `docs/database/README.md` and the Documentation Conventions section below.
 
@@ -261,7 +261,7 @@ All build work in this repo, whether or not the phase is named, follows `.claude
 
 - Any feature that handles personal data must consider: consent requirements, GDPR data export inclusion, and erasure handling.
 - Read `docs/features/privacy/` before planning any feature that touches user data, consent, account deletion, or data export.
-- If a new field contains personal data, it must be included in the `GenerateDataExportJob` and handled in the Tier 2 anonymisation job (`gdpr:anonymise-accounts`).
+- If a new field contains personal data, it must be included in the `GenerateDataExportJob` and handled in the Tier 2 anonymization job (`gdpr:anonymize-accounts`).
 - If a new consent type is needed, add it to the `ConsentType` enum and `docs/features/privacy/consent.md` before implementing the feature that requires it.
 
 ## Documentation Conventions

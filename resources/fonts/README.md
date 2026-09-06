@@ -24,9 +24,9 @@ italic, so the rare case can fall back to a synthesised oblique.
 Note the release also has a `variable/` folder, but that holds `.ttf`. The variable
 `.woff2` we want live under `webfonts/` alongside the static weights.
 
-## Licence
+## License
 
-SIL Open Font License 1.1, see `OFL.txt`. The licence permits redistribution provided
+SIL Open Font License 1.1, see `OFL.txt`. The license permits redistribution provided
 the copyright notice travels with the fonts, so that file has to stay here.
 
 ## Updating

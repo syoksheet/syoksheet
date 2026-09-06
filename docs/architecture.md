@@ -37,7 +37,7 @@ is in `.claude/work/specs/ssr-and-domain-rendering.md`.
 User↔Admin isolation is bidirectional and middleware-enforced: the wrong principal type on either host gets 403. Users resolve through `UserEmailProvider` (`user_emails.type = primary`): there is no `users.email` column.
 
 > [!NOTE]
-> The feature specs under `docs/features/` are **operation catalogues**, not URL specifications. Each defines an operation's validation, events, rules and error codes, and which host serves it. Whether an operation is also sold on `api.*` is decided per operation as it is built, and recorded in `openapi.json` and the Bruno collection, which are the only statement of the external contract.
+> The feature specs under `docs/features/` are **operation catalogs**, not URL specifications. Each defines an operation's validation, events, rules and error codes, and which host serves it. Whether an operation is also sold on `api.*` is decided per operation as it is built, and recorded in `openapi.json` and the Bruno collection, which are the only statement of the external contract.
 >
 > Tables still carrying `/api/v1/...` paths predate the move to Inertia and are being reshaped phase by phase, as each domain is built.
 

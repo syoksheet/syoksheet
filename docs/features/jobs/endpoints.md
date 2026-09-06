@@ -1,12 +1,12 @@
 # Jobs: Endpoints & Implementation
 
-Job posting CRUD, the Jobs Push API, and the normalization pipeline. Product behaviour in syoksheet-docs → features/jobs.md. There is **no external ATS integration and no polling**: jobs are created in the UI or pushed to us.
+Job posting CRUD, the Jobs Push API, and the normalization pipeline. Product behavior in syoksheet-docs → features/jobs.md. There is **no external ATS integration and no polling**: jobs are created in the UI or pushed to us.
 
 ## 🔌 Org Endpoints (UI)
 
 All require the `jobs.manage` permission (Hiring team by default).
 
-| Route | Behaviour |
+| Route | Behavior |
 |-------|-----------|
 | `GET /api/v1/organizations/{org}/jobs` | All postings with status, source, interest counts |
 | `POST /api/v1/organizations/{org}/jobs` | Create draft: title, description, employment_type required; occupation selected from taxonomy (same search UX as brags) |
@@ -40,7 +40,7 @@ Active = `status: published`, counted per org, non-deleted. Canonical limits: sy
 
 ## 🔌 User-Facing Endpoints
 
-| Route | Behaviour |
+| Route | Behavior |
 |-------|-----------|
 | `GET /api/v1/jobs` | Browse published postings: filters: occupation, skills, industry, location, remote, org; match score included when open-to-work; paginated |
 | `GET /api/v1/jobs/{job}` | Detail with "why you match" factors |

@@ -4,10 +4,10 @@ Language-agnostic infrastructure shipped in v1 with English as the only first-cl
 
 ## 🌐 Locale Handling
 
-- `users.locale`. BCP 47 code, default `en`. Editable in account settings; initialised from the browser's `Accept-Language` on registration.
+- `users.locale`. BCP 47 code, default `en`. Editable in account settings; initialized from the browser's `Accept-Language` on registration.
 - API responses, emails, and notifications resolve against the user's locale, falling back to `en` for any missing translation.
 - Unauthenticated/public endpoints resolve from `Accept-Language`.
-- UI strings live in this repo's frontend tree, keyed through translation files consumed by the Svelte pages; the API contract stays locale-neutral (identifiers and enums never localise, only display text does).
+- UI strings live in this repo's frontend tree, keyed through translation files consumed by the Svelte pages; the API contract stays locale-neutral (identifiers and enums never localize, only display text does).
 
 ## 🗂️ Taxonomy Translations
 

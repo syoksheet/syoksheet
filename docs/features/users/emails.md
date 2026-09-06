@@ -1,10 +1,10 @@
 # Email Management: Endpoints
 
-Managing the user's primary, recovery, and work emails. The rules (types, when a recovery address becomes required) are product behaviour. See syoksheet-docs → features/user-accounts.md; this file is the API contract.
+Managing the user's primary, recovery, and work emails. The rules (types, when a recovery address becomes required) are product behavior. See syoksheet-docs → features/user-accounts.md; this file is the API contract.
 
 ## 🔌 Endpoints
 
-| Route | Behaviour |
+| Route | Behavior |
 |-------|-----------|
 | `GET /api/v1/me/emails` | List the user's emails with type and verification state |
 | `POST /api/v1/me/emails` | Add an email `{ email, type }` → sends verification link. 422 if the address exists anywhere on the platform |

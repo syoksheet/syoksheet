@@ -67,7 +67,7 @@
         <div class="demo" style="width:600px;"><div class="shell">
           <div class="rail wide"><div class="ri on"></div><div class="ri"></div><div class="ri"></div><div class="ri"></div></div>
           <div class="main">
-            <div class="top"><span class="crumb">Organisations / Acme Corp / Membership</span><div class="acts"><span class="btn ico">⌕</span><span class="btn">Billing</span><span class="btn">View public wall</span></div></div>
+            <div class="top"><span class="crumb">Organizations / Acme Corp / Membership</span><div class="acts"><span class="btn ico">⌕</span><span class="btn">Billing</span><span class="btn">View public wall</span></div></div>
             <div class="body"><div class="ph" style="width:60%;"></div><div class="ph"></div><div class="ph" style="width:80%;"></div></div>
           </div>
         </div></div>
@@ -77,7 +77,7 @@
         <div class="demo" style="width:400px;"><div class="shell">
           <div class="rail narrow"><div class="ri on"></div><div class="ri"></div><div class="ri"></div><div class="ri"></div></div>
           <div class="main">
-            <div class="top"><span class="crumb">Organisations / Acme Corp / Membership</span><div class="acts"><span class="btn ico">⌕</span><span class="btn ico">▤</span><span class="btn">View public wall</span></div></div>
+            <div class="top"><span class="crumb">Organizations / Acme Corp / Membership</span><div class="acts"><span class="btn ico">⌕</span><span class="btn ico">▤</span><span class="btn">View public wall</span></div></div>
             <div class="body"><div class="ph" style="width:60%;"></div><div class="ph"></div><div class="ph" style="width:80%;"></div></div>
           </div>
         </div></div>
@@ -87,7 +87,7 @@
         <div class="demo" style="width:320px;"><div class="shell">
           <div class="rail tight"><div class="ri on"></div><div class="ri"></div><div class="ri"></div><div class="ri"></div></div>
           <div class="main">
-            <div class="top"><span class="crumb">Organisations / … / Membership</span><div class="acts"><span class="btn ico">⌕</span><span class="btn ico">⋯</span></div></div>
+            <div class="top"><span class="crumb">Organizations / … / Membership</span><div class="acts"><span class="btn ico">⌕</span><span class="btn ico">⋯</span></div></div>
             <div class="body"><div class="ph" style="width:60%;"></div><div class="ph"></div><div class="ph" style="width:80%;"></div></div>
           </div>
         </div></div>
@@ -99,9 +99,9 @@
     <span class="cap">breakpoints</span>
     <table>
       <tr><th>Viewport</th><th>Sidebar</th><th>Breadcrumb</th><th>Topbar actions</th></tr>
-      <tr><td class="bp">≥1440px</td><td>260px</td><td>full path</td><td>all labelled</td></tr>
-      <tr><td class="bp">1120–1439px</td><td>230px</td><td>full path</td><td>all labelled</td></tr>
-      <tr><td class="bp">840–1119px</td><td>200px</td><td>middle crumb ellipsizes</td><td>primary labelled, rest icon-only</td></tr>
+      <tr><td class="bp">≥1440px</td><td>260px</td><td>full path</td><td>all labeled</td></tr>
+      <tr><td class="bp">1120–1439px</td><td>230px</td><td>full path</td><td>all labeled</td></tr>
+      <tr><td class="bp">840–1119px</td><td>200px</td><td>middle crumb ellipsizes</td><td>primary labeled, rest icon-only</td></tr>
       <tr><td class="bp">&lt;840px</td><td>180px</td><td>middle crumbs → …</td><td>search + ⋯ overflow menu</td></tr>
       <tr><td class="bp">&lt;640px</td><td>180px</td><td>current page only</td><td>⋯ overflow menu</td></tr>
     </table>
@@ -113,7 +113,7 @@
       <div>· The shell never scrolls horizontally. Nothing in it may set a fixed <code>min-width</code> wider than the viewport — put <code>min-width:0</code> on the content column and on every flex child that holds text.</div>
       <div>· The content column is the only element that flexes. The sidebar and the topbar action group are <code>flex-shrink:0</code>; they change by switching state at a breakpoint, not by squeezing.</div>
       <div>· Text shrinks before controls: the breadcrumb truncates, then actions drop labels, then actions fold into ⋯. An action never gets clipped off-screen.</div>
-      <div>· Only one action stays labelled below 1120px — the page's primary. Everything else is icon + tooltip.</div>
+      <div>· Only one action stays labeled below 1120px — the page's primary. Everything else is icon + tooltip.</div>
       <div>· The sidebar never collapses to a rail or a drawer. It steps between fixed widths (260 / 230 / 200 / 180px) at the breakpoints and is always <code>flex-shrink:0</code>.</div>
       <div>· Horizontal scrolling is allowed only inside a bounded region — a wide data table's own wrapper — never on <code>body</code>.</div>
     </div>

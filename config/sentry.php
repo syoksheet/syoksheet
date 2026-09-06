@@ -64,7 +64,7 @@ return [
 
     // @see: https://docs.sentry.io/platforms/php/guides/laravel/configuration/options/#ignore_exceptions
     // Conditions the application handles correctly and turns into a proper HTTP
-    // response. They are user behaviour, not defects: reporting them buries real
+    // response. They are user behavior, not defects: reporting them buries real
     // bugs under noise.
     'ignore_exceptions' => [
         BusinessRuleException::class,

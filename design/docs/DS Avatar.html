@@ -104,7 +104,7 @@
     </a>
     <div class="grp">Foundations</div>
     <a class="n" href="DS App Shell.html">App shell</a>
-    <a class="n" href="DS Colour.html">Colour</a>
+    <a class="n" href="DS Color.html">Color</a>
     <a class="n" href="DS Iconography.html">Iconography &amp; motion</a>
     <a class="n" href="DS Logo.html">Logo</a>
     <a class="n" href="DS Spacing.html">Spacing &amp; layout</a>
@@ -149,7 +149,7 @@
       <header class="ph">
         <div class="crumb">Components / Avatar</div>
         <h1>Avatar</h1>
-        <p>An avatar represents a person or an organisation. People are circles; organisations are rounded squares — the shape alone tells you which you're looking at.</p>
+        <p>An avatar represents a person or an organization. People are circles; organizations are rounded squares — the shape alone tells you which you're looking at.</p>
         <div class="status">
           <span class="pill" style="background:#fbf3e3;border-color:#f4e4be;color:#8a5e12;">Beta</span>
           
@@ -173,20 +173,20 @@
       </section>
 
       <section class="s">
-        <h2>Person vs. organisation</h2>
-        <p class="lead">Shape encodes type. A circular avatar is always a person; a rounded-square logo is always an organisation. Never mix them.</p>
+        <h2>Person vs. organization</h2>
+        <p class="lead">Shape encodes type. A circular avatar is always a person; a rounded-square logo is always an organization. Never mix them.</p>
         <div class="ex">
           <div class="stage">
             <div class="lab"><span class="avatar lg b1">DC</span><span class="c">person · circle</span></div>
-            <div class="lab"><span class="orglogo md" style="background:linear-gradient(135deg,#18181b,#3f3f46);">A</span><span class="c">organisation · rounded square</span></div>
+            <div class="lab"><span class="orglogo md" style="background:linear-gradient(135deg,#18181b,#3f3f46);">A</span><span class="c">organization · rounded square</span></div>
           </div>
-          <div class="cap">Circle = person. Rounded square = organisation.</div>
+          <div class="cap">Circle = person. Rounded square = organization.</div>
         </div>
       </section>
 
       <section class="s">
-        <h2>Fallback &amp; colour</h2>
-        <p class="lead">With no photo, show initials on a deterministic colour from a fixed palette — the same person always gets the same colour. Colour is decorative, never meaningful.</p>
+        <h2>Fallback &amp; color</h2>
+        <p class="lead">With no photo, show initials on a deterministic color from a fixed palette — the same person always gets the same color. Color is decorative, never meaningful.</p>
         <div class="ex">
           <div class="stage">
             <span class="avatar md b1">DC</span>
@@ -201,7 +201,7 @@
           <thead><tr><th>Case</th><th>Display</th></tr></thead>
           <tbody>
             <tr><td>Has photo</td><td>Cropped image, circle/square per type</td></tr>
-            <tr><td>No photo, has name</td><td>1–2 initials on hashed colour</td></tr>
+            <tr><td>No photo, has name</td><td>1–2 initials on hashed color</td></tr>
             <tr><td>No name</td><td>Neutral person glyph on <code>--n-300</code></td></tr>
           </tbody>
         </table>
@@ -229,7 +229,7 @@
           <div class="dd-card do">
             <div class="hd"><span class="m"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Do</div>
             <div class="demo"><span class="orglogo md" style="background:linear-gradient(135deg,#18181b,#3f3f46);">A</span></div>
-            <p>Rounded square for an organisation.</p>
+            <p>Rounded square for an organization.</p>
           </div>
           <div class="dd-card dont">
             <div class="hd"><span class="m"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Don't</div>
@@ -244,8 +244,8 @@
         <ul class="rules">
           <li>Avatars have <code>alt</code> / <code>aria-label</code> with the full name; initials are not enough for screen readers.</li>
           <li>Decorative avatars beside a visible name are <code>aria-hidden</code>.</li>
-          <li>Never rely on avatar colour to convey identity or status — it's purely decorative.</li>
-          <li>Initials keep ≥4.5:1 contrast on every palette colour.</li>
+          <li>Never rely on avatar color to convey identity or status — it's purely decorative.</li>
+          <li>Initials keep ≥4.5:1 contrast on every palette color.</li>
         </ul>
       </section>
 

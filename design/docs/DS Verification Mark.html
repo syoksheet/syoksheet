@@ -106,7 +106,7 @@
     </a>
     <div class="grp">Foundations</div>
     <a class="n" href="DS App Shell.html">App shell</a>
-    <a class="n" href="DS Colour.html">Colour</a>
+    <a class="n" href="DS Color.html">Color</a>
     <a class="n" href="DS Iconography.html">Iconography &amp; motion</a>
     <a class="n" href="DS Logo.html">Logo</a>
     <a class="n" href="DS Spacing.html">Spacing &amp; layout</a>
@@ -151,7 +151,7 @@
       <header class="ph">
         <div class="crumb">Components / Verification mark</div>
         <h1>Verification mark</h1>
-        <p>The verification mark is syoksheet's most important signal — it means a real person or a DNS-verified organisation stood behind a brag. It is flat, quiet, and reserved exclusively for proven things.</p>
+        <p>The verification mark is syoksheet's most important signal — it means a real person or a DNS-verified organization stood behind a brag. It is flat, quiet, and reserved exclusively for proven things.</p>
         <div class="status">
           <span class="pill" style="background:#fbf3e3;border-color:#f4e4be;color:#8a5e12;">Beta</span>
 
@@ -163,7 +163,7 @@
       <section class="s">
         <h2>Principle</h2>
         <p class="lead">Trust is the product, so the mark earns it by being precise and consistent — not loud. It is a plain forest-green check, the way a tick on a legal document works. No stamp, no wax, no ring text, no gradient.</p>
-        <div class="note"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span><b>Forest green (<code>--verify-600</code>) is reserved for verification only.</b> It is never used for brand, action, or decoration. The brand colour is teal; these two greens never mix roles.</span></div>
+        <div class="note"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span><b>Forest green (<code>--verify-600</code>) is reserved for verification only.</b> It is never used for brand, action, or decoration. The brand color is teal; these two greens never mix roles.</span></div>
       </section>
 
       <!-- VARIANTS -->
@@ -183,7 +183,7 @@
           <tbody>
             <tr><td><b>Solid</b></td><td>Forest <code>--verify-600</code>, white check</td><td>Primary signal — card marks, callout seal</td></tr>
             <tr><td><b>Soft</b></td><td>Tint <code>--verify-50</code>, forest check</td><td>Dense lists, inside badges</td></tr>
-            <tr><td><b>Outline</b></td><td>Transparent, forest ring + check</td><td>Low-emphasis, on coloured surfaces</td></tr>
+            <tr><td><b>Outline</b></td><td>Transparent, forest ring + check</td><td>Low-emphasis, on colored surfaces</td></tr>
           </tbody>
         </table>
       </section>
@@ -206,7 +206,7 @@
       <!-- IN CONTEXT -->
       <section class="s">
         <h2>In context</h2>
-        <p class="lead">The mark almost always travels with a label. Colour alone never carries the meaning.</p>
+        <p class="lead">The mark almost always travels with a label. Color alone never carries the meaning.</p>
         <div class="ex">
           <div class="stage" style="gap:14px;">
             <span class="badge"><span class="vmark sm"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> Verified by Acme Corp</span>
@@ -221,9 +221,9 @@
       <!-- STATUS SYSTEM -->
       <section class="s">
         <h2>The status system</h2>
-        <p class="lead">Verification is one of three mutually exclusive states. Each has its own colour and glyph so they're never confused.</p>
+        <p class="lead">Verification is one of three mutually exclusive states. Each has its own color and glyph so they're never confused.</p>
         <table class="spec">
-          <thead><tr><th>State</th><th>Colour</th><th>Glyph</th><th>Meaning</th></tr></thead>
+          <thead><tr><th>State</th><th>Color</th><th>Glyph</th><th>Meaning</th></tr></thead>
           <tbody>
             <tr><td><b>Verified</b></td><td>Forest <code>--verify-600</code></td><td>Solid check</td><td>A person or DNS-verified org confirmed this.</td></tr>
             <tr><td><b>Pending</b></td><td>Amber <code>--amber-600</code></td><td>Hollow clock</td><td>Awaiting a verifier's response.</td></tr>
@@ -255,7 +255,7 @@
         <ul class="rules">
           <li>The mark is decorative when a text label is present (<code>aria-hidden</code>); the label carries meaning.</li>
           <li>When the mark stands alone (e.g. a card-corner check), give it an <code>aria-label="Verified"</code>.</li>
-          <li>Never communicate verified / pending / unverified by colour alone — glyph + label always accompany.</li>
+          <li>Never communicate verified / pending / unverified by color alone — glyph + label always accompany.</li>
           <li>Forest-on-white and white-on-forest both meet WCAG AA.</li>
         </ul>
       </section>

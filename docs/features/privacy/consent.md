@@ -4,7 +4,7 @@ The consent recording API. What each consent type means and when it is collected
 
 ## 🔌 Endpoints
 
-| Route | Behaviour |
+| Route | Behavior |
 |-------|-----------|
 | `GET /api/v1/me/consent` | Current state per consent type, the latest `consent_records` row per `(user_id, consent_type)` |
 | `POST /api/v1/me/consent` | Record actions: `{ consents: [{ type, action: given\|withdrawn }] }`, one append-only row each, capturing IP, user agent, and the current `policy_version` |

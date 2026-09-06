@@ -10,7 +10,7 @@ There is no `email` column on `users`: all emails live in `user_emails` (`primar
 
 Controllers live in `app/Http/Controllers/Auth/User/`.
 
-| Route | Controller | Behaviour |
+| Route | Controller | Behavior |
 |-------|-----------|-----------|
 | `POST /api/auth/register` | `RegisterController` | name, email, password + confirmation (`Password::default()`, min 8). Creates `User` + `UserEmail` (type=primary, unverified) in one transaction, fires `Registered` → verification email. 201. Duplicate email → 422. |
 | `POST /api/auth/login` | `LoginController` | Credentials resolved via `UserEmailProvider`. Sanctum session. 204 on success. |
@@ -23,7 +23,7 @@ Controllers live in `app/Http/Controllers/Auth/User/`.
 
 ## 🔑 Google OAuth (Socialite)
 
-| Route | Behaviour |
+| Route | Behavior |
 |-------|-----------|
 | `GET /auth/google/redirect` | Redirect to Google |
 | `GET /auth/google/callback` | Three paths: (1) existing social account → login; (2) existing verified matching email → link + login; (3) new → create user + verified primary email + social account + login |

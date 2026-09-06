@@ -1,6 +1,6 @@
 # Location: Database Schema
 
-Reference tables for countries, states/provinces, and cities, imported from GeoNames. FK targets on user and organisation profiles. Read-only at runtime: populated by import command, periodically re-synced. No `updated_at`, no soft deletes.
+Reference tables for countries, states/provinces, and cities, imported from GeoNames. FK targets on user and organization profiles. Read-only at runtime: populated by import command, periodically re-synced. No `updated_at`, no soft deletes.
 
 ## 🌍 countries
 

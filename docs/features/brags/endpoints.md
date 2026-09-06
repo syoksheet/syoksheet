@@ -1,10 +1,10 @@
 # Brags: Endpoints & Implementation
 
-Brag CRUD with tier limits and field locking. Product behaviour (fields, place field, business rules) in syoksheet-docs → features/brags.md.
+Brag CRUD with tier limits and field locking. Product behavior (fields, place field, business rules) in syoksheet-docs → features/brags.md.
 
 ## 🔌 Endpoints
 
-| Route | Behaviour |
+| Route | Behavior |
 |-------|-----------|
 | `GET /api/v1/me/brags` | Own brags: timeline order (`date_start` desc), filterable by skill, tag, org, date; paginated |
 | `POST /api/v1/me/brags` | Create: title, description, date_start, place_text, occupation_id, visibility required. Tier limit enforced (422 `brag_limit_reached`; canonical limits: syoksheet-docs → product/pricing.md) |
@@ -29,7 +29,7 @@ Always editable: `position_text`, `visibility`, `is_confidential`, `industry_id`
 
 ## 📏 Enforcement
 
-- Tier limit check counts non-deleted brags. Organisation plans never lift a member's personal limits: personal and org billing are fully independent.
+- Tier limit check counts non-deleted brags. Organization plans never lift a member's personal limits: personal and org billing are fully independent.
 - Downgrade hiding: over-limit brags get `hidden_at` set (most recent kept visible by default; reselect via the endpoint above); hidden brags are excluded from walls and analytics, fully restored on upgrade. See [../billing/lifecycle.md](../billing/lifecycle.md).
 - Visibility `on_verification` → treated as private until the first verification lands, then public.
 

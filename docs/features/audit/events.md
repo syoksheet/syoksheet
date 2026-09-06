@@ -99,7 +99,7 @@ Posting events are `internal` + `management` (the org's own history); `job.inter
 | `billing.subscription_created` | User/System | User or Organization |
 | `billing.subscription_upgraded` | User/System | User or Organization |
 | `billing.subscription_downgraded` | User/System | User or Organization |
-| `billing.subscription_cancelled` | User/System | User or Organization |
+| `billing.subscription_canceled` | User/System | User or Organization |
 | `billing.payment_succeeded` | System | User or Organization |
 | `billing.payment_failed` | System | User or Organization |
 
@@ -114,7 +114,7 @@ All `internal`, never visible to orgs.
 | `data_export.requested` | User | User | No extra properties |
 | `data_export.completed` | System | User | No extra properties |
 | `account_deletion.requested` | User | User | No extra properties |
-| `account_deletion.cancelled` | User | User | No extra properties |
+| `account_deletion.canceled` | User | User | No extra properties |
 | `account_deletion.tier1_applied` | System | User | No extra properties |
 | `account_deletion.tier2_applied` | System | User | No extra properties |
 | `account_deletion.completed` | System | User | No extra properties |

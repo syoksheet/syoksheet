@@ -1,10 +1,10 @@
 # Verification: Endpoints & Implementation
 
-The verification request lifecycle for both paths: personal (tokened email link) and organisation (queue). Product behaviour in syoksheet-docs → features/verification.md.
+The verification request lifecycle for both paths: personal (tokened email link) and organization (queue). Product behavior in syoksheet-docs → features/verification.md.
 
 ## 🔌 Owner Endpoints
 
-| Route | Behaviour |
+| Route | Behavior |
 |-------|-----------|
 | `POST /api/v1/me/brags/{brag}/verification-requests` | Create: `{ type: personal, verifier_name, verifier_email }` or `{ type: organization, organization_id }`. No pending limit on either tier; a 20/day per-user abuse rate limit applies. Org verification queues are uncapped on every tier |
 | `GET /api/v1/me/brags/{brag}/verification-requests` | List with status |
@@ -16,7 +16,7 @@ The verification request lifecycle for both paths: personal (tokened email link)
 
 ## 🌐 External Verifier Endpoints (unauthenticated, token-scoped)
 
-| Route | Behaviour |
+| Route | Behavior |
 |-------|-----------|
 | `GET /api/verify/{token}` | Full brag payload for the standalone verifier page. Handles expired / used / invalid / brag-deleted states |
 | `POST /api/verify/{token}` | Verify: `{ relationship, comment?, anonymity_level }` (`full`, `anonymous`). One-time use |
@@ -24,7 +24,7 @@ The verification request lifecycle for both paths: personal (tokened email link)
 
 ## 🏢 Org Queue Endpoints
 
-| Route | Permission | Behaviour |
+| Route | Permission | Behavior |
 |-------|-----------|-----------|
 | `GET /api/v1/organizations/{org}/verification-queue` | `verification.approve` | Pending org requests |
 | `PATCH /api/v1/organizations/{org}/verification-queue/{request}` | `verification.approve` | `{ action: approve, comment? }` or `{ action: reject, reason? }`: records `verified_by_org_user_id` |

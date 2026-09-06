@@ -1,10 +1,10 @@
 # Data Export: Implementation
 
-GDPR Article 15/20 export pipeline. Product behaviour in syoksheet-docs → features/privacy.md.
+GDPR Article 15/20 export pipeline. Product behavior in syoksheet-docs → features/privacy.md.
 
 ## 🔌 Endpoints
 
-| Route | Behaviour |
+| Route | Behavior |
 |-------|-----------|
 | `GET /api/v1/me/data-export` | Latest request with status + download URL while valid |
 | `POST /api/v1/me/data-export` | Create request: 422 if one is active or the 30-day cooldown since the last completed request hasn't passed |

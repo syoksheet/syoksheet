@@ -1,10 +1,10 @@
 # Taxonomy: Endpoints & Implementation
 
-Search and browse endpoints for occupations, skills, and industries. Product behaviour in syoksheet-docs → features/taxonomy.md.
+Search and browse endpoints for occupations, skills, and industries. Product behavior in syoksheet-docs → features/taxonomy.md.
 
 ## 🔌 Endpoints
 
-| Route | Behaviour |
+| Route | Behavior |
 |-------|-----------|
 | `GET /api/v1/taxonomy/occupations` | Search (`?search=`) via Scout/Meilisearch across canonical names + aliases; typo-tolerant. Results include category as subtitle. Leaf occupations only |
 | `GET /api/v1/taxonomy/skills` | Search or browse by category; results grouped by skill category |

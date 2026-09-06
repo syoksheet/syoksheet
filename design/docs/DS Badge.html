@@ -103,7 +103,7 @@
     </a>
     <div class="grp">Foundations</div>
     <a class="n" href="DS App Shell.html">App shell</a>
-    <a class="n" href="DS Colour.html">Colour</a>
+    <a class="n" href="DS Color.html">Color</a>
     <a class="n" href="DS Iconography.html">Iconography &amp; motion</a>
     <a class="n" href="DS Logo.html">Logo</a>
     <a class="n" href="DS Spacing.html">Spacing &amp; layout</a>
@@ -171,7 +171,7 @@
           <div class="cap">Verified · pending · unverified · info · error · count.</div>
         </div>
         <table class="spec">
-          <thead><tr><th>Variant</th><th>Colour</th><th>Meaning</th></tr></thead>
+          <thead><tr><th>Variant</th><th>Color</th><th>Meaning</th></tr></thead>
           <tbody>
             <tr><td><b>Verified</b></td><td>Forest <code>--verify</code></td><td>Confirmed by a person or DNS-verified org. Carries the mark.</td></tr>
             <tr><td><b>Pending</b></td><td>Amber <code>--amber</code></td><td>Awaiting a verifier. Hollow clock glyph.</td></tr>
@@ -193,7 +193,7 @@
             <tr><td>Height</td><td>~22px (3px vertical padding)</td></tr>
             <tr><td>Padding-x</td><td>9–11px (6px on the glyph side)</td></tr>
             <tr><td>Radius</td><td><code>999px</code> (full pill)</td></tr>
-            <tr><td>Border</td><td>1px, tint-100 of its colour</td></tr>
+            <tr><td>Border</td><td>1px, tint-100 of its color</td></tr>
             <tr><td>Glyph</td><td>11px line icon, or the 13px verified mark</td></tr>
           </tbody>
         </table>
@@ -218,12 +218,12 @@
           <div class="dd-card do">
             <div class="hd"><span class="m"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Do</div>
             <div class="demo"><span class="badge badge-pending"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Pending</span></div>
-            <p>Glyph + word, so meaning survives without colour.</p>
+            <p>Glyph + word, so meaning survives without color.</p>
           </div>
           <div class="dd-card dont">
             <div class="hd"><span class="m"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Don't</div>
             <div class="demo"><span class="badge" style="background:var(--amber-500);width:14px;height:14px;padding:0;border-radius:999px;"></span></div>
-            <p>A bare colour dot with no label or glyph — meaningless to many users.</p>
+            <p>A bare color dot with no label or glyph — meaningless to many users.</p>
           </div>
         </div>
         <div class="note"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span><b>Badges are not buttons.</b> If a user can act on it, it's a button or a tag-filter — not a badge.</span></div>
@@ -232,10 +232,10 @@
       <section class="s" style="border-bottom:none;">
         <h2>Accessibility</h2>
         <ul class="rules">
-          <li>Status is conveyed by glyph + text, never colour alone.</li>
+          <li>Status is conveyed by glyph + text, never color alone.</li>
           <li>Count badges include visually-hidden context (e.g. "2 pending verifications") for screen readers.</li>
           <li>Badges are inline text, not focusable; they never receive a tab stop.</li>
-          <li>All badge colour pairs meet WCAG AA on white.</li>
+          <li>All badge color pairs meet WCAG AA on white.</li>
         </ul>
       </section>
 

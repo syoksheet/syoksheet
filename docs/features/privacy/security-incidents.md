@@ -1,12 +1,12 @@
 # Security Incidents: Implementation
 
-The GDPR breach register on the audit database. Product behaviour (what counts as an incident, severity, lifecycle) in syoksheet-docs → features/privacy.md.
+The GDPR breach register on the audit database. Product behavior (what counts as an incident, severity, lifecycle) in syoksheet-docs → features/privacy.md.
 
 ## 🔌 Endpoints
 
 All require `security_incidents.manage` (Compliance / Super Admin).
 
-| Route | Behaviour |
+| Route | Behavior |
 |-------|-----------|
 | `GET /api/admin/v1/security-incidents` | List with live 72-hour countdown data for open High/Critical |
 | `POST /api/admin/v1/security-incidents` | Create: title, description, severity, incident_type, discovered_at (starts the clock), incident_url? |

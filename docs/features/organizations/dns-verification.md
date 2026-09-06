@@ -1,6 +1,6 @@
 # DNS Verification: Implementation
 
-The DNS TXT check pipeline that activates an org. Product behaviour in syoksheet-docs → features/dns-verification.md.
+The DNS TXT check pipeline that activates an org. Product behavior in syoksheet-docs → features/dns-verification.md.
 
 ## 🌐 TXT Record
 
@@ -12,7 +12,7 @@ syoksheet-verify={org_code}-{user_code}
 
 ## 🔌 Endpoints
 
-| Route | Permission | Behaviour |
+| Route | Permission | Behavior |
 |-------|-----------|-----------|
 | `POST /api/v1/organizations/{org}/dns-verification` | owner or `org.manage` | Generate the TXT value and queue the first check |
 | `GET /api/v1/organizations/{org}/dns-verification` | member | Current status, last/next check, failure count |

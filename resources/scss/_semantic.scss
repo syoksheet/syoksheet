@@ -8,7 +8,7 @@
 //
 // Some of these resolve to the same value today. --color-info and --color-action are
 // both teal-600, --color-success and --color-verified are both verify-600. They are
-// different meanings that happen to share a colour, and keeping them apart is the
+// different meanings that happen to share a color, and keeping them apart is the
 // whole point of this layer.
 
 :root {
@@ -46,13 +46,13 @@
   // Bordered fields (inputs, textareas, search) recolour their border and add a glow:
   //   border-color: var(--color-focus); box-shadow: 0 0 0 3px var(--color-focus-ring);
   //
-  // teal-500 rather than the teal-600 action colour, so the ring stays visible against
+  // teal-500 rather than the teal-600 action color, so the ring stays visible against
   // a teal button.
   --color-focus: var(--teal-500);
   --color-focus-ring: rgb(0 64 64 / 22%);
 
   // Status. Info is brand teal and success is forest: they are close, so tone always
-  // comes with an icon or label as well, never colour alone.
+  // comes with an icon or label as well, never color alone.
   --color-info: var(--teal-600);
   --color-info-subtle: var(--teal-50);
   --color-success: var(--verify-600);
@@ -118,7 +118,7 @@
   --space-16: 64px;
 
   // Motion. Three durations, one curve for movement and plain ease for fades.
-  --duration-fast: 120ms; // hover, colour, background
+  --duration-fast: 120ms; // hover, color, background
   --duration-base: 160ms; // card lift, fades, toggles
   --duration-slow: 240ms; // expand/collapse, overlay and drawer enter
   --ease-move: cubic-bezier(0.32, 0.72, 0, 1);

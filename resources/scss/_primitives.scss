@@ -2,7 +2,7 @@
 // directly: use the semantic tokens in _semantic.scss instead. Changing a value here
 // changes it everywhere it is used, which is only safe because nothing uses it by name.
 //
-// Values transcribed from design/docs/DS Colour.html.
+// Values transcribed from design/docs/DS Color.html.
 
 :root {
   // Neutral. The paper: surfaces, text, hairlines. No tint.
@@ -27,7 +27,7 @@
   --teal-600: #004040;
   --teal-700: #003131;
 
-  // Forest. Verification and completed saves. Never the brand colour.
+  // Forest. Verification and completed saves. Never the brand color.
   --verify-50: #ecf4ef;
   --verify-100: #d0e7da;
   --verify-200: #a6d3b9;

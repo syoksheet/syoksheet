@@ -56,7 +56,7 @@ Learning the lookup matters more than any single answer.
 | Svelte 5, Bits UI, Vite, TypeScript, DodoPayments | Official docs | Context7, 1,000 calls/month. Pass the library ID directly (`/sveltejs/svelte`) to skip a resolve call |
 | PHP language | php.net manual for reference, PHP The Right Way for idiom | Direct |
 | Project conventions | `.claude/skills/laravel-best-practices/rules/` (20 rule files), `pest-testing`, `inertia-svelte-development` | Read before asking Claude |
-| Product behaviour | `syoksheet-docs/features/` | Direct |
+| Product behavior | `syoksheet-docs/features/` | Direct |
 | Technical spec | This repo's `docs/` | Direct |
 | DDEV, Compose | ddev.readthedocs.io, docs.docker.com/compose | Direct |
 | GitHub Actions | docs.github.com/actions | Direct |

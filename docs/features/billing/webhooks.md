@@ -1,10 +1,10 @@
 # Billing: Endpoints & Webhooks
 
-DodoPayments integration: checkout and subscription sync. Organisation plans are flat, so there is no usage reporting of any kind. Product behaviour (payment flow, downgrade rules) in syoksheet-docs → features/billing.md; pricing in syoksheet-docs → product/pricing.md.
+DodoPayments integration: checkout and subscription sync. Organization plans are flat, so there is no usage reporting of any kind. Product behavior (payment flow, downgrade rules) in syoksheet-docs → features/billing.md; pricing in syoksheet-docs → product/pricing.md.
 
 ## 🔌 Endpoints
 
-| Route | Behaviour |
+| Route | Behavior |
 |-------|-----------|
 | `POST /api/v1/me/billing/checkout` | Create an embedded checkout session for Pro (`{ cycle: monthly|annual }`) |
 | `GET /api/v1/me/billing` | Current subscription, cycle, period, invoices |
@@ -18,10 +18,10 @@ DodoPayments integration: checkout and subscription sync. Organisation plans are
 
 1. Verify the DodoPayments signature (`DODO_WEBHOOK_SECRET`).
 2. Insert into `webhook_events` keyed on `dodo_event_id`: duplicate delivery is a no-op (idempotency).
-3. Queued handler processes by `event_type`: subscription created/updated/cancelled, payment succeeded/failed → sync the `subscriptions` row and the billable's `plan` column; mark `processed_at`.
+3. Queued handler processes by `event_type`. DodoPayments' own names, so `subscription.active`, `subscription.updated`, `subscription.cancelled`, `subscription.past_due`, and the payment events. Note the double L: that spelling is theirs → sync the `subscriptions` row and the billable's `plan` column; mark `processed_at`.
 4. Payment events fire `billing.*` audit events with `System` causer.
 
-## 🏢 Organisation Plans
+## 🏢 Organization Plans
 
 - Plans are flat per tier (Free, Growth, Business): canonical prices in syoksheet-docs → product/pricing.md.
 - Membership changes never affect the bill. There is no seat count, no proration on join or leave, and nothing to report to DodoPayments.
@@ -29,11 +29,11 @@ DodoPayments integration: checkout and subscription sync. Organisation plans are
 
 ## ⬇️ Downgrade, Grace & Dunning
 
-All transition behaviour lives in [lifecycle.md](lifecycle.md): the 14-day `past_due` grace, the dunning schedule, and per-feature downgrade application.
+All transition behavior lives in [lifecycle.md](lifecycle.md): the 14-day `past_due` grace, the dunning schedule, and per-feature downgrade application.
 
 ## 📋 Audit Events
 
-`billing.subscription_created/upgraded/downgraded/cancelled`, `billing.payment_succeeded/failed` (System causer, `internal` + `management` for orgs). See [../audit/events.md](../audit/events.md).
+`billing.subscription_created/upgraded/downgraded/canceled`, `billing.payment_succeeded/failed` (System causer, `internal` + `management` for orgs). See [../audit/events.md](../audit/events.md).
 
 ## 🗄️ Tables
 

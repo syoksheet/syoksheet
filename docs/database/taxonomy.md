@@ -1,6 +1,6 @@
 # Taxonomy: Database Schema
 
-Tables for occupations, skills, and industries. Populated from ESCO and O*NET via import commands, with manual curation for industries. FK targets for brags, organisations, and future job postings.
+Tables for occupations, skills, and industries. Populated from ESCO and O*NET via import commands, with manual curation for industries. FK targets for brags, organizations, and future job postings.
 
 ## 🗂️ data_providers
 

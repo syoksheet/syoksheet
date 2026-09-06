@@ -1,10 +1,10 @@
 # PDF Export: Implementation
 
-Pro users export a PDF snapshot of their public wall. Product behaviour in syoksheet-docs → features/user-accounts.md.
+Pro users export a PDF snapshot of their public wall. Product behavior in syoksheet-docs → features/user-accounts.md.
 
 ## 🔌 Endpoints
 
-| Route | Behaviour |
+| Route | Behavior |
 |-------|-----------|
 | `POST /api/v1/me/pdf-export` | Queue generation (Pro only). 422 with `code: export_in_progress` if one is running |
 | `GET /api/v1/me/pdf-export` | Latest export status + download URL while valid |

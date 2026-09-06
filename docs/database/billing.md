@@ -4,7 +4,7 @@ Tables for subscriptions and DodoPayments webhook event tracking.
 
 ## 💳 subscriptions
 
-Active and historical subscription records for users and organisations (morph).
+Active and historical subscription records for users and organizations (morph).
 
 | Column | Type | Notes |
 |--------|------|-------|
@@ -14,11 +14,11 @@ Active and historical subscription records for users and organisations (morph).
 | dodo_subscription_id | varchar(255) | Unique |
 | dodo_customer_id | varchar(255) | Required |
 | plan | varchar(20) | `pro` (user), `business` (org) |
-| status | varchar(20) | `active`, `cancelled`, `past_due`, `paused` |
+| status | varchar(20) | `active`, `cancelled`, `past_due`, `paused`. DodoPayments' own values, mirrored verbatim so the webhook handler is a passthrough. The double L is theirs; do not "correct" it |
 | billing_cycle | varchar(10) | `monthly`, `annual` |
 | current_period_start | timestamptz | Required |
 | current_period_end | timestamptz | Required |
-| cancelled_at | timestamptz | Nullable |
+| canceled_at | timestamptz | Nullable |
 | created_at, updated_at | timestamptz | Managed by Eloquent |
 
 **Index:** `(billable_type, billable_id)`

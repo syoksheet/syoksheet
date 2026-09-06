@@ -3,6 +3,7 @@ paths:
   - '.ddev/**'
   - '.claude/**'
   - CLAUDE.md
+  - '**'
 ---
 
 # General
@@ -15,7 +16,7 @@ One test decides it: does the generated file already state a value you disagree 
 
 Never edit a marked file to add something it does not mention: owning their whole compose file (image version, ports, volume subpaths) to carry a two-line addition is a bad trade.
 
-Hooks always live in `.ddev/config.yaml`, never a separate `config.*.yaml`: merge behaviour for the `hooks` list across config files is undocumented, and a wrong guess silently stops the existing hooks from running.
+Hooks always live in `.ddev/config.yaml`, never a separate `config.*.yaml`: merge behavior for the `hooks` list across config files is undocumented, and a wrong guess silently stops the existing hooks from running.
 
 ## The no-em-dash rule stops at agent tooling files
 The project-wide "never use em dashes" rule applies to documentation, code comments and chat replies. It does NOT apply to `.claude/**` or `.ai/**`: skills, plans, specs, agent definitions and recorded rules are agent tooling, not prose anyone reads as project documentation.
@@ -28,3 +29,10 @@ Everything between `<laravel-boost-guidelines>` and `</laravel-boost-guidelines>
 Consequence for the no-em-dash rule: that block contains em dashes and will keep reintroducing them. It is exempt, the same way `.claude/**` and `.ai/**` are. Do not sweep it, and do not treat its em dashes as a regression.
 
 Everything OUTSIDE that block is hand-authored project instruction and IS subject to every formatting rule.
+
+## US spelling everywhere, except values owned by an external API
+US spelling in all prose, docs, comments, UI strings, identifiers, schema and routes: color, behavior, organization, anonymized, canceled, catalog, center, labeled, license, analyze.
+
+One exception: a field that stores an external provider's state mirrors that provider's spelling verbatim, so the handler is a passthrough rather than a translation table. `subscriptions.status` holds DodoPayments' `active`, `cancelled`, `past_due`, `paused`, with the double L, and their event type is `subscription.cancelled`. Our own columns beside it stay US, so `canceled_at`. The distinction is ownership, not consistency. Note the enum never reaches a user: UI strings come from translation files, so a customer always sees "Canceled".
+
+Do not run a blind find-and-replace. Three things break: `phpstan analyse` is a CLI command; `aria-labelledby` is an HTML attribute; and `analysis`, `emphasis` and `optimistic` are already US, so stem matching produces false positives. Word-boundary regex also misses `cancelled_at` and `subscription_cancelled`, because `_` is a word character.

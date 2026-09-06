@@ -53,7 +53,7 @@ Tokens are created in the respective UIs (password-confirmed). Interactive login
 
 ## 📚 Relationship to the Feature Specs
 
-The endpoint tables under [../features/](../features/) are **operation catalogues**: what each operation does, what it validates, what it fires, which host serves it. They do not define this API's URLs.
+The endpoint tables under [../features/](../features/) are **operation catalogs**: what each operation does, what it validates, what it fires, which host serves it. They do not define this API's URLs.
 
 An operation reaches `api.*` only by being added here, to `openapi.json` and to `bruno/`, and that is a per-operation decision made in the phase that builds it. If it is not in `openapi.json`, it is not sold.
 

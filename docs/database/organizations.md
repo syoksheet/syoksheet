@@ -1,6 +1,6 @@
 # Organizations: Database Schema
 
-Tables for organisations, membership, teams and permissions, join requests, departures, ownership transfers, DNS verification, and SSO configuration.
+Tables for organizations, membership, teams and permissions, join requests, departures, ownership transfers, DNS verification, and SSO configuration.
 
 ## 🏢 organizations
 
@@ -31,7 +31,7 @@ Tables for organisations, membership, teams and permissions, join requests, depa
 
 ## 👥 org_members
 
-One row per user per organisation. `is_owner` is the special system designation: all other access comes from team membership.
+One row per user per organization. `is_owner` is the special system designation: all other access comes from team membership.
 
 | Column | Type | Notes |
 |--------|------|-------|
@@ -136,8 +136,8 @@ Scheduled or completed member departures (7-day notice).
 | user_id | uuid FK → users | CASCADE |
 | initiated_at | timestamptz | Required |
 | effective_at | timestamptz | `initiated_at` + 7 days |
-| cancelled_at | timestamptz | Nullable |
-| status | varchar(20) | `pending`, `completed`, `cancelled` |
+| canceled_at | timestamptz | Nullable |
+| status | varchar(20) | `pending`, `completed`, `canceled` |
 | created_at | timestamptz | Set on insert |
 
 ## 🔄 ownership_transfers
@@ -148,7 +148,7 @@ Scheduled or completed member departures (7-day notice).
 | organization_id | uuid FK → organizations | CASCADE |
 | from_user_id | uuid FK → users | Required |
 | to_user_id | uuid FK → users | Any current member |
-| status | varchar(20) | `pending`, `accepted`, `expired`, `cancelled` |
+| status | varchar(20) | `pending`, `accepted`, `expired`, `canceled` |
 | expires_at | timestamptz | 7 days from creation |
 | responded_at | timestamptz | Nullable |
 | created_at | timestamptz | Set on insert |

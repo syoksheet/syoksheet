@@ -1,6 +1,6 @@
 # Passkeys
 
-WebAuthn passkeys, optional for every user, provided by Laravel Fortify's `passkeys` feature over the first-party `laravel/passkeys` package. There is no TOTP: a passkey is a strong credential in its own right rather than a second factor on a password, it resists phishing, and it syncs through iCloud Keychain and Google Password Manager, so a lost device is not a lost credential. Passwords remain available so that a browser without passkey support never locks anyone out. Product behaviour in syoksheet-docs → features/authentication.md.
+WebAuthn passkeys, optional for every user, provided by Laravel Fortify's `passkeys` feature over the first-party `laravel/passkeys` package. There is no TOTP: a passkey is a strong credential in its own right rather than a second factor on a password, it resists phishing, and it syncs through iCloud Keychain and Google Password Manager, so a lost device is not a lost credential. Passwords remain available so that a browser without passkey support never locks anyone out. Product behavior in syoksheet-docs → features/authentication.md.
 
 ## ⚙️ Configuration
 
@@ -26,7 +26,7 @@ Only the `passkeys` feature is enabled. Registration, login, email verification 
 
 Fortify registers these; they are re-registered under the app domain group rather than used as-is, matching the `Route::domain()` structure.
 
-| Route | Behaviour |
+| Route | Behavior |
 |-------|-----------|
 | `GET /user/passkeys/options` | WebAuthn creation options for an authenticated user |
 | `POST /user/passkeys` | Stores a credential with a user-supplied `name` |
@@ -54,7 +54,7 @@ await Passkeys.verify()
 - Registering or deleting a passkey requires password confirmation, and a passkey itself satisfies that confirmation.
 - A user may hold several passkeys, each individually named, listed and revocable.
 - Registering or deleting one sends a security confirmation email from `noreply@`.
-- Guests of an organisation must hold a passkey: they are exempt from the org SSO gate, and this is the compensating control. See [sso.md](sso.md).
+- Guests of an organization must hold a passkey: they are exempt from the org SSO gate, and this is the compensating control. See [sso.md](sso.md).
 
 ## 🗄️ Tables
 

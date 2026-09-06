@@ -45,7 +45,7 @@ This is a security boundary, not tidiness. It also produces the property the cac
 
 ## Caching and rate limiting
 
-Standard practice, applied without customisation.
+Standard practice, applied without customization.
 
 ```
 Cache-Control: public, max-age=60, stale-while-revalidate=300, stale-if-error=86400
@@ -61,7 +61,7 @@ Cache-Control: public, max-age=60, stale-while-revalidate=300, stale-if-error=86
 | Any other query param | No, stripped | Otherwise `?x=1`, `?x=2` and so on each cost a render, and the cache can be busted indefinitely |
 | Cookies and auth state | No | Nothing user-specific is ever in the output |
 
-**Inertia JSON partials are never cached.** An Inertia visit returns JSON from the same URL as the HTML page, separated only by `Vary: X-Inertia`. Cloudflare honours `Vary` for `Accept-Encoding` and effectively ignores it otherwise, so relying on it would let a JSON body be cached against the page URL and served to the next visitor or crawler. `SetPublicCacheHeaders` therefore skips any request carrying the `X-Inertia` header outright, and the Cloudflare configuration needs the matching bypass rule.
+**Inertia JSON partials are never cached.** An Inertia visit returns JSON from the same URL as the HTML page, separated only by `Vary: X-Inertia`. Cloudflare honors `Vary` for `Accept-Encoding` and effectively ignores it otherwise, so relying on it would let a JSON body be cached against the page URL and served to the next visitor or crawler. `SetPublicCacheHeaders` therefore skips any request carrying the `X-Inertia` header outright, and the Cloudflare configuration needs the matching bypass rule.
 
 ### The URL is in the cached HTML
 
@@ -74,7 +74,7 @@ Two things prevent it, both before Phase 14:
 - Cloudflare strips or normalises the query string for apex cache entries, or bypasses cache for requests carrying unknown params.
 - Every apex wildcard segment gets a `Route::pattern` constraint, so a `<` can never reach the path on a 200.
 
-Rate limiting is a Cloudflare rule, not Laravel middleware. The param allowlist is the real defence; the limiter only backstops it. Cache hits never reach the origin, so the limiter sees misses only, and the ceiling must stay high enough never to throttle a search crawler.
+Rate limiting is a Cloudflare rule, not Laravel middleware. The param allowlist is the real defense; the limiter only backstops it. Cache hits never reach the origin, so the limiter sees misses only, and the ceiling must stay high enough never to throttle a search crawler.
 
 **The session cookie is host-only** (`SESSION_DOMAIN=null`). The apex sets no cookie because it runs no session, but a leading-dot parent domain would still have the browser *send* a logged-in user's session cookie to it on every request, to a host with no use for it. A test asserts the cookie carries no domain attribute on `app.` and `admin.`, and none at all on the apex.
 
