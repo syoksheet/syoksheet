@@ -70,7 +70,7 @@
 {/if}
 
 <style lang="scss">
-  @use 'breakpoints' as bp;
+  @use '../../../../scss/breakpoints' as bp;
 
   .announcement {
     position: relative;

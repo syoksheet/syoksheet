@@ -31,19 +31,6 @@ export default defineConfig({
     }),
   ],
 
-  /*
-   * Put the token layer on the Sass load path so a component can `@use 'breakpoints'`
-   * without walking back up the tree. Only breakpoints are ever imported this way:
-   * colors, spacing and type are custom properties, which need no import at all.
-   */
-  css: {
-    preprocessorOptions: {
-      scss: {
-        loadPaths: [path.resolve(import.meta.dirname, 'resources/scss')],
-      },
-    },
-  },
-
   resolve: {
     alias: {
       $components: path.resolve(import.meta.dirname, 'resources/ts/components'),

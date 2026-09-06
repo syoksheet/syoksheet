@@ -39,3 +39,10 @@ Do not restate design rationale in comments. The spec owns why the mark has thre
 Prefer a named constant to a comment explaining a number: `markSize <= COMPACT_MASTER_MAX_PX` needs no comment where `markSize <= 28` does.
 
 Prop JSDoc is different and welcome: it is the public API and shows at every call site.
+
+## SCSS imports in components are relative, never aliased
+A component that needs the breakpoint mixin imports it by relative path: `@use '../../../../scss/breakpoints' as bp;`. Four levels up is stable, because the component convention is fixed at `components/{group}/{name}/`.
+
+Do not replace this with a bare `@use 'breakpoints'` plus a Vite `css.preprocessorOptions.scss.loadPaths` entry. That reads better but resolves only where the tooling is configured: every editor then needs its own equivalent setting, JetBrains through Mark Directory as Resources Root, others through their own, and until someone sets it they see an error on correct code. The relative form resolves by plain filesystem rules everywhere, with no configuration for anyone.
+
+This should stay rare. Layout tokens step themselves in `_semantic.scss`, so a component normally reads a token and writes no media query at all. The announcement bar needs one because it changes alignment rather than a value.
