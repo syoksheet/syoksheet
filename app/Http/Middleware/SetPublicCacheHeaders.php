@@ -9,17 +9,14 @@ use Symfony\Component\HttpFoundation\Response;
 class SetPublicCacheHeaders
 {
     /**
-     * Let the CDN cache apex pages.
+     * Let the CDN cache apex pages. Only GET requests that returned 200 qualify.
      *
-     * GET requests that returned 200 only. Caching a 404 or a 500 would keep it
-     * around long after the fault was fixed.
+     * Inertia visits are skipped. They hit the same URL as the page but return JSON,
+     * and the only thing telling them apart is the Vary header, which Cloudflare
+     * ignores. If we cached the JSON, the next visitor asking for the page would get it.
      *
-     * Inertia visits are skipped. They hit the same URL but return JSON, and the only
-     * thing separating them is `Vary: X-Inertia`, which Cloudflare ignores unless it
-     * is `Accept-Encoding`. Cache the JSON and someone asking for the page gets it.
-     *
-     * All of this only works because the apex has no session and shares no user data,
-     * so every visitor gets identical HTML. Change either and this becomes a leak.
+     * All of this is only safe because the apex has no session and shares no user data,
+     * so every visitor receives identical HTML.
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -33,10 +30,9 @@ class SetPublicCacheHeaders
             return $response;
         }
 
-        // Belt and braces. Everything above assumes the apex has no session and sets no
-        // cookies, which is true of its route group today. If a future route ends up in
-        // a session-enabled group, we want it uncached rather than shared between
-        // visitors along with someone's session id.
+        // Never cache a response that sets a cookie. The apex has no session today, but
+        // if a future route ends up in a session-enabled group, we want that response
+        // left uncached rather than shared between visitors along with a session id.
         if ($request->hasSession() || $response->headers->getCookies() !== []) {
             return $response;
         }

@@ -13,8 +13,9 @@ class HandleAdminInertiaRequests extends Middleware
     protected $rootView = 'domains.admin';
 
     /**
-     * SSR off. The admin panel is behind a login too, and it should never touch the Node process at all.
-     * '*' matches every path, including '/'.
+     * Server-side rendering is switched off here. The admin panel is behind a login as
+     * well, and it should never touch the Node process at all. The '*' matches every
+     * path, including '/'.
      *
      * @var array<int, string>
      */

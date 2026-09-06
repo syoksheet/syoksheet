@@ -28,15 +28,13 @@ export default [
     },
   },
   {
-    // The SSR process imports a module once and keeps it around for every render,
-    // unlike PHP-FPM which starts fresh each request. So a mutable binding at module
-    // scope is shared by everyone, and one visitor's data can end up on another
-    // visitor's page. prefer-const handles the rest, so anything that reaches this rule
-    // is actually reassigned, which is the case we care about.
+    // The SSR process imports a module once and keeps it for every render, unlike
+    // PHP-FPM which starts fresh on each request. A mutable binding at module scope is
+    // therefore shared by everyone, and one visitor's data can end up on another
+    // visitor's page.
     //
-    // This cannot see inside `<script module>` in a component. The Svelte parser does
-    // not expose those as top-level declarations, so that case is a review thing and is
-    // written down in .ai/rules.
+    // This rule cannot see inside a component's `<script module>` block, because the
+    // Svelte parser does not expose those as top-level declarations.
     files: ['resources/ts/**/*.ts'],
     rules: {
       'no-restricted-syntax': [

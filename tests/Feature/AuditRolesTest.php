@@ -7,9 +7,9 @@ beforeEach(function () {
 });
 
 /**
- * Default privileges are stored per database, so asserting them proves the migration
- * ran against the audit test database. Role existence proves less: roles are
- * cluster-wide, so one created by a development run already exists here.
+ * Default privileges are stored per database, so checking them proves the migration ran
+ * against this database. Checking that a role exists proves much less, because roles
+ * are cluster-wide and a development run may have created it already.
  *
  * @return list<string>
  */

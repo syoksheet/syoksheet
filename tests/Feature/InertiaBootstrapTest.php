@@ -19,11 +19,11 @@ it('renders an inertia page on every html domain', function (Domain $domain, str
 })->with('inertia domains');
 
 /**
- * Only `.page.svelte` files are pages. Widening `inertia.pages.extensions` back to
- * `svelte` would make every component sitting beside a page routable, and would put each
- * one in the Vite glob as a chunk of its own. Nothing else fails when that happens: the
- * real pages keep rendering, so this is the only thing standing between the narrowing
- * and a silent revert.
+ * Only .page.svelte files are pages. If someone widens the extension back to .svelte,
+ * every component sitting beside a page becomes routable and gets its own chunk.
+ *
+ * Nothing else fails when that happens. The real pages keep rendering, so this test is
+ * the only thing standing between the narrowing and a silent revert.
  */
 it('does not resolve a component beside a page as a page', function () {
     $pages = sys_get_temp_dir().'/'.uniqid('inertia-pages-', true).'/home';
@@ -39,8 +39,8 @@ it('does not resolve a component beside a page as a page', function () {
 });
 
 /**
- * Each domain builds its own bundle and the root view is what loads it. Share one root
- * view and marketing visitors start downloading the admin bundle.
+ * Each domain builds its own bundle, and the root view is what loads it. If the domains
+ * shared one root view, marketing visitors would start downloading the admin bundle.
  */
 it('renders each domain through its own root view', function (Domain $domain, string $component, string $rootView) {
     $this->get('https://'.$domain->host().'/')
@@ -49,11 +49,12 @@ it('renders each domain through its own root view', function (Domain $domain, st
 })->with('inertia domains');
 
 /**
- * Sets a locale the app does not default to, because that is the only way this test can
- * fail. Asserting against app()->getLocale() would compare the answer to itself, and
- * would have passed just as happily against the earlier bug where the prop came from
- * $request->getLocale(): Symfony's request locale is its own default, 'en', and never
- * follows App::setLocale().
+ * This sets a locale the app does not default to, because that is the only way the test
+ * can fail. Asserting against app()->getLocale() would compare the answer to itself.
+ *
+ * It would also pass against a version that read the locale from the request instead.
+ * Symfony's request locale defaults to 'en' on its own and never follows
+ * App::setLocale().
  */
 it('shares the application locale with every page', function (Domain $domain) {
     App::setLocale('fr');
@@ -67,11 +68,11 @@ it('shares the application locale with every page', function (Domain $domain) {
 ]);
 
 /**
- * Each root view has to load its own entry. Nothing else catches a copy-paste here: the
- * page renders, the props are right and every other test stays green while marketing
- * visitors quietly download the admin bundle.
+ * Each root view has to load its own entry file. Nothing else catches a copy-paste
+ * here: the page still renders, the props are still right, and every other test stays
+ * green while marketing visitors quietly download the admin bundle.
  *
- * Reads the file rather than the rendered HTML so it works without a build.
+ * This reads the Blade file rather than the rendered HTML, so it works without a build.
  */
 it('loads its own bundle in each root view', function (Domain $domain) {
     $view = file_get_contents(resource_path("views/domains/{$domain->value}.blade.php"));

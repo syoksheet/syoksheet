@@ -12,12 +12,12 @@
   let menuOpen = $state(false);
 
   /*
-   * Must track `md` in resources/scss/_breakpoints.scss: media queries cannot read a
-   * custom property, so the value exists in both places and nothing checks that.
+   * This has to stay in step with the `md` breakpoint in the SCSS. A media query cannot
+   * read a custom property, so the value lives in both places and nothing checks that.
    *
-   * The menu closes rather than hiding when the viewport grows past it. Hiding an open
-   * dialog leaves the scroll lock on and focus trapped in a subtree nobody can see or
-   * reach, and the toggle that would close it is hidden at this width too.
+   * The menu closes when the viewport grows past it, rather than simply hiding. Hiding
+   * an open dialog would leave the scroll lock on and focus trapped in a subtree nobody
+   * can see, and the button that would close it is hidden at this width too.
    */
   const MENU_BREAKPOINT = '(min-width: 840px)';
 
@@ -204,8 +204,8 @@
     stroke-width: 2;
   }
 
-  // No overlay. The panel is opaque and covers the viewport, so a scrim behind it would
-  // only ever be visible if the panel failed to paint.
+  // There is no overlay. The panel is opaque and covers the whole viewport, so a
+  // scrim behind it would only ever show if the panel failed to paint.
   .panel {
     position: fixed;
     z-index: 100;

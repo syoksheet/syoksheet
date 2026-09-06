@@ -13,12 +13,13 @@ class HandlePublicInertiaRequests extends Middleware
     protected $rootView = 'domains.public';
 
     /**
-     * Locale and nothing else.
+     * Share the locale and nothing else.
      *
-     * We skip parent::share() on purpose. It shares validation errors from the
-     * session, and everything shared here ends up in HTML that gets cached and served
-     * to every visitor. Anything tied to one person would leak to everyone else, so
-     * do not add per-visitor props to this method.
+     * The apex HTML is cached and handed to every visitor, so anything shared here is
+     * seen by everyone. Never add a prop that belongs to one person.
+     *
+     * We skip parent::share() for the same reason. It shares validation errors from the
+     * session, and those belong to whoever submitted the form.
      *
      * @return array<string, mixed>
      */

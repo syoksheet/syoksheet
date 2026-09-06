@@ -4,18 +4,11 @@ import path from 'path';
 import inertia from '@inertiajs/vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 
-/*
- * Vite runs inside the DDEV container, so binding to the default 127.0.0.1 makes it
- * reachable only from inside that container. Laravel writes whatever address Vite
- * reports into public/hot, the @vite directive turns it into a script src, and the
- * browser on the host then asks its own 127.0.0.1 for assets nothing is serving there.
- *
- * Binding to every interface and reporting the DDEV URL fixes both halves. The values
- * come from the container's own environment rather than a hardcoded hostname, so the
- * config keeps working if the project is renamed. Outside DDEV, they are absent and Vite
- * falls back to its own defaults.
- */
 const VITE_PORT = 5173;
+
+// ddevUrl and ddevHost are read from the container's own environment rather than
+// hardcoded, so this config keeps working if the project is renamed. Outside DDEV both
+// are undefined, and Vite falls back to its own defaults.
 const ddevUrl = process.env.DDEV_PRIMARY_URL_WITHOUT_PORT;
 const ddevHost = process.env.DDEV_HOSTNAME?.split(',')[0];
 
@@ -28,28 +21,30 @@ interface DdevServerOptions {
 }
 
 /*
- * Everything needed to run Vite inside the DDEV container and have a browser on the
- * host reach it. Off DDEV the options are undefined and every hook returns early, so
- * Vite keeps its own defaults.
+ * Make Vite reachable from a browser on the host while it runs inside the container.
  *
- * Two separate problems, which is why there are two hooks:
+ * Vite binds inside the container, so it has to listen on every interface and report
+ * the DDEV URL rather than the address it actually bound to. Laravel writes whatever
+ * Vite reports into public/hot, and the browser would otherwise ask its own machine
+ * for assets that nothing there is serving.
  *
- * `config` covers the ordinary case. Vite binds inside the container, so it must listen
- * on every interface and report the routed DDEV URL rather than the address it bound
- * to, or Laravel writes that address into public/hot and the browser asks its own
- * machine for assets. One server answers four hostnames, hence the CORS pattern.
+ * configureServer is separate because @inertiajs/vite builds its server-rendered
+ * stylesheet links from the resolved local URL and never looks at the origin we set.
+ * Vite fills that value in during listen, after any listening handler could run, so we
+ * intercept the property instead of assigning to it. Only the local URL is rewritten,
+ * and the real network URLs pass through untouched.
  *
- * `configureServer` covers @inertiajs/vite, which builds its SSR stylesheet links from
- * `server.resolvedUrls.local[0]` and never reads `server.origin` (dist/index.js,
- * resolveDevServerOrigin). Setting origin alone leaves every SSR-injected <link>
- * pointing at localhost while Laravel's own tags are correct, which is a confusing
- * half-broken state. Vite assigns resolvedUrls during listen, after any 'listening'
- * handler could run, so the value is intercepted rather than assigned. Only `local` is
- * rewritten; the real network URLs are passed through.
+ * Off DDEV there is no URL, and every hook here returns early.
  */
 function ddevDevServer({ url, host, port }: DdevServerOptions): Plugin {
   const origin = url ? `${url.replace(/\/$/, '')}:${port}` : undefined;
 
+  // Vite's Plugin type extends Rolldown's, and Rolldown bundles its declarations in a
+  // way PhpStorm cannot follow. PhpStorm therefore rejects every plugin object, even
+  // one with nothing but a name. tsc accepts them all.
+  //
+  // The annotation stays because it is what makes tsc catch a misspelled hook name. A
+  // hook spelled wrong would leave this plugin loaded and silently doing nothing.
   // noinspection TypeScriptValidateTypes
   return {
     name: 'syoksheet:ddev-dev-server',
@@ -64,10 +59,12 @@ function ddevDevServer({ url, host, port }: DdevServerOptions): Plugin {
         server: {
           host: '0.0.0.0',
           port,
-          // Fail loudly on a taken port. Moving to 5174 would put an address in
-          // public/hot that DDEV does not route.
+          // Fail loudly if the port is taken. If Vite quietly moved to 5174, it
+          // would write an address into public/hot that DDEV does not route.
           strictPort: true,
           origin,
+          // One dev server answers all four hostnames, so the allowed origin has to
+          // match any DDEV subdomain.
           cors: { origin: /^https?:\/\/([a-z0-9-]+\.)*ddev\.site(:\d+)?$/ },
           ws: host ? { protocol: 'wss', host, clientPort: port } : undefined,
         },
@@ -106,12 +103,9 @@ export default defineConfig({
     }),
     svelte(),
     inertia({
-      /*
-       * Only the apex is server-rendered, so there is one SSR entry rather than one
-       * per bundle. Host is pinned to loopback on purpose: the renderer should never
-       * be reachable from off the machine, and we would rather say so than rely on a
-       * default staying put.
-       */
+      // There is one SSR entry rather than one per bundle, because only the apex is
+      // server-rendered. The host is pinned to loopback so that the renderer is never
+      // reachable from outside this machine.
       ssr: {
         entry: 'resources/ts/domains/public/ssr.ts',
         host: '127.0.0.1',
@@ -135,8 +129,8 @@ export default defineConfig({
     noExternal: true,
   },
 
-  // Everything DDEV-specific moved into the plugin above. What is left applies wherever
-  // this runs.
+  // Everything specific to DDEV lives in the plugin above. What is left here applies
+  // wherever this runs.
   server: {
     watch: {
       ignored: ['**/storage/framework/views/**'],

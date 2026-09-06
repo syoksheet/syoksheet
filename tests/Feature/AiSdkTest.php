@@ -3,9 +3,8 @@
 use Laravel\Ai\AiServiceProvider;
 
 /**
- * Wiring checks for the Laravel AI SDK. Scaffold-level only. No agent exists yet and no provider call is made until
- * the taxonomy and job-mapping work lands, so what is worth pinning here is the wiring:
- * the SDK is installed, it points at Anthropic, and nothing else is configured.
+ * These tests only check the wiring. The SDK is installed, it points at Anthropic, and
+ * no other provider is configured. There is no agent yet, and nothing calls out.
  */
 it('registers the ai sdk', function () {
     expect(app()->getProviders(AiServiceProvider::class))->not->toBeEmpty();
@@ -16,8 +15,9 @@ it('defaults to anthropic', function () {
 });
 
 /**
- * The SDK ships drivers for a dozen providers. Configuring a key for any of them would
- * make it reachable, and only Anthropic is a documented processor for our data.
+ * The SDK ships drivers for a dozen providers. Setting a key for any of them would make
+ * that provider reachable. Anthropic is the only one we have approved to handle our
+ * data, so the others must stay unconfigured.
  */
 it('configures no provider other than anthropic', function () {
     $configured = collect(config('ai.providers'))
@@ -29,9 +29,8 @@ it('configures no provider other than anthropic', function () {
 });
 
 /**
- * Conversation persistence is the one part of the SDK that needs tables. Both our use
- * cases are one-shot batch prompts, so those migrations stay unpublished and the schema
- * stays ours.
+ * Conversation persistence is the only part of the SDK that needs database tables. We
+ * only ever send one-shot prompts, so we never publish those migrations.
  */
 it('publishes no conversation tables', function () {
     $migrations = glob(database_path('migrations/*agent_conversation*'));

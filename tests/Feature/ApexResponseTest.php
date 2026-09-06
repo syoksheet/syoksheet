@@ -12,8 +12,8 @@ use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * No session on the apex. A Set-Cookie header stops the response being cacheable, and
- * the whole point of this domain is that it can be cached.
+ * The apex must not start a session. A Set-Cookie header stops the response being
+ * cacheable, and being cacheable is the whole point of this domain.
  */
 it('sets no cookie on the apex', function () {
     $this->get('https://'.Domain::Public->host().'/')
@@ -22,9 +22,8 @@ it('sets no cookie on the apex', function () {
 });
 
 /**
- * The apex HTML is cached and handed to every visitor, so a prop built from one person
- * would show up for everyone. That is why the public middleware skips parent::share(),
- * which adds validation errors from the session.
+ * The apex HTML is cached and handed to every visitor. A prop built from one person
+ * would therefore show up for everyone else too.
  */
 it('shares no user-derived data on the apex', function () {
     $this->get('https://'.Domain::Public->host().'/')
@@ -36,22 +35,18 @@ it('shares no user-derived data on the apex', function () {
 });
 
 /**
- * Checked one directive at a time. Symfony reorders Cache-Control alphabetically, so
- * matching the whole string would be testing its formatting instead of ours and would
- * break on an unrelated framework change.
- *
- * stale-while-revalidate is what keeps the renderer out of the request path and
- * stale-if-error is what covers it going down, so both are named on purpose.
+ * Check one directive at a time. Symfony reorders Cache-Control alphabetically, so
+ * matching the whole string would test Symfony's formatting instead of our policy, and
+ * would break on an unrelated framework change.
  */
 it('marks a successful apex page cacheable', function () {
     $header = $this->get('https://'.Domain::Public->host().'/')
         ->assertOk()
         ->headers->get('Cache-Control');
 
-    // Literal values on purpose. Reading them back from config would only prove the
-    // header was built from config, and would pass just as happily if someone set
-    // max-age to a day. These are the documented policy, so changing them should mean
-    // changing the docs and this test together.
+    // These values are written out rather than read from config on purpose. Reading
+    // them back would only prove the header was built from config, and the test would
+    // pass just as happily if someone set max-age to a day.
     expect($header)
         ->toContain('public')
         ->toContain('max-age=60')
@@ -60,7 +55,8 @@ it('marks a successful apex page cacheable', function () {
 });
 
 /**
- * An error cached at the edge for a day would stick around long after the fix.
+ * An error cached at the edge for a day would still be served long after the fault was
+ * fixed.
  */
 it('never marks an error response cacheable', function () {
     $middleware = new SetPublicCacheHeaders;
@@ -85,13 +81,11 @@ it('never marks a write response cacheable', function () {
 });
 
 /**
- * When SSR works, Inertia uses the head it rendered and skips the fallback in the root
- * view (see Head::render()). So whatever the page set has to make it into the HTML,
- * because it is the only head the apex gets.
+ * When SSR succeeds, Inertia uses the head the page rendered and skips the fallback in
+ * the root view. So whatever the page sets is the only head the apex gets.
  *
- * The faked title is deliberately not the app name. Match the fallback and the test
- * passes off the Blade slot with SSR switched off entirely, proving nothing. The
- * assertDontSee is there for the same reason: it pins that the fallback was dropped.
+ * The faked title is deliberately not the app name. If it matched the fallback, this
+ * test would pass off the Blade slot with SSR switched off entirely, proving nothing.
  */
 it('renders the head produced by server-side rendering', function () {
     config(['inertia.ssr.enabled' => true, 'inertia.ssr.ensure_bundle_exists' => false]);
@@ -110,15 +104,13 @@ it('renders the head produced by server-side rendering', function () {
 });
 
 /**
- * The guard for the test above. Since a successful render drops the fallback title, a
- * public page without its own head goes out with no title and no description and
- * nothing else here would catch it.
+ * This guards the test above. Since a successful render drops the fallback title, a
+ * public page with no head of its own would ship with no title and no description, and
+ * nothing else here would notice.
  *
- * Recursive on purpose. Page names are paths, so Inertia::render('jobs/Index') lives at
- * domains/public/pages/jobs/Index.page.svelte, and Phase 14 nests plenty of them.
- *
- * Only `.page.svelte` files are pages. A component sitting beside its page has no head
- * of its own and must not be held to this.
+ * The search is recursive, because page names are paths. It looks at .page.svelte
+ * files only: a component sitting beside a page has no head of its own, and should not
+ * be held to this.
  */
 it('gives every public page its own head', function () {
     $pages = collect(File::allFiles(resource_path('ts/domains/public/pages')))
@@ -136,17 +128,13 @@ it('gives every public page its own head', function () {
 });
 
 /**
- * An Inertia visit returns JSON from the same URL as the page, and Cloudflare ignores
- * Vary unless it is Accept-Encoding. Cache this and the next person asking for the
- * page could get the JSON.
+ * An Inertia visit returns JSON from the same URL as the page. The only thing telling
+ * them apart is a Vary header that Cloudflare ignores, so caching this response would
+ * hand the JSON to the next person asking for the page.
  *
- * We ask the middleware for the version instead of hashing the manifest ourselves, so
- * this works with or without a build. version() returns the manifest hash when there is
- * one and null when there is not, and Inertia turns null into ''. Hashing the file
- * directly blows up on a clean checkout, and CI runs tests before the build.
- *
- * Get the version wrong and the request 409s, the middleware skips it for not being a
- * 200, and the test passes without touching the code it is meant to cover.
+ * We ask the middleware for the version rather than hashing the manifest ourselves, so
+ * this works with or without a build. Getting the version wrong makes the request 409,
+ * the middleware skips it for not being a 200, and the test passes covering nothing.
  */
 it('never marks an inertia partial cacheable', function () {
     $response = $this->get('https://'.Domain::Public->host().'/', [

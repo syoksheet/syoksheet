@@ -1,9 +1,9 @@
-// Two families and nine styles. Geist carries everything visible; Geist Mono marks
-// "the record": IDs, timestamps, counts, hashes. Never body copy in mono.
+// Two families. Geist carries everything a person reads. Geist Mono marks the record:
+// IDs, timestamps, counts and hashes. Never set body copy in mono.
 //
-// The styles are mixins rather than tokens because each one is four values. As
-// custom properties that would be thirty-odd names nobody remembers, and it would be
-// possible to apply a size without its matching line-height and tracking.
+// These are mixins rather than tokens because each style is four values at once. As
+// custom properties that would be thirty-odd names nobody remembers, and you could
+// apply a size without the line-height and tracking that go with it.
 
 @mixin type-display {
   font-family: var(--font-sans);
@@ -45,7 +45,7 @@
   letter-spacing: 0;
 }
 
-// 13px is the floor, and only for secondary captions. Body never goes below 14px.
+// 13px is the floor, and only for secondary captions. Body copy never goes below 14px.
 @mixin type-small {
   font-family: var(--font-sans);
   font-size: 13px;
@@ -71,14 +71,14 @@
   letter-spacing: 0;
 }
 
-// Chips: badges, tags, the announcement's label. They sit below every content style, in
-// a fixed-height pill, and three components had each invented their own size because
-// nothing here covered them.
+// Chips are badges, tags and small labels sitting in a fixed-height pill.
 //
-// The one mixin that sets no font-family. A chip's family is its meaning, not its
-// styling: mono says the value came from the system (a status, an ID, a count), sans
-// says a person wrote it (a skill, a keyword). The component picks. Nothing catches a
-// component that picks neither: it inherits sans from body and looks right.
+// This is the one mixin that sets no font-family, because a chip's family carries
+// meaning. Mono says the value came from the system, such as a status or an ID. Sans
+// says a person wrote it, such as a skill or a keyword. The component chooses.
+//
+// Nothing catches a component that chooses neither. It inherits sans from body and
+// still looks correct.
 @mixin type-chip {
   font-size: 12px;
   font-weight: 500;

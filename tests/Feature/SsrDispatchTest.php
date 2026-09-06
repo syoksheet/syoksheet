@@ -11,9 +11,10 @@ use Sentry\ClientInterface;
 use Sentry\SentrySdk;
 
 /**
- * phpunit.xml turns SSR off for the suite, so these tests turn it back on.
- * ensure_bundle_exists goes off too, otherwise the gateway gives up before making the
- * HTTP call just because nobody has run a production build here.
+ * SSR is switched off for the whole suite, so these tests turn it back on.
+ *
+ * They also switch off ensure_bundle_exists. Otherwise the gateway gives up before it
+ * makes the HTTP call, simply because nobody has run a production build here.
  */
 beforeEach(function () {
     config([
@@ -29,15 +30,17 @@ it('server-side renders the apex', function () {
 
     $this->get('https://'.Domain::Public->host().'/')->assertOk();
 
-    // Pins the target, not just the count. A request to the wrong host would still
-    // satisfy assertSentCount.
+    // Check where the request went, not just that one was sent. A request to the
+    // wrong host would still satisfy assertSentCount.
     Http::assertSent(fn ($request) => $request->url() === 'http://127.0.0.1:13714/render');
 });
 
 /**
- * Its own test, not a second assertion in the one above. $withoutSsr calls except() on
- * the SSR gateway, which is a singleton and keeps what you give it. Hit `app.` first
- * and SSR is off for the apex too, so the apex test would pass for the wrong reason.
+ * This has its own test rather than being a second assertion in the one above.
+ *
+ * $withoutSsr calls except() on the SSR gateway, which is a singleton and keeps what
+ * you give it. If we hit `app.` first, SSR would then be off for the apex as well, and
+ * the apex test would pass for the wrong reason.
  */
 it('does not server-side render the user app', function () {
     Http::fake();
@@ -56,10 +59,11 @@ it('does not server-side render the admin panel', function () {
 });
 
 /**
- * Inertia hides SSR failures and falls back to rendering in the browser, so without a
- * listener nobody finds out and crawlers just get an empty shell. Laravel finds
- * listeners in app/Listeners, so this breaks if the class moves or handle() stops
- * type-hinting the event.
+ * Inertia hides SSR failures. It falls back to rendering in the browser, so a visitor
+ * sees a working page and nothing is logged. Without a listener, nobody finds out.
+ *
+ * Laravel discovers listeners by looking in app/Listeners, so this breaks if the class
+ * moves or if handle() stops type-hinting the event.
  */
 it('reports server-side rendering failures', function () {
     Event::fake();
@@ -68,9 +72,9 @@ it('reports server-side rendering failures', function () {
 });
 
 /**
- * Without this the tray fills up locally: every apex page load with no `npm run dev`
- * running produces a refused connection, and an alert that fires constantly is one
- * nobody reads.
+ * Without this, working locally fills the tray with alerts. Every apex page load with
+ * no dev server running produces a refused connection, and an alert that fires
+ * constantly is one everyone learns to ignore.
  */
 it('stays quiet when the local renderer is simply not running', function () {
     app()->detectEnvironment(fn () => 'local');

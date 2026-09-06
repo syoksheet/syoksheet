@@ -5,9 +5,8 @@ namespace App\Enums;
 use RuntimeException;
 
 /**
- * The four hosts one application serves, each with its own routing group, rendering
- * style and authentication. Named for `Route::domain()`, which consumes it, and for
- * `config/domains.php`, which supplies the values.
+ * The four hosts this application serves. Each one has its own routing group, its own
+ * rendering style and its own authentication.
  */
 enum Domain: string
 {
@@ -19,9 +18,9 @@ enum Domain: string
     /**
      * The hostname this domain answers on, per environment.
      *
-     * Throws rather than returning null because `Route::domain(null)` is not an error
-     * in Laravel: it means "no host constraint", so an unset value would quietly serve
-     * this domain's routes on every hostname. A missing host has to be fatal.
+     * This throws instead of returning null on purpose. Laravel treats
+     * Route::domain(null) as "match any host" rather than as an error, so a missing
+     * value would quietly serve this domain's routes on every hostname.
      */
     public function host(): string
     {

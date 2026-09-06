@@ -25,8 +25,9 @@ it('renders a business rule violation as 422 with a stable code', function () {
 });
 
 /**
- * These strings are a public contract. Anything but lowercase snake_case will read as a
- * typo to whoever consumes it, and a duplicate would make two rules indistinguishable.
+ * These strings are a public contract. Anything other than lowercase snake_case reads
+ * as a typo to whoever consumes it, and a duplicate would make two different rules
+ * impossible to tell apart.
  */
 it('gives every code a distinct snake_case value', function () {
     $values = array_map(fn (ErrorCode $case): string => $case->value, ErrorCode::cases());
@@ -40,16 +41,16 @@ it('gives every code a distinct snake_case value', function () {
 });
 
 /**
- * A rule violation is an expected outcome, not a fault. Reporting these would spend the
- * error quota on users hitting their own tier limits.
+ * A rule violation is an expected outcome rather than a fault. Reporting these would
+ * spend the error quota on people hitting their own tier limits.
  */
 it('is not reported to sentry', function () {
     expect(config('sentry.ignore_exceptions'))->toContain(BusinessRuleException::class);
 });
 
 /**
- * The code reaches the log context, so a logged violation names the rule that refused
- * the request instead of leaving you to match on the message.
+ * The code ends up in the log context, so a logged violation names the rule that
+ * refused the request instead of leaving you to work it out from the message.
  */
 it('puts the code in the log context', function () {
     $exception = new BusinessRuleException(ErrorCode::ExportInProgress, 'An export is already running.');

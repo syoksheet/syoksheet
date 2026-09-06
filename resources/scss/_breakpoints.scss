@@ -1,17 +1,10 @@
-// Breakpoints are SCSS variables rather than custom properties, and they have to be:
-// CSS custom properties do not work inside a media query condition. @media
-// (min-width: var(--bp-md)) silently matches nothing. This is the one part of the
-// system a component cannot read at runtime.
+// These are SCSS variables rather than custom properties, and they have to be. A
+// custom property inside a media query condition silently matches nothing, so
+// @media (min-width: var(--bp-md)) never fires. This is the one part of the system a
+// component cannot read at runtime.
 //
-// Mobile-first, so use min-width and let the larger screens add to the base.
-//
-// Values come from design/docs/DS App Shell.html, which is the layout contract. The
-// sidebar steps between fixed widths at these four points and never collapses to a
-// rail or a drawer. An earlier reading of DS Spacing.html put a single 980px step here
-// with a 64px icon rail; that layout was superseded and the spacing spec now agrees.
-//
-// The design cards' own CSS uses 820px and 900px: those belong to the preview pages'
-// layout, not the product's.
+// Mobile-first, so use min-width and let larger screens add to the base. The sidebar
+// steps between fixed widths at these four points and never collapses to a rail.
 
 @use 'sass:map';
 

@@ -3,14 +3,11 @@
 namespace App\Enums;
 
 /**
- * Stable codes for business-rule violations, all returned as 422.
+ * Stable codes for business-rule violations. Every one of these is returned as a 422.
  *
- * These strings are a public contract: frontends branch on the code and never on the
- * message, so a value here can be added but not renamed once it has shipped. The
- * message is free to change with the copy.
- *
- * The set is pinned to the `BusinessRuleError` component in docs/api/openapi.json by
- * ErrorCodeTest, so the enum and the published contract cannot drift apart.
+ * Frontends branch on the code and never on the message. That makes each string a
+ * public contract, so you can add a case here, but you cannot rename one once it has
+ * shipped. The message is free to change with the copy.
  */
 enum ErrorCode: string
 {

@@ -1,8 +1,6 @@
-// Raw palette. No meaning attached, no component should ever reference these
-// directly: use the semantic tokens in _semantic.scss instead. Changing a value here
-// changes it everywhere it is used, which is only safe because nothing uses it by name.
-//
-// Values transcribed from design/docs/DS Color.html.
+// The raw palette, with no meaning attached to any value. Components never reference
+// these directly and use the semantic tokens instead. That is what makes changing a
+// value here safe: nothing depends on it by name.
 
 :root {
   // Neutral. The paper: surfaces, text, hairlines. No tint.

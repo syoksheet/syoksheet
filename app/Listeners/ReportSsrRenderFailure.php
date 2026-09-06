@@ -14,10 +14,9 @@ class ReportSsrRenderFailure
     /**
      * Send an SSR failure to Sentry.
      *
-     * Inertia hides these. When the render fails it falls back to rendering in the
-     * browser, so the visitor still gets a working page and nothing is logged. That is
-     * fine for people and bad for crawlers, which get an empty shell. Without this we
-     * would never find out the SSR server was down.
+     * When the render fails, Inertia quietly falls back to rendering in the browser and
+     * logs nothing. A visitor still sees a working page, so nobody notices. A crawler
+     * does not run JavaScript, so it gets an empty shell instead.
      */
     public function handle(SsrRenderFailed $event): void
     {
@@ -25,8 +24,9 @@ class ReportSsrRenderFailure
             return;
         }
 
-        // withScope, not configureScope. configureScope would leave this context on
-        // the hub for the rest of the request and tag unrelated errors as SSR ones.
+        // Use withScope rather than configureScope. configureScope would leave this
+        // context on the hub for the rest of the request, and later errors that have
+        // nothing to do with SSR would be tagged as SSR failures.
         withScope(function (Scope $scope) use ($event): void {
             $scope->setContext('inertia_ssr', [
                 'component' => $event->page['component'] ?? 'unknown',
@@ -39,9 +39,9 @@ class ReportSsrRenderFailure
     }
 
     /**
-     * Locally a refused connection just means `npm run dev` is not running. The page
-     * still works, and reporting it would fire on every apex page load until everyone
-     * ignored the alert. Render errors are real bugs and still get reported.
+     * A refused connection in local development just means the dev server is not
+     * running. Reporting that would raise an alert on every page load, and an alert
+     * that fires constantly is one nobody reads. Real render errors are still sent.
      */
     private function isLocalServerNotRunning(SsrRenderFailed $event): bool
     {

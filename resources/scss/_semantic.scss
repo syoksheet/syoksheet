@@ -1,15 +1,13 @@
 @use 'breakpoints' as bp;
 
-// What things are for. Components use these and nothing else.
+// What things are for. Components use these tokens and nothing else.
 //
-// The rule: a component never references a primitive (--n-*, --teal-*, --clay-* and
-// friends). If you write var(--n-600) in a component you lose the ability to change
-// "secondary text" without hunting through every file guessing which greys meant that.
+// A component must never reference a primitive. Write var(--n-600) in a component and
+// you lose the ability to change what "secondary text" means without hunting through
+// every file guessing which greys meant that.
 //
-// Some of these resolve to the same value today. --color-info and --color-action are
-// both teal-600, --color-success and --color-verified are both verify-600. They are
-// different meanings that happen to share a color, and keeping them apart is the
-// whole point of this layer.
+// Some names resolve to the same value today. They are different meanings that happen
+// to share a color, and keeping them apart is the whole point of this layer.
 
 :root {
   // Surfaces
@@ -17,9 +15,9 @@
   --color-surface: var(--n-0); // cards and panels on the page
   --color-scrim: rgb(10 10 11 / 45%); // behind modals and drawers
 
-  // A recessed neutral fill for chips that carry no status: file-type labels, counts,
-  // an "unverified" badge. Same value as the disabled surface, different meaning, so
-  // they get different names.
+  // A recessed fill for chips that carry no status, such as a file-type label or a
+  // count. It shares a value with the disabled surface but means something different,
+  // so it gets its own name.
   --color-surface-sunken: var(--n-100);
 
   // Text
@@ -38,16 +36,17 @@
   --color-action-subtle: var(--teal-50);
   --color-on-action: var(--n-0);
 
-  // Focus comes in two treatments, and which one depends on the control.
+  // Focus has two treatments, and which one you use depends on the control.
   //
-  // Pressable things (buttons, checkboxes, radios, toggles) take an outline:
+  // Buttons, checkboxes, radios and toggles take an outline:
   //   outline: 2px solid var(--color-focus); outline-offset: 2px;
   //
-  // Bordered fields (inputs, textareas, search) recolour their border and add a glow:
+  // Inputs, textareas and search fields already have a border, so they recolor it and
+  // add a ring instead:
   //   border-color: var(--color-focus); box-shadow: 0 0 0 3px var(--color-focus-ring);
   //
-  // teal-500 rather than the teal-600 action color, so the ring stays visible against
-  // a teal button.
+  // Never use both on one control. The color is teal-500 rather than the teal-600 used
+  // for actions, so the ring stays visible against a teal button.
   --color-focus: var(--teal-500);
   --color-focus-ring: rgb(0 64 64 / 22%);
 
@@ -65,10 +64,9 @@
   --color-danger-subtle: var(--clay-50);
   --color-on-danger: var(--n-0);
 
-  // The tinted pattern: badges, tags and alerts are a pale background, dark text and a
-  // light border from the same ramp, rather than a solid fill. Without names for the
-  // text and border halves you end up reaching for var(--clay-700) in a component,
-  // which is exactly what the semantic layer exists to stop.
+  // Badges, tags and alerts share a tinted pattern: a pale background, dark text and a
+  // light border, all from one ramp. The text and border halves are named here so a
+  // component never has to reach for a primitive to build one.
   --color-info-text: var(--teal-700);
   --color-info-border: var(--teal-100);
   --color-success-text: var(--verify-700);
@@ -124,18 +122,19 @@
   --ease-move: cubic-bezier(0.32, 0.72, 0, 1);
   --ease-fade: ease;
 
-  // Layout. A stepped sidebar plus a content column that is the only thing that flexes.
-  // The sidebar never collapses to a rail or a drawer: it switches between these fixed
-  // widths at the breakpoints and is always flex-shrink: 0. Both the sidebar and the
-  // page gutter are stepped in the media queries below, so a component reads one token
-  // and never a breakpoint. These are the base values, below the first breakpoint.
+  // The sidebar switches between fixed widths at the breakpoints and never collapses
+  // to a rail or a drawer. The content column is the only thing that flexes.
+  //
+  // Both the sidebar and the page gutter step in the media queries below, so a
+  // component reads one token and never branches on a breakpoint. These are the base
+  // values, used below the first breakpoint.
   --layout-sidebar: 180px; // below md
   --layout-content: 760px; // forms and reading
   --layout-content-wide: 1080px; // tables and dense grids
   --layout-gutter: 20px; // below sm
 
-  // Inverse surface. The dark teal the announcement bar and the marketing footer sit
-  // on. Not a theme: these are surfaces that are always dark, whatever the page is.
+  // Surfaces that are always dark, whatever the rest of the page is doing. The
+  // announcement bar and the marketing footer sit on these. This is not a theme.
   --color-surface-inverse: var(--teal-900);
   --color-on-inverse: var(--n-0);
   --color-on-inverse-muted: var(--teal-200);
@@ -157,9 +156,8 @@
   --font-mono: 'Geist Mono', ui-monospace, monospace;
 }
 
-// Anything that changes with the viewport steps here rather than in a component, so a
-// component reads one token and never branches on a breakpoint. Sidebar widths come
-// from design/docs/DS App Shell.html, gutters from DS Spacing.html.
+// Anything that changes with the viewport steps here rather than inside a component.
+// That way a component reads one token and never branches on a breakpoint itself.
 @include bp.at-least('sm') {
   :root {
     --layout-gutter: 40px;

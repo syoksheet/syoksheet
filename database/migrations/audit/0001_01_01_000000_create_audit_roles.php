@@ -6,23 +6,9 @@ use Illuminate\Support\Facades\DB;
 return new class extends Migration
 {
     /**
-     * Append-only is a missing permission, not a rule in application code, so a bug or
-     * a stolen credential still cannot rewrite history.
-     *
-     * The grant is expressed as a default privilege rather than a `GRANT` because the
-     * audit tables do not exist yet: Phase 6 creates them. A default privilege is a
-     * standing instruction applied at CREATE TABLE time, so every audit table any later
-     * phase adds arrives with the right access list and nobody has to remember.
-     *
-     * `FOR ROLE CURRENT_USER` is deliberate and must not become a literal. The
-     * instruction is keyed to whoever creates the table, which is `db` locally and
-     * `forge` in production. A hardcoded name would be correct here and silently do
-     * nothing there, leaving the audit tables ungranted.
-     *
-     * The erasure role gets no default privilege. Its `UPDATE` is scoped to the
-     * anonymisable columns, which `ALTER DEFAULT PRIVILEGES` cannot express, so Phase 6
-     * grants it beside each table. A table-wide `UPDATE` here would look symmetrical
-     * and dissolve the guarantee.
+     * The audit log is append-only because these roles are missing the permission to
+     * update or delete, not because application code refuses to. A bug or a stolen
+     * credential therefore still cannot rewrite history.
      */
     private const string APPLICATION_ROLE = 'syoksheet_audit_app';
 
@@ -31,8 +17,7 @@ return new class extends Migration
     public function up(): void
     {
         foreach ([self::APPLICATION_ROLE, self::ERASURE_ROLE] as $role) {
-            // Postgres has no CREATE ROLE IF NOT EXISTS, and roles are cluster-wide, so
-            // this must survive a second environment on the same cluster.
+            // Postgres has no CREATE ROLE IF NOT EXISTS, and roles are cluster-wide.
             DB::statement(sprintf(<<<'SQL'
                 DO $$
                 BEGIN
@@ -44,6 +29,13 @@ return new class extends Migration
             SQL, $role, $role));
         }
 
+        // This is a default privilege rather than a GRANT because the audit tables do
+        // not exist yet. Postgres applies a default privilege at CREATE TABLE time, so
+        // every audit table added later arrives with the right access list already set.
+        //
+        // Keep FOR ROLE CURRENT_USER as it is. Whoever creates the tables differs
+        // between environments, so a hardcoded role name would be right in one place
+        // and would silently grant nothing in the other.
         DB::statement(sprintf(
             'ALTER DEFAULT PRIVILEGES FOR ROLE CURRENT_USER IN SCHEMA public GRANT INSERT, SELECT ON TABLES TO %s',
             self::APPLICATION_ROLE
@@ -51,9 +43,11 @@ return new class extends Migration
     }
 
     /**
-     * Destroys no data: the roles own nothing, since the audit tables are owned by
-     * whoever ran the migration. But roles are cluster-wide, so this removes them for
-     * every database on the server, not only this one.
+     * This destroys no data. The roles own nothing, because the audit tables belong to
+     * whoever ran the migration.
+     *
+     * Roles are cluster-wide, though, so dropping them here removes them for every
+     * database on the server rather than only this one.
      */
     public function down(): void
     {

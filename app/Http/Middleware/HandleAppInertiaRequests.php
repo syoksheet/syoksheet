@@ -13,8 +13,9 @@ class HandleAppInertiaRequests extends Middleware
     protected $rootView = 'domains.app';
 
     /**
-     * SSR off. The app sits behind a login so nothing crawls it. SSR would add a Node round trip for no gain.
-     * '*' matches every path, including '/'.
+     * Server-side rendering is switched off here. This app sits behind a login, so
+     * nothing crawls it, and rendering on the server would add a round trip to Node for
+     * no gain. The '*' matches every path, including '/'.
      *
      * @var array<int, string>
      */

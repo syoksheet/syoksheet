@@ -37,14 +37,9 @@ One exception: a field that stores an external provider's state mirrors that pro
 
 Do not run a blind find-and-replace. Three things break: `phpstan analyse` is a CLI command; `aria-labelledby` is an HTML attribute; and `analysis`, `emphasis` and `optimistic` are already US, so stem matching produces false positives. Word-boundary regex also misses `cancelled_at` and `subscription_cancelled`, because `_` is a word character.
 
-## Name things in full words, and never comment a decision that lives elsewhere
+## Name things in full words
 No abbreviated identifiers. Not `n`, `h`, `p`, `x`, `j`, `slot`, `pz`, `nm`. Write `number`, `heading`, `body`, `placeholder`. This applies to CSS class names, object keys and loop variables as much as to variables, methods and classes: `{ heading, body }` reads, `{ h, p }` does not, and `.subheading`, `.column`, `.icon`, `.container` read where `.sub`, `.col`, `.ico`, `.wrap` do not. Prefer `for (const character of source)` to an index counter; a bare `for` counter is the only place a single letter is acceptable.
 
-Do not restate a decision, rule or spec in a comment. "Marketing copy is inline by decision", "every link here resolves", "heights are fixed by the spec", "a badge is never focusable" all belong in `.ai/rules`, `decisions.md` or the design spec, and a second copy in the code drifts from the first.
-
-Comment only what the code cannot say: a non-obvious mechanism, a browser quirk, a workaround with a reason. `min-inline-size: 0` needs a line explaining that flex items default to `auto` and refuse to shrink. `background: currentcolor` on an empty element needs a line saying a mask cuts the shape out of it. Prefer a named constant to a comment about a number.
-
-Prop JSDoc is different and welcome: it is the public API and shows at every call site.
 
 ## The four hosts are domains, never "surfaces"
 Apex, `app.`, `admin.` and `api.` are **domains**. Never call them surfaces, in code, comments, docs, plans or chat.
@@ -54,3 +49,25 @@ The codebase already settled the word: `App\Enums\Domain`, `config/domains.php`,
 It is also actively ambiguous here: `--color-surface` and `--color-surface-sunken` are background tokens, so "surface" already means something else in this project.
 
 The ordinary English senses stay fine: a "wireframing surface" to sketch on, or "a bug surfaces later" as a verb. Only the four-hosts meaning is banned.
+
+## Comments: write them for a person, in plain English
+A comment is prose a developer reads, not a note to a machine. Write full sentences with a clear subject and verb. One idea per sentence. Say who does what: "Laravel adds this to the log context", not "Merged into the log context".
+
+There is **no line limit**. A comment is as long as it needs to be. Never compress a sentence to fit a budget: stacked clauses, dropped subjects and telegraphic phrasing are harder to read than an extra line, and that trade is never worth making.
+
+Read it back before moving on. If it takes two passes to parse, rewrite it.
+
+Three things never appear in a comment:
+
+- **History.** Not "used to", "previously", "had drifted", "this was a bug". Git holds that, and the sentence is wrong the moment the code moves on.
+- **Citations.** No doc paths, `.md` filenames, `@see`, spec names, phase numbers, or vendor file and line numbers. Nothing checks them, so they rot silently and mislead. Naming a class or a config key the reader can grep for is fine; pointing at a line number is not.
+- **Anything that belongs somewhere else.** A decision goes in `decisions.md`, a convention goes in `.ai/rules`. "Marketing copy is inline by decision", "heights are fixed by the spec" and "a badge is never focusable" are all rules, not comments, and a second copy in the code drifts from the first.
+
+What earns a comment is what the code cannot say: a non-obvious mechanism, a browser or library quirk, a workaround and the constraint forcing it. `min-inline-size: 0` needs a line explaining that flex items default to `auto` and refuse to shrink. `background: currentcolor` on an empty element needs a line saying a mask cuts the shape out of it. Prefer a named constant to a comment about a number.
+
+Prop JSDoc is separate and welcome, since it is the public API and shows at every call site.
+
+## BusinessRuleException is ignored by Sentry through config, not through the exception
+`BusinessRuleException` is listed in `ignore_exceptions` in the Sentry config. Do not "tidy" that into implementing Laravel's `ShouldntReport` on the class instead.
+
+The two are not equivalent. `ShouldntReport` drops the local log entry as well, and a refused request is worth a log line even though it is not worth an alert. The test asserts the config value, so swapping the mechanism would keep the suite green while silently losing the log.

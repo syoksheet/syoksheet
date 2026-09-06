@@ -7,16 +7,16 @@ it('runs clean', function () {
 })->throwsNoExceptions();
 
 /**
- * The seeder's whole job is creating accounts with known credentials, and CI calls it
- * with `--force`, which is also the flag that skips Laravel's own production prompt.
- * Without this guard the only thing standing between a fixture user and production is
- * whoever typed the command.
+ * This seeder exists to create accounts with known credentials, and CI runs it with
+ * --force. That is also the flag that skips Laravel's own production prompt, so without
+ * this guard the only thing between a fixture user and production is whoever typed the
+ * command.
  */
 it('refuses to run in production', function () {
     app()->detectEnvironment(fn () => 'production');
 
-    // Called directly rather than through $this->seed(), which goes via the Artisan
-    // command and swallows the exception into a failed exit code.
+    // Call the seeder directly. Going through $this->seed() runs the Artisan command,
+    // which swallows the exception and turns it into a failed exit code.
     expect(fn () => (new BrunoSeeder)->run())
         ->toThrow(RuntimeException::class, 'must never run in production');
 });

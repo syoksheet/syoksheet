@@ -32,10 +32,9 @@ return Application::configure(basePath: dirname(__DIR__))
         | session, a session sets a cookie, and a response with Set-Cookie is not
         | cacheable. The apex is public, identical for everyone and server-rendered, so
         | staying stateless is what lets the CDN hold it. Nothing here needs a session:
-        | Inertia's middleware guards every session call with hasSession(). Note that
-        | Inertia\Response::__construct calls session() without a guard, but it returns
-        | the default rather than throwing, so the only cost is building the session
-        | manager. That is the line to recheck on an Inertia upgrade.
+        | Inertia's middleware guards every session call with hasSession(). Its Response
+        | class calls session() without that guard, but the call returns a default
+        | rather than throwing, so the only cost is building the session manager.
         |
         | When the apex needs a form, that POST gets its own small session-enabled
         | group rather than putting a session on every GET.

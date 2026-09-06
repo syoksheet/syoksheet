@@ -11,11 +11,9 @@ use RuntimeException;
 abstract class TestCase extends BaseTestCase
 {
     /**
-     * Every root view calls @vite, which throws when public/build/manifest.json is
-     * missing. That file is gitignored, so on a clean checkout, and in CI where tests
-     * run before the build, 20 tests fail on a missing asset none of them care about.
-     * Nothing here asserts on script tags. A test that does needs to opt back in with
-     * $this->withVite().
+     * Every root view calls @vite, which throws when there is no built manifest. That
+     * file is gitignored, so a clean checkout and CI both hit it, and no test here
+     * asserts on script tags anyway. A test that needs them calls $this->withVite().
      */
     protected function setUp(): void
     {
@@ -27,21 +25,23 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * Inertia's SSR gateway posts to the Vite dev server rather than the SSR bundle
-     * whenever `Vite::isRunningHot()` is true, and that is `is_file(public_path('hot'))`.
-     * A developer with `npm run dev` running, or one whose dev server was killed instead
-     * of stopped and left the file behind, gets different results from the same suite.
+     * Stop a running dev server from changing what these tests exercise.
      *
-     * `useHotFile()` cannot pin it: withoutVite() above installs a stub that overrides
-     * that method to do nothing and return itself, so the call succeeds and changes
-     * nothing. Replacing the binding is the only way to reach the decision. Running
-     * after withoutVite() keeps $this->withVite() working, since that restores the
-     * instance withoutVite() saved.
+     * Inertia's SSR gateway posts to the Vite dev server instead of the SSR bundle
+     * whenever a hot file exists. So whether someone has `npm run dev` running decides
+     * which code path the suite covers, which is not something a test should depend on.
+     *
+     * We cannot pin this with useHotFile(). The stub that withoutVite() installs above
+     * overrides that method to do nothing, so the call succeeds and changes nothing.
+     * Replacing the binding is the only way to reach the decision.
+     *
+     * This has to run after withoutVite(). withVite() restores the instance that
+     * withoutVite() saved, so reversing the order stops withVite() working.
      */
     private function pinViteNotRunningHot(): void
     {
-        // The facade caches whatever it resolved first, so swapping the binding on its
-        // own leaves it handing back the stub installed a moment ago.
+        // The facade remembers the first instance it resolved. Without clearing that,
+        // swapping the binding would leave the facade handing back the old stub.
         ViteFacade::clearResolvedInstance();
 
         $this->swap(Vite::class, new class extends Vite

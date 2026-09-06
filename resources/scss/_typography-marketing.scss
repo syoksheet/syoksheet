@@ -1,16 +1,12 @@
-// Marketing type, apex only. The app scale in _typography.scss is built for dense
-// product UI, where 15px body and 11px labels are right. Marketing pages are read at
-// arm's length on a wide screen and need more room, so they get their own scale rather
-// than loosening the product's.
+// The type scale for marketing pages, used on the apex only. The app scale is built
+// for dense product UI, where 15px body copy is right. Marketing pages are read from
+// further away and need more room, so they get their own scale.
 //
-// Sizes are fluid because these pages have no fixed column: the scale follows the
-// viewport instead of stepping at the app breakpoints. Every clamp floor is the mobile
-// size and every ceiling is the desktop size, so neither end is left to chance.
+// The sizes are fluid because these pages have no fixed column. Each clamp runs from
+// its mobile size up to its desktop one, so neither end is left to chance.
 //
-// The apex root view puts `.marketing` on <body>, which is what raises the base size
-// from the app's 15px; that rule lives in _base.scss, because this file is @use'd by
-// individual components and any real CSS in it would be emitted, and Svelte-scoped,
-// once per component. Nothing outside the apex should use these mixins.
+// This file holds no real CSS rules. Components @use it, and any rule in here would be
+// emitted and Svelte-scoped once per component.
 
 @mixin marketing-display {
   font-family: var(--font-sans);
@@ -44,8 +40,9 @@
   letter-spacing: -0.02em;
 }
 
-// Card headings. Fixed rather than fluid: a card is a fixed-width box, so its heading
-// scaling with the viewport only makes it collide with its own edges.
+// Headings inside cards. These are fixed rather than fluid, because a card is a
+// fixed-width box. A heading that scaled with the viewport would only collide with the
+// card's own edges.
 @mixin marketing-h4 {
   font-family: var(--font-sans);
   font-size: 18px;
@@ -54,7 +51,7 @@
   letter-spacing: -0.01em;
 }
 
-// The sentence under a heading, and the hero paragraph. One step above body.
+// The sentence under a heading, and the hero paragraph. One step above body copy.
 @mixin marketing-lead {
   font-family: var(--font-sans);
   font-size: clamp(18px, 1.6vw, 21px);
@@ -71,8 +68,9 @@
   letter-spacing: 0;
 }
 
-// The floor for marketing copy. Footer links, card captions, fine print. The app scale
-// goes to 13px and 11px; nothing on a marketing page should.
+// The smallest size marketing copy is allowed to use: footer links, card captions and
+// fine print. The app scale goes down to 13px and 11px, but nothing on a marketing page
+// should be that small.
 @mixin marketing-small {
   font-family: var(--font-sans);
   font-size: 15px;
@@ -90,9 +88,8 @@
   text-transform: uppercase;
 }
 
-// Mono fine print that is not a label: the copyright line, a placeholder caption. The
-// app scale's equivalent is `type-record` at 12px, which is a size too small to read
-// comfortably at marketing distance.
+// Mono fine print that is not a label, such as a copyright line or a placeholder
+// caption.
 @mixin marketing-meta {
   font-family: var(--font-mono);
   font-size: 13px;

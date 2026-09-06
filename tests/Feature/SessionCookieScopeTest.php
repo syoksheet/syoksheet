@@ -20,20 +20,21 @@ function apexSessionCookieFrom(TestResponse $response): ?Cookie
 }
 
 /**
- * The session cookie is host-only. With a leading-dot parent domain the browser sends
- * it to every subdomain, including two that should never see it: `api.`, which uses
- * bearer tokens and has no session, and the apex, which is public and cached. Handing
- * a session id to a cached page is asking for trouble and often stops the CDN caching
- * at all.
+ * The session cookie is host-only.
  *
- * `app.` and `admin.` do not need to share one. They run separate guards, so being
+ * With a leading-dot parent domain the browser would send it to every subdomain. Two
+ * of them should never see it: `api.` uses bearer tokens and has no session, and the
+ * apex is public and cached. Handing a session id to a cached page often stops the CDN
+ * caching it at all.
+ *
+ * `app.` and `admin.` do not need to share a cookie. They run separate guards, so being
  * signed in to one never means being signed in to the other.
  */
 it('scopes the session cookie to the host that set it', function (Domain $domain) {
     $cookie = apexSessionCookieFrom($this->get('https://'.$domain->host().'/'));
 
-    // Both assertions matter: the first stops the second passing vacuously when no
-    // session cookie is set at all.
+    // Both assertions matter. The first one stops the second from passing when no
+    // session cookie was set at all.
     expect($cookie)->not->toBeNull()
         ->and($cookie?->getDomain())->toBeNull();
 })->with([

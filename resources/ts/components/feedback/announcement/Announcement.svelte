@@ -21,13 +21,15 @@
   const STORAGE_PREFIX = 'announcement:';
 
   /*
-   * Rendered by default, including on the server, and hidden on mount for anyone who
-   * dismissed it. The reverse (hidden until storage confirms otherwise) means the bar
-   * is absent from the server render and appears on hydration, shifting the whole page
-   * down for every visitor to spare a flash for the few who dismissed it.
+   * The bar renders by default, including on the server, and hides on mount for anyone
+   * who dismissed it.
    *
-   * Storage does not exist during SSR and throws in some private windows, so every
-   * access is guarded and the bar simply stays visible when it is unavailable.
+   * Doing it the other way round, hiding until storage says otherwise, would leave the
+   * bar out of the server render and add it on hydration. That shifts the whole page
+   * down for every visitor, just to spare a flash for the few who dismissed it.
+   *
+   * Storage does not exist during server rendering and throws in some private windows,
+   * so every access is guarded and the bar simply stays visible when it is unavailable.
    */
   let dismissed = $state(false);
 
@@ -83,8 +85,9 @@
     color: var(--color-on-inverse);
   }
 
-  // Mobile first: centred text has nowhere to go on a narrow screen, so it starts
-  // left-aligned and centres from `sm` up. The close button always keeps its own room.
+  // Mobile first. Centered text has nowhere to go on a narrow screen, so the bar
+  // starts left-aligned and centers from `sm` up. The close button always keeps its
+  // own room at the end.
   .inner {
     display: flex;
     gap: var(--space-2);
