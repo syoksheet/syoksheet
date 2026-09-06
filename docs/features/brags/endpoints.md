@@ -1,14 +1,13 @@
 # Brags: Endpoints & Implementation
 
-Brag CRUD with tier limits and field locking. Product behavior (fields, place field, business rules) in syoksheet-docs → features/brags.md.
+Brag CRUD with abuse rate limiting and field locking. Product behavior (fields, place field, business rules) in syoksheet-docs → features/brags.md.
 
 ## 🔌 Endpoints
 
 | Route | Behavior |
 |-------|-----------|
 | `GET /api/v1/me/brags` | Own brags: timeline order (`date_start` desc), filterable by skill, tag, org, date; paginated |
-| `POST /api/v1/me/brags` | Create: title, description, date_start, place_text, occupation_id, visibility required. Tier limit enforced (422 `brag_limit_reached`; canonical limits: syoksheet-docs → product/pricing.md) |
-| `PATCH /api/v1/me/brags/visibility-selection` | After downgrade: choose which brags stay visible within the free limit: sets/clears `hidden_at` |
+| `POST /api/v1/me/brags` | Create: title, description, date_start, place_text, occupation_id, visibility required. No tier limit. Abuse rate limited (429 `brag_creation_rate_limited`) |
 | `GET /api/v1/me/brags/{brag}` | Detail with tags, links, attachments, skills, collaborators, verifications |
 | `PATCH /api/v1/me/brags/{brag}` | Update: locked fields rejected while `is_locked` (see below) |
 | `DELETE /api/v1/me/brags/{brag}` | Soft delete; cascades children |
@@ -29,8 +28,8 @@ Always editable: `position_text`, `visibility`, `is_confidential`, `industry_id`
 
 ## 📏 Enforcement
 
-- Tier limit check counts non-deleted brags. Organization plans never lift a member's personal limits: personal and org billing are fully independent.
-- Downgrade hiding: over-limit brags get `hidden_at` set (most recent kept visible by default; reselect via the endpoint above); hidden brags are excluded from walls and analytics, fully restored on upgrade. See [../billing/lifecycle.md](../billing/lifecycle.md).
+- Creation is rate limited per user on every plan, from `config('abuse.brags.per_hour')` and `config('abuse.brags.per_day')`, returning 429 `brag_creation_rate_limited`. There is no tier limit on brag count.
+- Downgrade hides attachments on unverified brags, never the brags themselves. Personal and org billing are fully independent, so an organization plan never lifts a member's personal limits. See [../billing/lifecycle.md](../billing/lifecycle.md).
 - Visibility `on_verification` → treated as private until the first verification lands, then public.
 
 ## 📋 Audit Events

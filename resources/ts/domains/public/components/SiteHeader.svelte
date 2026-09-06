@@ -35,13 +35,8 @@
   });
 </script>
 
-<Announcement
-  id="founding-member-2026"
-  href="/pricing"
-  tag="Founding member"
-  dismissLabel="Dismiss announcement"
->
-  First 500 Pro subscribers keep $5 a month for life
+<Announcement id="free-tier-launch" href="/pricing" tag="Free" dismissLabel="Dismiss announcement">
+  Unlimited achievements and verification, free forever
 </Announcement>
 
 <div class="header-bar">

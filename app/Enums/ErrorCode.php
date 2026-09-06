@@ -11,8 +11,6 @@ namespace App\Enums;
  */
 enum ErrorCode: string
 {
-    case BragLimitReached = 'brag_limit_reached';
-    case VerificationRateLimited = 'verification_rate_limited';
     case AttachmentRequiresPro = 'attachment_requires_pro';
     case JobPostingLimitReached = 'job_posting_limit_reached';
     case FieldsLocked = 'fields_locked';

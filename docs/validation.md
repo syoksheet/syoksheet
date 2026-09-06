@@ -11,7 +11,7 @@ Platform-wide validation rules referenced by every feature spec: uploads, identi
 | Org cover image (branding) | 5 MB | jpeg, png, webp |
 | Brag attachment | 10 MB | pdf, jpeg, png, webp |
 
-Files upload to `syoksheet-private-{env}`; images are validated as real images (not just extension). Attachment count per brag is tier-limited (syoksheet-docs → product/pricing.md).
+Files upload to `syoksheet-private-{env}`; images are validated as real images (not just extension). Attachments are a Pro feature, unlimited on Pro and unavailable on Free (syoksheet-docs → product/pricing.md).
 
 ## 🔤 Identifiers
 
@@ -38,8 +38,6 @@ Rule violations return 422 with a stable `code` alongside the message, so fronte
 
 | Code | Raised by |
 |------|-----------|
-| `brag_limit_reached` | Brag creation over tier limit |
-| `verification_rate_limited` | Verification requests over the daily abuse limit, never a tier limit |
 | `attachment_requires_pro` | Attachments are a Pro feature; Free has none |
 | `job_posting_limit_reached` | Publish over tier limit |
 | `fields_locked` | Editing locked brag fields |
@@ -49,6 +47,17 @@ Rule violations return 422 with a stable `code` alongside the message, so fronte
 | `reserved_name` | Username/slug on the reserved list |
 
 New business rules add their code here and to the OpenAPI `BusinessRuleError` component.
+
+## ⏱️ Abuse Rate Limits
+
+Rate limits return 429 with a `Retry-After` header and a stable `code`. They are not tier limits: every one of these applies to every account on every plan, and none of them appears in the pricing table. A limit that differs by plan is a business rule and belongs in the table above.
+
+| Code | Limit | Protects |
+|------|-------|----------|
+| `brag_creation_rate_limited` | syoksheet-docs → product/pricing.md | Content pollution. Nobody writes 30 real achievements in an hour |
+| `verification_rate_limited` | syoksheet-docs → product/pricing.md | Sending reputation. Each request emails someone who may have no account |
+
+New abuse limits add their code here and to the OpenAPI `RateLimitError` component. The values live in `config/abuse.php`, which mirrors the canonical numbers in pricing, so tuning one never means changing code.
 
 ### Authorization codes
 

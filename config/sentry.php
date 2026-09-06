@@ -1,6 +1,7 @@
 <?php
 
 use App\Exceptions\BusinessRuleException;
+use App\Exceptions\RateLimitException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -68,6 +69,7 @@ return [
     // bugs under noise.
     'ignore_exceptions' => [
         BusinessRuleException::class,
+        RateLimitException::class,
         ValidationException::class,
         NotFoundHttpException::class,
         ModelNotFoundException::class,

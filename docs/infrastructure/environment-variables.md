@@ -150,3 +150,13 @@ Only the apex is server-side rendered. `app.` and `admin.` opt out in their midd
 | PUBLIC_CACHE_MAX_AGE | 60 | Seconds a response is fresh |
 | PUBLIC_CACHE_STALE_WHILE_REVALIDATE | 300 | Serve stale and refresh in the background, which keeps the renderer off the critical path |
 | PUBLIC_CACHE_STALE_IF_ERROR | 86400 | Keep serving the last good copy through an origin or SSR outage |
+
+## 🚦 Abuse Rate Limits
+
+These throttle abuse, not tiers. They apply to every account on every plan, and the canonical values live in syoksheet-docs → product/pricing.md. Change them here only to respond to an incident.
+
+| Variable | Default | Applies to |
+|----------|---------|------------|
+| `ABUSE_BRAGS_PER_HOUR` | 30 | Brag creation, per user |
+| `ABUSE_BRAGS_PER_DAY` | 100 | Brag creation, per user |
+| `ABUSE_VERIFICATION_REQUESTS_PER_DAY` | 20 | Verification requests, per user |

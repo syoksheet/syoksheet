@@ -21,11 +21,10 @@ Tables for brags, their enrichment data, and verification requests and results.
 | visibility | varchar(20) | `public`, `private`, `on_verification` |
 | is_confidential | boolean | Default false |
 | is_locked | boolean | Default false: set once any verification exists |
-| hidden_at | timestamptz | Nullable: set on over-limit brags after downgrade; cleared on re-upgrade or reselection |
 | created_at, updated_at | timestamptz | Managed by Eloquent |
 | deleted_at | timestamptz | Soft delete |
 
-**Indexes:** user_id, organization_id, occupation_id, industry_id, visibility, place_normalized, hidden_at, deleted_at, created_at
+**Indexes:** user_id, organization_id, occupation_id, industry_id, visibility, place_normalized, deleted_at, created_at
 
 ## 🏷️ brag_tags
 
@@ -50,6 +49,7 @@ Files stored in `syoksheet-private-{env}`.
 | file_path | varchar(500) | `syoksheet-private-{env}` key |
 | file_size | bigint | Standard |
 | mime_type | varchar(100) | Standard |
+| hidden_at | timestamptz | Nullable: set on downgrade for attachments on unverified brags; cleared on re-upgrade |
 | created_at | timestamptz | Set on insert |
 
 ## 🔗 brag_links

@@ -9,7 +9,7 @@
     id: string;
     /** Where the bar links to. The whole message is the link. */
     href: string;
-    /** Short mono label before the message, for example "Founding member". */
+    /** Short mono label before the message, for example "Free". */
     tag?: string;
     /** Accessible name for the dismiss control. Omit to make the bar permanent. */
     dismissLabel?: string;

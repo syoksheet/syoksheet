@@ -2,6 +2,7 @@
 
 use App\Enums\Domain;
 use App\Exceptions\BusinessRuleException;
+use App\Exceptions\RateLimitException;
 use App\Http\Middleware\HandleAdminInertiaRequests;
 use App\Http\Middleware\HandleAppInertiaRequests;
 use App\Http\Middleware\HandlePublicInertiaRequests;
@@ -73,6 +74,15 @@ return Application::configure(basePath: dirname(__DIR__))
                 'message' => $e->getMessage(),
                 'code' => $e->errorCode->value,
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        });
+
+        // A tripped rate limit is expected too. Retry-After is a header rather than a
+        // body field because that is where an HTTP client looks for it.
+        $exceptions->render(function (RateLimitException $e, Request $request) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'code' => $e->rateLimitCode->value,
+            ], Response::HTTP_TOO_MANY_REQUESTS, ['Retry-After' => $e->retryAfterSeconds]);
         });
 
         // Keyed on the host, not the path. The API lives at `/v1/*` rather than

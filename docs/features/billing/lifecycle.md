@@ -19,15 +19,15 @@ Full access continues during the entire grace period. A successful payment at an
 
 On any transition to `free` (cancellation at period end, or grace expiry):
 
-**Users**, over-limit brags get `hidden_at` set, most recent kept visible by default; the user can reselect via `PATCH /api/v1/me/brags/visibility-selection` (see [../brags/endpoints.md](../brags/endpoints.md)). Pro-only features switch off: custom slug falls back to username, analytics dashboard access ends (data retained 90 days), PDF export and API tokens disabled (existing tokens revoked).
+**Users**: brags are never hidden, because the free tier does not cap them. Attachments are handled in the section below. Pro-only features switch off: custom slug falls back to username, analytics dashboard access ends (data retained 90 days), PDF export and API tokens disabled (existing tokens revoked).
 
 **Orgs**: nothing is removed. Members, teams and the verification queue are uncapped on every tier, so the only free-tier ceiling is active job postings: the org cannot publish beyond it, and existing postings are unaffected. Paid features (talent search, Push API, analytics, branding, SSO) simply stop resolving. Existing members, teams, and published postings stay. Wall pins are cleared, branding stops rendering (config retained), analytics access ends (data retained 90 days), Push API tokens revoked, SSO disabled (config retained), webhook endpoints disabled (config retained).
 
-Re-upgrading reverses everything: `hidden_at` cleared, features re-enabled, aggregates intact.
+Re-upgrading reverses everything: hidden attachments become visible again, features re-enabled, aggregates intact.
 
 ## 📎 Attachments on Downgrade
 
-Attachments are a Pro feature. On downgrade, no new attachments can be added and attachments on **unverified** brags are hidden. Attachments on **verified** brags stay visible permanently: a verifier vouched for the claim while that evidence was on display, and withdrawing it later would hollow out a verification a third party gave in good faith.
+Attachments are a Pro feature. On downgrade, no new attachments can be added and attachments on **unverified** brags get `hidden_at` set. Attachments on **verified** brags stay visible permanently: a verifier vouched for the claim while that evidence was on display, and withdrawing it later would hollow out a verification a third party gave in good faith.
 
 ## 📋 Audit Events
 

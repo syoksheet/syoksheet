@@ -37,7 +37,7 @@ Controllers live in `app/Http/Controllers/Auth/User/`.
 | Register | 10/min |
 | Password reset request | 3/hour |
 | Verification email resend | 3/hour |
-| Brag verification requests | 20/day per user. An abuse limit protecting sending reputation, never a tier limit (`code: verification_rate_limited`) |
+| Brag verification requests | 20/day per user. An abuse limit protecting sending reputation, never a tier limit (429 `verification_rate_limited`) |
 
 ## 🔒 Guard Isolation
 

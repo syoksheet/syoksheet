@@ -11,16 +11,16 @@ use Illuminate\Support\Facades\Route;
 it('renders a business rule violation as 422 with a stable code', function () {
     Route::get('/__test/business-rule', function (): never {
         throw new BusinessRuleException(
-            ErrorCode::BragLimitReached,
-            'You have reached the Free tier brag limit.',
+            ErrorCode::AttachmentRequiresPro,
+            'Attachments are available on Pro.',
         );
     });
 
     $this->getJson('/__test/business-rule')
         ->assertStatus(422)
         ->assertExactJson([
-            'message' => 'You have reached the Free tier brag limit.',
-            'code' => 'brag_limit_reached',
+            'message' => 'Attachments are available on Pro.',
+            'code' => 'attachment_requires_pro',
         ]);
 });
 

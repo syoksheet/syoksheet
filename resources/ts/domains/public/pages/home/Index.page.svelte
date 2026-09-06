@@ -230,8 +230,8 @@
         <div class="teaser">
           <span class="audience">For individuals</span>
           <dl>
-            <div><dt>Free<small>15 achievements, unlimited verification</small></dt><dd>$0</dd></div>
-            <div><dt>Pro<small>Unlimited, analytics, PDF export</small></dt><dd>$8 / mo</dd></div>
+            <div><dt>Free<small>Unlimited achievements and verification</small></dt><dd>$0</dd></div>
+            <div><dt>Pro<small>Attachments, analytics, PDF export</small></dt><dd>$10 / mo</dd></div>
           </dl>
           <a class="more" href="/pricing#individuals">Compare individual plans</a>
         </div>
@@ -246,8 +246,8 @@
         </div>
       </div>
       <p class="teaser-note">
-        No per-member charge and no per-verification fee. Business is the highest published
-        plan, and every price is on the pricing page.
+        No per-member charge and no per-verification fee. Building the record is always
+        free. You pay only to get more out of it.
       </p>
     </div>
   </section>
