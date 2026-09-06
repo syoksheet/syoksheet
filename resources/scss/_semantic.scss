@@ -134,6 +134,13 @@
   --layout-content-wide: 1080px; // tables and dense grids
   --layout-gutter: 20px; // below sm
 
+  // Inverse surface. The dark teal the announcement bar and the marketing footer sit
+  // on. Not a theme: these are surfaces that are always dark, whatever the page is.
+  --color-surface-inverse: var(--teal-900);
+  --color-on-inverse: var(--n-0);
+  --color-on-inverse-muted: var(--teal-200);
+  --color-on-inverse-hover: var(--teal-100);
+
   // Avatar fallback palette. Decorative only: the swatch is hashed from an id so the
   // same person is always the same color, and it never carries meaning.
   --color-avatar-1: var(--teal-600);
